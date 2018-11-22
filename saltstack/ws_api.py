@@ -28,7 +28,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 #获取当前时间，以特定的格式，如Wed, 09 May 2018 12:51:25 GMT
 def getDate():
-    return datetime.datetime.utcnow().strftime('%a, %d %b %Y %H:%M:%S   GMT')
+    return datetime.datetime.utcnow().strftime('%a, %d %b %Y %H:%M:%S GMT')
 
 class wsApi(object):
     def __init__(self, username, apikey):
