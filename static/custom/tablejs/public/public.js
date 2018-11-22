@@ -37,8 +37,12 @@ var public = {
     showSelectedValue: function (selectid, bool){
         var selectedValue = []; 
         var objSelect = document.getElementById(selectid); 
-        for(var i = 0; i < objSelect.options.length; i++) { 
+        for(var i = 0; i < objSelect.options.length; i++) {
+            //console.log(selectedValue); 
             if (objSelect.options[i].selected == true) {
+                if (objSelect.options[i].value == ""){
+                    continue;
+                }
                 selectedValue.push(objSelect.options[i].value);
             }
         }
@@ -49,7 +53,7 @@ var public = {
                 }
             }
         }
-        
+        //console.log(selectedValue);
         return selectedValue;
     },
 

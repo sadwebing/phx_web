@@ -19,6 +19,7 @@ choices_st = (
         ('tomcat', 'tomcat'),
         ('nodejs', 'nodejs'),
         ('vpn',    'vpn'),
+        ('svn',    'svn'),
         ('flask',  'flask'),
         ('logstash', 'logstash'),
     )
@@ -42,7 +43,7 @@ choices_proj = (
 
 class telegram_domain_alert_t(models.Model):
     name       = models.CharField(max_length=32, null=False)
-    chat_group = models.ManyToManyField(telegram_chat_group_t, null=False)
+    chat_group = models.ManyToManyField(telegram_chat_group_t, blank=False)
     user_id    = models.ManyToManyField(telegram_user_id_t, blank=True)
     product    = models.IntegerField(choices=choices_product)
     customer   = models.IntegerField(choices=choices_customer, default=29)
@@ -56,7 +57,7 @@ class telegram_domain_alert_t(models.Model):
 
 class telegram_ssl_alert_t(models.Model):
     name       = models.CharField(max_length=32, null=False)
-    chat_group = models.ManyToManyField(telegram_chat_group_t, null=False)
+    chat_group = models.ManyToManyField(telegram_chat_group_t, blank=False)
     user_id    = models.ManyToManyField(telegram_user_id_t, blank=True)
     product    = models.IntegerField(choices=choices_product)
     customer   = models.IntegerField(choices=choices_customer, default=29)
@@ -83,6 +84,7 @@ class minion_t(models.Model):
     choices_provider = (
             (1, '台湾机房[taiwan]'), 
             (2, '香港机房[hongkong]'),
+            (10, '亚马逊机房[aws]'),
             (3, 'fent'),
             (4, '星联[xinglian]'),
             (5, '久速[jiusu]'),
@@ -107,6 +109,16 @@ class minion_t(models.Model):
     def __str__(self):
         return " - ".join([self.minion_id, self.get_provider_display(), self.get_status_display()])
 
+class svn_master_t(models.Model):
+    name       = models.CharField(max_length=32, unique=True, null=False)
+    minion_id  = models.ForeignKey(minion_t, db_constraint=False)
+    gray_env   = models.TextField(null=True, default='')
+    online_env = models.TextField(null=True, default='')
+    rollback   = models.TextField(null=True, default='')
+
+    def __str__(self):
+        return " - ".join([self.name, self.minion_id.minion_id])
+
 class project_t(models.Model):
     choices_env = (
         (1, '运营环境[ONLINE]'), 
@@ -123,24 +135,27 @@ class project_t(models.Model):
             ('other',   '其他服务器[other]'),
         )
 
-    envir       = models.IntegerField(choices=choices_env, default=1)
-    product     = models.IntegerField(choices=choices_product)
-    project     = models.CharField(max_length=10, choices=choices_proj)
-    customer    = models.IntegerField(choices=choices_customer, default=29)
-    minion_id   = models.ManyToManyField(minion_t)
-    user        = models.CharField(max_length=24, default='root')
-    port        = models.IntegerField(null=False, default=11223)
-    password    = models.TextField(null=False, default='/')
-    server_type = models.CharField(max_length=10, choices=choices_servert, default='front')
-    role        = models.CharField(max_length=10, choices=choices_role, default='main')
-    #domain      = models.ForeignKey(domains, default=domain_D.id)
-    url         = models.CharField(max_length=128, default='https://arno.com')
-    alive       = models.IntegerField(choices=choices_s, default=1)
-    status      = models.IntegerField(choices=choices_s, default=1)
-    svn         = models.IntegerField(choices=choices_s, default=0)
-    privatekey  = models.TextField(null=False, default='thisisdefaultprivatekey')
-    publickey   = models.TextField(null=False, default='thisisdefaultpublickey')
-    info        = models.CharField(max_length=128, blank=True)
+    envir         = models.IntegerField(choices=choices_env, default=1)
+    product       = models.IntegerField(choices=choices_product)
+    project       = models.CharField(max_length=10, choices=choices_proj)
+    customer      = models.IntegerField(choices=choices_customer, default=29)
+    minion_id     = models.ManyToManyField(minion_t, blank=True)
+    svn_master    = models.ForeignKey(svn_master_t, blank=True, null=True, db_constraint=False)
+    user          = models.CharField(max_length=24, default='root')
+    port          = models.IntegerField(null=False, default=11223)
+    password      = models.TextField(null=False, default='/')
+    server_type   = models.CharField(max_length=10, choices=choices_servert, default='front')
+    role          = models.CharField(max_length=10, choices=choices_role, default='main')
+    #domain       = models.ForeignKey(domains, default=domain_D.id)
+    url           = models.CharField(max_length=128, default='https://arno.com')
+    alive         = models.IntegerField(choices=choices_s, default=1)
+    status        = models.IntegerField(choices=choices_s, default=1)
+    svn           = models.IntegerField(choices=choices_s, default=0)
+    svn_mst_alive = models.IntegerField(choices=choices_s, default=0)
+    svn_mst_lock  = models.IntegerField(choices=choices_s, default=0)
+    privatekey    = models.TextField(null=False, default='thisisdefaultprivatekey')
+    publickey     = models.TextField(null=False, default='thisisdefaultpublickey')
+    info          = models.CharField(max_length=128, blank=True)
     class Meta:
         unique_together = ('product' ,'project' ,'envir', 'customer', 'server_type')
 

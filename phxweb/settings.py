@@ -111,6 +111,7 @@ INSTALLED_APPS = (
     'detect',
     'servers',
     'channels',
+    'upgrade',
 )
 
 

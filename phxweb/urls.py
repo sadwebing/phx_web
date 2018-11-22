@@ -22,6 +22,7 @@ urlpatterns = [
     url(r'^detect/', include('detect.urls')),
     url(r'^saltstack/', include('saltstack.urls')),
     url(r'^servers/', include('servers.urls')),
+    url(r'^upgrade/', include('upgrade.urls')),
 
     url(r'^favicon$', lambda x: HttpResponseRedirect(settings.STATIC_URL+'images/favicon.ico')),
     url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),

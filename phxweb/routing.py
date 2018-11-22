@@ -7,6 +7,7 @@ from dns.cloudflare_customer import DnsCloudflareRecordUpdate, DnsCloudflareReco
 from saltstack.reflesh_customer import SaltstackRefleshExecuteCdn, SaltstackRefleshExecute
 from saltstack.command_customer import SaltstackCommandDeploy, SaltstackCommandExecute
 from servers.index_customer  import ServersUpdate
+from upgrade.execute_customer import UpgradeExecute
 
 channel_routing = [
     #/dns/dnspod/record
@@ -27,4 +28,8 @@ channel_routing = [
 
     #/servers/update
     route_class(ServersUpdate, path=r"^/servers/update"),
+
+    #/upgrade/execute
+    route_class(UpgradeExecute, path=r"^/upgrade/execute"),
+
 ]

@@ -40,7 +40,7 @@
 						</ul>
 					</li>
 					<li id="dns">
-						<i class="glyphicon glyphicon-sort text-primary"> <span>域名中心</span></i>
+						<i class="glyphicon glyphicon-th text-primary"> <span>域名中心</span></i>
 						<ul>  
 						    <li><a ui-sref="dns_cloudflare"><i class="glyphicon glyphicon-align-right"></i>   CloudFlare</a></li>
 						</ul>
@@ -61,14 +61,16 @@
 						</ul>
 					</li>
 
-					{% comment %}
 					<li id="upgrade">
 						<i class="glyphicon glyphicon-sort text-primary"> <span>升级中心</span></i>
 						<ul>  
-						    <li><a ui-sref="upgrade_operate"><i class="glyphicon glyphicon-align-right"></i>   基本操作</a></li>  
-						    <li><a ui-sref="upgrade_op_history"><i class="glyphicon glyphicon-check"></i> 操作记录</a></li>
+							<li><a ui-sref="upgrade_operate"><i class="glyphicon glyphicon-align-right"></i>   基本操作</a></li>  
+							{% comment %}
+							<li><a ui-sref="upgrade_op_history"><i class="glyphicon glyphicon-check"></i> 操作记录</a></li>
+							{% endcomment %}
 						</ul>
 					</li>
+					{% comment %}
 					<li id="detect">
 						<i class="glyphicon glyphicon-bullhorn text-primary"> <span>检测中心</span></i>
 						<ul>  
