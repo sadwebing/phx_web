@@ -42,7 +42,7 @@ class DpApi(object):
         try:
             ret = requests.post(url, data=self.__data, verify=False)
         except Exception, e:
-            message['text'] = self.__warning + '\nException: ' + e.message
+            message['text'] = self.__warning + '\nException: ' + str(e.message)
             logger.error(message['text'])
             sendTelegram(message).send()
             return error, False
