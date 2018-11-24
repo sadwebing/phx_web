@@ -45,7 +45,7 @@ class DpApi(object):
             message['text'] = self.__warning + '\nException: ' + str(e.message)
             logger.error(message['text'])
             sendTelegram(message).send()
-            return error, False
+            return str(e.message), False
         else:
             result = ret.json()
             if result['status']['code'] != "1":
