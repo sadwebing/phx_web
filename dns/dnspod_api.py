@@ -40,7 +40,7 @@ class DpApi(object):
               ])
         #logger.info(self.__data)
         try:
-            ret = requests.post(url, data=self.__data, verify=False)
+            ret = requests.post(url, data=self.__data, verify=False, timeout=15)
         except Exception, e:
             message['text'] = self.__warning + '\nException: ' + str(e.message)
             logger.error(message['text'])

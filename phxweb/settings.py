@@ -262,6 +262,23 @@ LOGGING = {
     }
 }     
 
+choices_s = (
+        (1, '启用'), 
+        (0, '禁用'),
+    )
+
+choices_proj = (
+        ('other',   '其他[other]'), 
+        ('caipiao', '彩票[caipiao]'), 
+        ('sport',   '体育[sport]'),
+        ('houtai',  '后台[houtai]'),
+        ('pay',     '支付[pay]'),
+        ('ggz',     '广告站[ggz]'),
+        ('image',   '图片[image]'),
+        ('vpn',     'vpn'),
+        ('httpdns', 'httpdns'),
+    )
+
 choices_permission = (
         ('read',    u'读权限'), 
         ('change',  u'改权限'),
@@ -282,23 +299,33 @@ choices_customer = (
             (5, u'天天[tiantian]'), 
             (6, u'三德|富豪|668[sande]'), 
             (7, u'uc彩票[uc]'), 
-            (8, u'谷歌[9393]'), 
-            (9, u'苹果[3535]'), 
-            (19, u'芒果[1717]'), 
             (10, u'ag彩[agcai]'), 
             #(20, u'福利彩[fulicai]'), 
             #(22, u'亿人[yrcai]'), 
             (23, u'亿腾[yiteng]'),
-            (24, u'永利会[yonglihui]'), 
+            #(24, u'永利会[yonglihui]'), 
             #(25, u'618彩[618cai]'), 
-            (28, u'乐天[letian]'),
-            (21, u'乐都城[leducheng]'), 
-            (11, u'万游[wanyou]'),
+            #(28, u'乐天[letian]'),
+            (11, u'万游[klc]'),
             #(17, u'yy娱乐城[yy]'),
             #(18, u'永发[yongfa]'),
+            (39, u'68彩[68bet]'),
+            (40, u'567彩[567bet]'),
+            (41, u'专业盘彩票[zyp]'),
+            (42, u'飞信[feixin]'),
+            (43, u'世彩堂[sct]'),
+
+            #凤凰体育彩票
+            (8, u'谷歌[9393cp]'), 
+            (9, u'苹果[188cp|3535]'), 
+            (19, u'芒果[1717cp]'), 
+            (21, u'乐都城[ldc]'), 
+            (36, u'瑞银[ruiyin|UBS]'),
+            (37, u'勇士[warrior]'),
+            (38, u'体彩[tc]'),
 
             #凤凰体育
-            (13, u'钻石[le7]'),
+            (13, u'钻石[le7|diamond]'),
             #(14, u'大象6668[dx_6668]'),
             #(15, u'大象70887[dx_70887]'),
             #(30, u'大象[daxiang]'),
@@ -316,7 +343,7 @@ choices_customer = (
 choices_product = ( 
             (0, u'公共产品[pub]'),
             (12, u'凤凰[fenghuang]'),
-            (16, u'勇士[yongshi]'),
+            (16, u'勇士[warrior]'),
             (27, u'瑞银[ruiyin|UBS]'),
             (26, u'JAVA'),
             )

@@ -4,4 +4,8 @@ from . import views
 
 urlpatterns = [
     url('^operate$', views.Operate, name='Operate'),
+    url('^get_svn_customer$', views.GetSvnCustomer, name='GetSvnCustomer'),
+    url('^get_svn_records$', views.GetSvnRecords, name='GetSvnRecords'),
+    url('^get_svn_lock_records$', views.GetSvnLockRecords, name='GetSvnLockRecords'),
+    url('^get_svn_master$', views.GetSvnMaster, name='GetSvnMaster'),
 ]

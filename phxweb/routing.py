@@ -8,6 +8,7 @@ from saltstack.reflesh_customer import SaltstackRefleshExecuteCdn, SaltstackRefl
 from saltstack.command_customer import SaltstackCommandDeploy, SaltstackCommandExecute
 from servers.index_customer  import ServersUpdate
 from upgrade.execute_customer import UpgradeExecute
+from upgrade.deploy.apache_config_customer import ApacheConfig
 
 channel_routing = [
     #/dns/dnspod/record
@@ -29,7 +30,8 @@ channel_routing = [
     #/servers/update
     route_class(ServersUpdate, path=r"^/servers/update"),
 
-    #/upgrade/execute
+    #/upgrade/
     route_class(UpgradeExecute, path=r"^/upgrade/execute"),
+    route_class(ApacheConfig, path=r"^/upgrade/deploy/apache_config"),
 
 ]

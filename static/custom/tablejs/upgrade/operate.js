@@ -1,11 +1,98 @@
 $(function () {
+    tableInit.Init();
     operate.operateInit();
 });
+
+//初始化表格
+var tableInit = {
+    Init: function () {
+        //this.dbclick();
+        //绑定table的viewmodel
+        this.myViewModel = new ko.bootstrapTableViewModel({
+            //url: '/servers/get_servers_records',         //请求后台的URL（*）
+            //method: 'post',                      //请求方式（*）
+            dataType: "json",
+            toolbar: '#toolbar',                //工具按钮用哪个容器
+            clickToSelect: true,
+            height:600,
+            toolbarAlign: "right",
+            queryParams: function (param) {
+                return { limit: param.limit, offset: param.offset, 'act':'query_all' };
+            },//传递参数（*）
+            columns: [
+                {
+                    checkbox: true,
+                    width:'2%',
+                },{
+                    field: 'revision',
+                    title: 'revision',
+                    sortable: true,
+                    //visible: false,
+                    //width:'8%',
+                    //align: 'center'
+                },{
+                    field: 'date',
+                    title: 'date',
+                    sortable: true,
+                    //width:'8%',
+                    //align: 'center'
+                },{
+                    field: 'author',
+                    title: 'author',
+                    sortable: true,
+                    //formatter: function (value, row, index) {
+                    //    return value[1];
+                    //},
+                    //width:'15%',
+                    //align: 'center'
+                },{
+                    field: 'log',
+                    title: 'log',
+                    sortable: true,
+                    //width:'15%',
+                    //align: 'center'
+                },{
+                    field: 'changelist',
+                    title: 'changelist',
+                    sortable: true,
+                    formatter: function (value, row, index) {
+                        if (Array.isArray(value)){
+                            return value.join('\r\n');
+                        }else {
+                            return value;
+                        }
+                        
+                    },
+                    //width:'15%',
+                    //align: 'center'
+                },{
+                    field: 'operations',
+                    title: '操作项',
+                    //align: 'center',
+                    width:'6%',
+                    checkbox: false,
+                    //events: operateEvents,
+                    formatter: this.operateFormatter,
+                    //width:300,
+                },
+            ]
+
+        });
+        //console.log(this.myViewModel)
+        //this.myViewModel.hidecolumn('zone_id');
+        ko.applyBindings(this.myViewModel, document.getElementById("records_table"));
+        //部分列进行隐藏
+        $('#records_table').bootstrapTable('hideColumn', 'operations');
+    },
+};
 
 //全局变量
 window.modal_results = document.getElementById("OperateRestartresults");
 window.modal_footer = document.getElementById("progressFooter");
 window.modal_head = document.getElementById("progress_head");
+
+//升级所用到的全局变量
+window.upgrade_postData = {};
 
 //操作
 var operate = {
@@ -59,6 +146,35 @@ var operate = {
         });
     },
     
+    GetapacheconfigCust: function (){
+        var product = public.showSelectedValue('apacheconfig_product'); //获取选中的产品
+        //console.log(product);
+
+        if (product.length != 1){
+            alert('产品选择错误！');
+            return false;
+        }
+
+        var customerHtml = "";
+
+        for (var i = 0; i < items.length; i++){
+            var value = items[i];
+
+            if (value['product'][0] ==  product[0]){
+                for (var i = 0; i < value['svn_customer']['in'].length; i++){
+                    customer_dict = value['svn_customer']['in'][i];
+                    //if (customer_dict['isrsynccode'] == 0){
+                    //    continue;
+                    //}
+                    customerHtml = customerHtml + "<option value="+customer_dict['id']+">"+customer_dict['name']+"</option>";
+                }
+            };
+        }
+
+        document.getElementById("apacheconfig_customer").innerHTML=customerHtml;
+        $('.selectpicker').selectpicker('refresh');
+    },
+    
     GetProjectProd: function (){
         var envir = public.showSelectedValue('project_envir'); //获取选中的产品环境
         //console.log(envir);
@@ -97,17 +213,27 @@ var operate = {
             return false;
         }
 
-        var customerHtml = "";
+        var customerInHtml = "";
+        var customerExHtml = "";
+        var codeEnvHtml = "<option value=gray_env>代码-灰度环境</option><option value=online_env>代码-运营环境</option>";
 
         for (var i = 0; i < items.length; i++){
-            //console.log(envir[0]);
-            //console.log(items[i]['envir'][0]);
             if (items[i]['envir'][0] ==  envir[0] && items[i]['product'][0] == product[0]){
-                customerHtml = customerHtml + "<option value="+items[i]['customer'][0]+">"+items[i]['customer'][1]+"</option>";
+                //for (var j = 0; j < items[i]['svn_customer']['in'].length; j++){
+                //    var ct = items[i]['svn_customer']['in'][j];
+                //    customerInHtml = customerInHtml + "<option value="+ct['id']+">"+ct['name']+"</option>";
+                //}
+                for (var j = 0; j < items[i]['svn_customer']['ex'].length; j++){
+                    var ct = items[i]['svn_customer']['ex'][j];
+                    customerInHtml = customerInHtml + "<option value="+ct+">"+ct+"</option>";
+                    customerExHtml = customerExHtml + "<option value="+ct+">"+ct+"</option>";
+                }
             };
         }
 
-        document.getElementById("project_customer").innerHTML=customerHtml;
+        document.getElementById("project_customer_in").innerHTML=customerInHtml;
+        document.getElementById("project_customer_ex").innerHTML=customerExHtml;
+        document.getElementById("project_codeEnv").innerHTML=codeEnvHtml;
         $('.selectpicker').selectpicker('refresh');
     },
 
@@ -150,13 +276,19 @@ var operate = {
         $('.selectpicker').selectpicker('refresh');
     },
 
-    Submit: function(submit){
+    PreSubmit: function(submit){
+        public.disableButtons(['btn_commit_upgrade'], true);
         var postData = {
             'envir': public.showSelectedValue('project_envir', false), //获取选中的产品环境
             'product': public.showSelectedValue('project_product', false), //获取选中的产品
-            'customer': public.showSelectedValue('project_customer', false), //获取选中的客户
+            'customer': {
+                    'in': public.showSelectedValue('project_customer_in', false), //获取选中的只升级的客户
+                    'ex': public.showSelectedValue('project_customer_ex', false), //获取选中的不升级的客户
+                    'real':[],
+                },
             'codeEnv': public.showSelectedValue('project_codeEnv', false), //获取选中的代码环境
-            'items': items,
+            //'items': items,
+            'isdeletegraylock': public.showSelectedValue('project_isdeletegraylock', false), //获取选中是否删除记录锁
         }
 
         if (postData['envir'].length != 1){
@@ -169,22 +301,106 @@ var operate = {
             return false;
         }
 
-        if (postData['customer'].length != 1){
-            alert('客户选择错误！');
-            return false;
-        }
-
-        if (postData['codeEnv'].length != 1){
+        if (postData['codeEnv'].length == 0){
             alert('代码环境选择错误！');
             return false;
         }
 
+        if (postData['codeEnv'].length == 1 && postData['codeEnv'][0] == 'online_env'){
+            if (postData['isdeletegraylock'].length != 1){
+                alert('请选择是否删除记录锁！');
+                return false;
+            }
+        }
+
+        if (postData['customer']['in'].length == 0){
+            alert('请选择要升级的客户！');
+            return false;
+        }
+
+        for (var i = 0; i < postData['customer']['in'].length; i++){
+            ct = postData['customer']['in'][i];
+            if (! public.isStrinList(ct, postData['customer']['ex'])){
+                postData['customer']['real'].push(ct);
+            }
+        }
+
+        if (postData['customer']['real'].length == 0){
+            alert('没有可升级的客户，请检查所选择的用户是否冲突！');
+            return false;
+        }
+
         for (var i = 0; i < items.length; i++){
-            if (items[i]['envir'][0] ==  postData['envir'][0] && items[i]['product'][0] == postData['product'][0] && items[i]['customer'][0] == postData['customer'][0]){
+            if (items[i]['envir'][0] ==  postData['envir'][0] && items[i]['product'][0] == postData['product'][0]){
+                postData['item'] = items[i]
                 postData['cmd'] = items[i]['svn_master'][postData['codeEnv']];
                 postData['minion_id'] = items[i]['svn_master']['minion_id'];
                 postData['id'] = items[i]['id'];
+                postData['svn_master_id'] = items[i]['svn_master']['id'];
             };
+        }
+        var uri = "/upgrade/execute";
+
+        $('#svnlogprocess').modal('show');
+        svn.GetSvnRecords(postData);
+        upgrade_postData = postData;
+        console.log(upgrade_postData);
+        return false;
+    },
+
+    Submit: function(submit){
+        if (submit == 'btn_submit_command'){
+            var postData = {
+                'product': public.showSelectedValue('apacheconfig_product', false), //获取选中的产品
+                'customer': public.showSelectedValue('apacheconfig_customer', false), //获取选中的客户
+                //'items': items,
+            }
+
+            if (postData['product'].length != 1){
+                alert('产品选择错误！');
+                return false;
+            }
+    
+            if (postData['customer'].length == 0){
+                alert('客户选择错误！');
+                return false;
+            }
+            for (var i = 0; i < items.length; i++){
+                if (items[i]['product'][0] == postData['product'][0]){
+                    postData['item'] = items[i]
+                    postData['cmd'] = items[i]['svn_master'][postData['codeEnv']];
+                    postData['minion_id'] = items[i]['svn_master']['minion_id'];
+                    postData['id'] = items[i]['id'];
+                };
+            }
+            var uri = "/upgrade/deploy/apache_config";
+        }else if (submit == 'btn_submit_command2'){
+            upgrade_postData['svn_records'] = []
+
+            var arrselectedData = tableInit.myViewModel.getSelections();
+            if (arrselectedData.length == 0){
+                alert("请至少选择一行数据");
+                return false;
+            }
+
+            for (var i=0;i<arrselectedData.length;i++){
+                upgrade_postData['svn_records'].push({
+                    'revision': arrselectedData[i].revision,
+                    'author': arrselectedData[i].author,
+                    'date': arrselectedData[i].date,
+                    'log': arrselectedData[i].log,
+                    'changelist': arrselectedData[i].changelist,
+                });
+            }
+
+            console.log(upgrade_postData);
+
+            var postData = upgrade_postData;
+            var uri = "/upgrade/execute";
+            $('#svnlogprocess').modal('hide');
+
+        }else {
+            return false;
         }
 
         //alert("获取到的表单数据为:"+JSON.stringify(postData));
@@ -195,7 +411,7 @@ var operate = {
         modal_head.innerHTML = "操作进行中，请勿刷新页面......";
         $('#OperateRestartresults').append('<p>连接中......</p>' );
 
-        public.socketConn("/upgrade/execute", [])
+        public.socketConn(uri, [])
 
         window.s.onopen = function (e) {
             window.s.send(JSON.stringify(postData));

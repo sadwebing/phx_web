@@ -244,7 +244,7 @@ def sendAlert(ip, results):
 
 if __name__ == '__main__':
     if platform.system() == "Linux":
-        ip = commands.getoutput('curl -s http://ip.cn')
+        ip = commands.getoutput('curl -s https://ip.cn')
     else:
         ip = getIp()
 
