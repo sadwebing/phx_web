@@ -2,7 +2,7 @@
 from phxweb.customer   import DefConsumer
 from phxweb            import settings
 from saltstack.saltapi import SaltAPI
-from monitor.models    import project_t, minion_t, minion_ip_t
+from monitor.models    import project_t, minion_t, minion_ip_t, svn_master_t
 from upgrade.models    import svn_customer_t
 from saltstack.command import Command
 from accounts.limit    import LimitAccess
@@ -52,7 +52,6 @@ class ApacheConfig(DefConsumer):
         info = {}
         info['step'] = 'final'
         info['results'] = {}
-        api = data['item']['svn_master']['api'].strip('/') + '/apache_config'
         svn_customer_dict = {}
 
         count = 1
@@ -88,11 +87,13 @@ class ApacheConfig(DefConsumer):
                 }
 
         try:
+            svn_master = svn_master_t.objects.get(id=data['svn_master_id'])
+            api = svn_master.api.strip('/') + '/apache_config'
             logger.info('posting: %s' %api)
             #logger.info('posting: %s' %svn_customer_dict)
             ret = requests.post(api, data=json.dumps(svn_customer_dict))
         except Exception as e:
-            message['text'] = api + '\nException: ' + str(e)
+            message['text'] = 'Exception: ' + str(e)
             logger.error(message['text'])
             sendTelegram(message).send()
             info['results'][data['minion_id']] = message['text']

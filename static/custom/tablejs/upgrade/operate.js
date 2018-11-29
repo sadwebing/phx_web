@@ -344,7 +344,7 @@ var operate = {
         $('#svnlogprocess').modal('show');
         svn.GetSvnRecords(postData);
         upgrade_postData = postData;
-        console.log(upgrade_postData);
+        //console.log(upgrade_postData);
         return false;
     },
 
@@ -371,6 +371,7 @@ var operate = {
                     postData['cmd'] = items[i]['svn_master'][postData['codeEnv']];
                     postData['minion_id'] = items[i]['svn_master']['minion_id'];
                     postData['id'] = items[i]['id'];
+                    postData['svn_master_id'] = items[i]['svn_master']['id'];
                 };
             }
             var uri = "/upgrade/deploy/apache_config";
@@ -393,9 +394,9 @@ var operate = {
                 });
             }
 
-            console.log(upgrade_postData);
-
             var postData = upgrade_postData;
+            postData['svn_records'] = upgrade_postData['svn_records'].sort(public.compare('revision'));
+            console.log(upgrade_postData);
             var uri = "/upgrade/execute";
             $('#svnlogprocess').modal('hide');
 
