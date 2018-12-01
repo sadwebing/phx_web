@@ -14,7 +14,8 @@ var tableInit = {
             dataType: "json",
             toolbar: '#toolbar',                //工具按钮用哪个容器
             clickToSelect: true,
-            height:600,
+            height: 600,
+            pageSize: 100,
             toolbarAlign: "right",
             queryParams: function (param) {
                 return { limit: param.limit, offset: param.offset, 'act':'query_all' };
