@@ -18,8 +18,10 @@ var svn = {
 
         if (public.isStrinList('gray_env', postData['codeEnv'])){
             url = "/upgrade/get_svn_records";
+            value = false;
         }else if(postData['codeEnv'][0] == 'online_env'){
             url = "/upgrade/get_svn_lock_records";
+            value = true;
         }
 
         $.ajax({
@@ -41,7 +43,7 @@ var svn = {
                     })
                 });
                 //console.log(initData);
-                tableInit.myViewModel.load(initData.sort(public.compare('revision')));
+                tableInit.myViewModel.load(initData.sort(public.compare('revision', value)));
                 toastr.success('数据获取成功！');
                 public.disableButtons(['btn_commit_upgrade'], false);
             },
