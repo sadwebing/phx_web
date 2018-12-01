@@ -396,7 +396,7 @@ var operate = {
 
             var postData = upgrade_postData;
             //对svn 记录进行排序，先提交的记录排在前面，顺序升级
-            postData['svn_records'] = upgrade_postData['svn_records'].sort(public.compare('revision'));
+            postData['svn_records'] = upgrade_postData['svn_records'].sort(public.compare('revision', true));
             console.log(upgrade_postData);
             var uri = "/upgrade/execute";
             $('#svnlogprocess').modal('hide');
