@@ -41,7 +41,7 @@ var svn = {
                     })
                 });
                 //console.log(initData);
-                tableInit.myViewModel.load(initData);
+                tableInit.myViewModel.load(initData.sort(public.compare('revision')));
                 toastr.success('数据获取成功！');
                 public.disableButtons(['btn_commit_upgrade'], false);
             },
