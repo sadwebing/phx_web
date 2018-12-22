@@ -192,25 +192,31 @@ class UpgradeExecute(DefConsumer):
                     count += 1
 
         #调用接口执行代码同步
-        try:
-            svn_master = svn_master_t.objects.get(id=data['svn_master_id'])
-            api = svn_master.api.strip('/') + '/svn_code'
-            logger.info('posting: %s' %api)
-            #logger.info('posting: %s' %svn_customer_dict)
-            ret = requests.post(api, data=json.dumps({
-                'author': self.username.replace('_', ''),
-                'svn_records': data['svn_records'],
-                'changelist': svn_files,
-                'code_env': data['codeEnv'],
-                'svn_customer_dict': svn_customer_dict,
-            }))
-        except Exception as e:
-            message['text'] = api + '\nException: ' + str(e)
-            logger.error(message['text'])
-            sendTelegram(message).send()
-            info['results'][data['minion_id']] = message['text']
-        else:
-            info['results'][data['minion_id']] = ret.content
+        while len(svn_files) !=0:
+            svn_files_c = svn_files[:30]
+            svn_files   = svn_files[30:]
+            if len(svn_files) == 0:
+                break
+            try:
+                svn_master = svn_master_t.objects.get(id=data['svn_master_id'])
+                api = svn_master.api.strip('/') + '/svn_code'
+                logger.info('posting: %s' %api)
+                #logger.info('posting: %s' %svn_customer_dict)
+                ret = requests.post(api, data=json.dumps({
+                    'author': self.username.replace('_', ''),
+                    'svn_records': data['svn_records'],
+                    'changelist_c': svn_files_c,
+                    'changelist': svn_files,
+                    'code_env': data['codeEnv'],
+                    'svn_customer_dict': svn_customer_dict,
+                }))
+            except Exception as e:
+                message['text'] = api + '\nException: ' + str(e)
+                logger.error(message['text'])
+                sendTelegram(message).send()
+                info['results'][data['minion_id']] = message['text']
+            else:
+                info['results'][data['minion_id']] += ret.content
 
 
         #给升级的产品解锁
