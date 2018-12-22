@@ -72,13 +72,16 @@ class UpgradeExecute(DefConsumer):
 
         #获取需要同步的文件
         svn_files = []
+        svn_files_all = []
         for svn_record in data['svn_records']:
             changelist = svn_record['changelist']
             if not isinstance(changelist, list):
                 for i in changelist[1:-1].split('], ['):
                     svn_files.append([i.split('\'')[1], i.split('\'')[3]])
+                    svn_files_all.append([i.split('\'')[1], i.split('\'')[3]])
             else:
                 svn_files += changelist
+                svn_files_all += changelist
 
         #给升级到灰度的svn 文件上锁以及解锁
         if len(data['codeEnv']) == 1 and data['codeEnv'][0] == 'gray_env':
@@ -195,8 +198,6 @@ class UpgradeExecute(DefConsumer):
         while len(svn_files) !=0:
             svn_files_c = svn_files[:30]
             svn_files   = svn_files[30:]
-            if len(svn_files) == 0:
-                break
             try:
                 svn_master = svn_master_t.objects.get(id=data['svn_master_id'])
                 api = svn_master.api.strip('/') + '/svn_code'
@@ -206,7 +207,7 @@ class UpgradeExecute(DefConsumer):
                     'author': self.username.replace('_', ''),
                     'svn_records': data['svn_records'],
                     'changelist_c': svn_files_c,
-                    'changelist': svn_files,
+                    'changelist': svn_files_all,
                     'code_env': data['codeEnv'],
                     'svn_customer_dict': svn_customer_dict,
                 }))
