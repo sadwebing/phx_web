@@ -196,8 +196,8 @@ class UpgradeExecute(DefConsumer):
 
         #调用接口执行代码同步
         while len(svn_files) !=0:
-            svn_files_c = svn_files[:30]
-            svn_files   = svn_files[30:]
+            svn_files_c = svn_files[:20]
+            svn_files   = svn_files[20:]
             try:
                 svn_master = svn_master_t.objects.get(id=data['svn_master_id'])
                 api = svn_master.api.strip('/') + '/svn_code'
