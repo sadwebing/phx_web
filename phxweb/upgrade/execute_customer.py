@@ -196,8 +196,10 @@ class UpgradeExecute(DefConsumer):
 
         #调用接口执行代码同步
         while len(svn_files) !=0:
-            svn_files_c = svn_files[:20]
-            svn_files   = svn_files[20:]
+            #svn_files_c = svn_files[:20]
+            #svn_files   = svn_files[20:]
+            svn_files_c = svn_files_all
+            svn_files   = []
             try:
                 svn_master = svn_master_t.objects.get(id=data['svn_master_id'])
                 api = svn_master.api.strip('/') + '/svn_code'
@@ -218,6 +220,8 @@ class UpgradeExecute(DefConsumer):
                 info['results'][data['minion_id']] = message['text']
             else:
                 info['results'][data['minion_id']] += ret.content
+            
+            break
 
 
         #给升级的产品解锁
