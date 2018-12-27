@@ -165,8 +165,10 @@ class SaltstackRefleshExecute(DefConsumer):
         for domain in domain_l:
             for cdn in domain.cdn.all():
                 cdn_d[cdn.get_name_display()+"_"+cdn.account]['domain'].append(urlparse.urlsplit(domain.name).scheme+"://"+urlparse.urlsplit(domain.name).netloc)
-            for cf in domain.cf.all():
-                cf_d[cf.name]['domain'].append(urlparse.urlsplit(domain.name).scheme+"://"+urlparse.urlsplit(domain.name).netloc)
+            if domain.cf:
+                cf_d[domain.cf.name]['domain'].append(urlparse.urlsplit(domain.name).scheme+"://"+urlparse.urlsplit(domain.name).netloc)
+            #for cf in domain.cf.all():
+            #    cf_d[cf.name]['domain'].append(urlparse.urlsplit(domain.name).scheme+"://"+urlparse.urlsplit(domain.name).netloc)
         #logger.info(cdn_d)
         for cdn in cdn_d:
             info['cdn'] = cdn
