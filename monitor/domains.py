@@ -75,11 +75,14 @@ def DomainsQuery(request):
                     'name':    cdn.get_name_display(),
                     'account': cdn.account,
                 } for cdn in domain.cdn.all()]
-            tmp_dict['cf']       = [{
-                    'id':      cf.id,
-                    'name':    "cloudflare",
-                    'account': cf.name,
-                } for cf in domain.cf.all()]
+            if domain.cf:
+                tmp_dict['cf'] = [{
+                        'id':      domain.cf.id,
+                        'name':    "cloudflare",
+                        'account': domain.cf.name,
+                    }]
+            else:
+                tmp_dict['cf'] = []
 
             domain_list.append(tmp_dict)
         #logger.info(domain_list)
@@ -206,9 +209,12 @@ def DomainsAdd(request):
                 for id in datas['cdn']:
                     info.cdn.add(cdn_account_t.objects.get(id=id))
                     info.save()
-                for id in datas['cf']:
-                    info.cf.add(cf_account.objects.get(id=id))
+                if len(datas['cf']) != 0:
+                    info.cf = cf_account.objects.get(id=datas['cf'][0])
                     info.save()
+                #for id in datas['cf']:
+                #    info.cf.add(cf_account.objects.get(id=id))
+                #    info.save()
         if exist:
             return HttpResponse(str(exist)+'已存在，其余的新增成功！')
         else:
@@ -244,13 +250,20 @@ def DomainsUpdate(request):
                     info.cdn.add(cdn_account_t.objects.get(id=id))
                     info.save()
             if int(datas['edit_cf_bool'][0]) == 1:
-                for cf in info.cf.all():
-                    info.cf.remove(cf)
+                if info.cf:
+                    info.cf.remove()
                     info.save()
-                    #info.cf.all().delete()
-                for id in datas['cf']:
-                    info.cf.add(cf_account.objects.get(id=id))
+                if len(datas['cf']) != 0:
+                    info.cf = cf_account.objects.get(id=datas['cf'][0])
                     info.save()
+                #for cf in info.cf.all():
+                #    info.cf.remove(cf)
+                #    info.save()
+                #    #info.cf.all().delete()
+                #for id in datas['cf']:
+                #    info.cf.add(cf_account.objects.get(id=id))
+                #    info.save()
+                
             info.name     = datas['domain_l'][i]
             info.product  = datas['product'] if datas['product'] else prod_d[line['product']]
             info.customer = datas['customer'] if datas['customer'] else cust_d[line['customer']]

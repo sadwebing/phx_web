@@ -24622,3 +24622,147 @@ Exception: HTTPConnectionPool(host='52.78.53.187', port=8080): Max retries excee
 2018-12-01 14:42:24,789 telegram.py [django:112] [ERROR]- Attention: send message failed!
 2018-12-01 14:42:24,789 telegram.py [django:113] [ERROR]- 400: {"ok":false,"error_code":400,"description":"Bad Request: can't parse entities: Unsupported start tag \"urllib3.connection.httpconnection\" at byte offset 169"}
 2018-12-01 14:42:24,789 telegram.py [django:114] [ERROR]- {'disable_web_page_preview': True, 'text': u"http://52.78.53.187:8080/svn_code\nException: HTTPConnectionPool(host='52.78.53.187', port=8080): Max retries exceeded with url: /svn_code (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0703C9D0>: Failed to establish a new connection: [Errno 10061] ',))", 'doc_name': 'message.txt_20181201144223', 'caption': '', 'chat_id': -204952096L, 'parse_mode': 'HTML'}
+2018-12-06 18:26:47,796 exception.py [django.security.DisallowedHost:80] [ERROR]- Invalid HTTP_HOST header: u'10.10.20.13:5000'. You may need to add u'10.10.20.13' to ALLOWED_HOSTS.
+2018-12-06 18:26:55,568 exception.py [django.security.DisallowedHost:80] [ERROR]- Invalid HTTP_HOST header: u'10.10.20.13'. You may need to add u'10.10.20.13' to ALLOWED_HOSTS.
+2018-12-22 20:17:16,930 execute_customer.py [django:209] [ERROR]- http://52.78.53.187:8000/svn_code
+Exception: ('Connection aborted.', BadStatusLine("''",))
+2018-12-22 20:27:09,150 execute_customer.py [django:209] [ERROR]- http://52.78.53.187:8000/svn_code
+Exception: ('Connection aborted.', BadStatusLine("''",))
+2018-12-22 21:55:12,604 execute_customer.py [django:213] [ERROR]- http://52.78.53.187:8000/svn_code
+Exception: ('Connection aborted.', BadStatusLine("''",))
+2018-12-22 21:56:37,799 execute_customer.py [django:213] [ERROR]- http://52.78.53.187:8000/svn_code
+Exception: ('Connection aborted.', BadStatusLine("''",))
+2018-12-22 22:52:07,838 execute_customer.py [django:216] [ERROR]- http://52.78.53.187:8000/svn_code
+Exception: ('Connection aborted.', BadStatusLine("''",))
+2018-12-22 22:52:58,993 execute_customer.py [django:216] [ERROR]- http://52.78.53.187:8000/svn_code
+Exception: ('Connection aborted.', BadStatusLine("''",))
+2018-12-22 22:59:30,526 execute_customer.py [django:216] [ERROR]- http://52.78.53.187:8000/svn_code
+Exception: ('Connection aborted.', BadStatusLine("''",))
+2018-12-22 23:02:45,714 execute_customer.py [django:216] [ERROR]- http://52.78.53.187:8000/svn_code
+Exception: ('Connection aborted.', BadStatusLine("''",))
+2018-12-22 23:04:36,943 execute_customer.py [django:216] [ERROR]- http://52.78.53.187:8000/svn_code
+Exception: ('Connection aborted.', BadStatusLine("''",))
+2018-12-22 23:09:00,526 execute_customer.py [django:216] [ERROR]- http://52.78.53.187:8000/svn_code
+Exception: ('Connection aborted.', BadStatusLine("''",))
+2018-12-22 23:11:00,903 execute_customer.py [django:216] [ERROR]- http://52.78.53.187:8000/svn_code
+Exception: ('Connection aborted.', BadStatusLine("''",))
+2018-12-22 23:12:40,604 execute_customer.py [django:216] [ERROR]- http://52.78.53.187:8000/svn_code
+Exception: ('Connection aborted.', BadStatusLine("''",))
+2018-12-22 23:18:49,986 execute_customer.py [django:216] [ERROR]- http://52.78.53.187:8000/svn_code
+Exception: ('Connection aborted.', BadStatusLine("''",))
+2018-12-22 23:20:37,240 execute_customer.py [django:216] [ERROR]- http://52.78.53.187:8000/svn_code
+Exception: ('Connection aborted.', BadStatusLine("''",))
+2018-12-23 10:31:33,319 execute_customer.py [django:216] [ERROR]- http://52.78.53.187:8000/svn_code
+Exception: ('Connection aborted.', BadStatusLine("''",))
+2018-12-23 10:33:54,552 execute_customer.py [django:216] [ERROR]- http://52.78.53.187:8000/svn_code
+Exception: ('Connection aborted.', BadStatusLine("''",))
+2018-12-27 09:22:00,016 exception.py [django.request:135] [ERROR]- Internal Server Error: /monitor/domains/Query
+Traceback (most recent call last):
+  File "J:\arno\test\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "J:\arno\test\lib\site-packages\channels\handler.py", line 243, in process_exception_by_middleware
+    return super(AsgiHandler, self).process_exception_by_middleware(exception, request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "J:\arno\test\lib\site-packages\django\views\decorators\csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "J:\arno\test\phx_web\monitor\domains.py", line 82, in DomainsQuery
+    } for cf in domain.cf.all()]
+AttributeError: 'cf_account' object has no attribute 'all'
+2018-12-27 09:25:28,121 exception.py [django.request:135] [ERROR]- Internal Server Error: /monitor/domains/Query
+Traceback (most recent call last):
+  File "J:\arno\test\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "J:\arno\test\lib\site-packages\channels\handler.py", line 243, in process_exception_by_middleware
+    return super(AsgiHandler, self).process_exception_by_middleware(exception, request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "J:\arno\test\lib\site-packages\django\views\decorators\csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "J:\arno\test\phx_web\monitor\domains.py", line 80, in DomainsQuery
+    'id':      cf.id,
+AttributeError: 'list' object has no attribute 'id'
+2018-12-27 09:28:28,055 exception.py [django.request:135] [ERROR]- Internal Server Error: /monitor/domains/Update
+Traceback (most recent call last):
+  File "J:\arno\test\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "J:\arno\test\lib\site-packages\channels\handler.py", line 243, in process_exception_by_middleware
+    return super(AsgiHandler, self).process_exception_by_middleware(exception, request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "J:\arno\test\lib\site-packages\django\views\decorators\csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "J:\arno\test\phx_web\monitor\domains.py", line 250, in DomainsUpdate
+    for cf in info.cf.all():
+AttributeError: 'NoneType' object has no attribute 'all'
+2018-12-27 09:37:00,716 exception.py [django.request:135] [ERROR]- Internal Server Error: /monitor/domains/Update
+Traceback (most recent call last):
+  File "J:\arno\test\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "J:\arno\test\lib\site-packages\channels\handler.py", line 243, in process_exception_by_middleware
+    return super(AsgiHandler, self).process_exception_by_middleware(exception, request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "J:\arno\test\lib\site-packages\django\views\decorators\csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "J:\arno\test\phx_web\monitor\domains.py", line 257, in DomainsUpdate
+    info.cf = datas['cf'][0]
+  File "J:\arno\test\lib\site-packages\django\db\models\fields\related_descriptors.py", line 216, in __set__
+    self.field.remote_field.model._meta.object_name,
+ValueError: Cannot assign "u'8'": "domains.cf" must be a "cf_account" instance.
+2018-12-27 09:38:30,387 exception.py [django.request:135] [ERROR]- Internal Server Error: /monitor/domains/Update
+Traceback (most recent call last):
+  File "J:\arno\test\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "J:\arno\test\lib\site-packages\channels\handler.py", line 243, in process_exception_by_middleware
+    return super(AsgiHandler, self).process_exception_by_middleware(exception, request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "J:\arno\test\lib\site-packages\django\views\decorators\csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "J:\arno\test\phx_web\monitor\domains.py", line 255, in DomainsUpdate
+    info.save()
+  File "J:\arno\test\lib\site-packages\django\db\models\base.py", line 762, in save
+    "unsaved related object '%s'." % field.name
+ValueError: save() prohibited to prevent data loss due to unsaved related object 'cf'.
+2018-12-27 09:40:11,190 exception.py [django.request:135] [ERROR]- Internal Server Error: /monitor/domains/Update
+Traceback (most recent call last):
+  File "J:\arno\test\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "J:\arno\test\lib\site-packages\channels\handler.py", line 243, in process_exception_by_middleware
+    return super(AsgiHandler, self).process_exception_by_middleware(exception, request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "J:\arno\test\lib\site-packages\django\views\decorators\csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "J:\arno\test\phx_web\monitor\domains.py", line 243, in DomainsUpdate
+    info = domains.objects.get(id=line['id'])
+  File "J:\arno\test\lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "J:\arno\test\lib\site-packages\django\db\models\query.py", line 379, in get
+    self.model._meta.object_name
+DoesNotExist: domains matching query does not exist.

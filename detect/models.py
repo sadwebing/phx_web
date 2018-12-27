@@ -1,17 +1,15 @@
 # coding: utf8
 from django.db import models
-from phxweb.settings import choices_product, choices_customer, TELEGRAM_API
+from phxweb.settings import choices_product, choices_customer, choices_s, TELEGRAM_API
 from dns.models      import cf_account
+
+import datetime
+
 #from accounts.models import telegram_chat_group_t
 
 # Create your models here.
 
 class groups(models.Model):
-    choices_s = (
-                (1, u'启用'), 
-                (0, u'禁用'),
-                )
-
     group  = models.CharField(max_length=128, unique=True)
     client = models.CharField(max_length=12, null=False)
     method = models.CharField(max_length=12, null=False)
@@ -61,16 +59,6 @@ class telegram_user_id_t(models.Model):
         return " | ".join([self.user, self.name, str(self.user_id)])
 
 class domains(models.Model):
-    #choices_n = (
-    #            (1, 'http://'), 
-    #            (0, 'https://'),
-    #            )
-
-    choices_s = (
-                (1, u'启用'), 
-                (0, u'禁用'),
-                )
-
     #protocol = models.IntegerField(choices=choices_n, default=1) 
     name       = models.CharField(max_length=128, unique=True, null=False)
     product    = models.IntegerField(choices=choices_product, default=12)
@@ -80,7 +68,11 @@ class domains(models.Model):
     content    = models.CharField(max_length=128, blank=True)
     status     = models.IntegerField(choices=choices_s, default=1)
     cdn        = models.ManyToManyField(cdn_account_t, blank=True)
-    cf         = models.ManyToManyField(cf_account, blank=True)
+    cf         = models.ForeignKey(cf_account, blank=True, null=True)
+    cf_content = models.CharField(max_length=128, blank=True)
+    ws_content = models.CharField(max_length=128, blank=True)
+    ng_content = models.CharField(max_length=128, blank=True)
+    mod_date   = models.DateTimeField('解析最后修改日期', default=datetime.datetime.now())
     
     def __str__(self):
         if self.group.ssl == 1:
