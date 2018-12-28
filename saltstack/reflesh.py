@@ -116,12 +116,13 @@ def refleshGetProject(request):
             elif cdn.get_name_display() == "wangsu":
                 req = wsApi(cdn.secretid, cdn.secretkey)
                 results, status = req.getdomains()
-                for line in results:
-                    if line['enabled'] == 'true':
-                        tmpdict['domain'].append({
-                            'name': line['domain-name'],
-                            'ssl' : 1 if line['service-type']=='web-https' else 0,
-                        })
+                if status:
+                    for line in results:
+                        if line['enabled'] == 'true':
+                            tmpdict['domain'].append({
+                                'name': line['domain-name'],
+                                'ssl' : 1 if line['service-type']=='web-https' else 0,
+                            })
             else:
                 tmpdict['domain'] = []
 
