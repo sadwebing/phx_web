@@ -100,7 +100,7 @@ class svn_master_t(models.Model):
     svn_code_u    = models.CharField(max_length=32, null=False)
     svn_code_p    = models.CharField(max_length=32, null=False)
     minion_id     = models.ForeignKey(minion_t, db_constraint=False)
-    svn_gray_lock = models.ManyToManyField(svn_gray_lock_t, blank=True, null=True)
+    svn_gray_lock = models.ManyToManyField(svn_gray_lock_t, blank=True)
     gray_lock     = models.TextField(blank=True, null=True, default='')
     gray_env      = models.TextField(blank=True, null=True, default='')
     online_env    = models.TextField(blank=True, null=True, default='')
@@ -138,7 +138,11 @@ class project_t(models.Model):
     password      = models.TextField(null=False, default='/')
     server_type   = models.CharField(max_length=10, choices=choices_servert, default='front')
     role          = models.CharField(max_length=10, choices=choices_role, default='main')
-    #domain       = models.ForeignKey(domains, default=domain_D.id)
+
+    #域名检测，自动切换线路
+    domain        = models.ManyToManyField(domains, blank=True, db_constraint=False)
+    autoMdns      = models.IntegerField(choices=choices_s, default=0)
+
     url           = models.CharField(max_length=128, default='https://arno.com')
     alive         = models.IntegerField(choices=choices_s, default=1)
     status        = models.IntegerField(choices=choices_s, default=1)

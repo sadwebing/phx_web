@@ -1,5 +1,6 @@
 # coding: utf8
-from django.db import models
+from django.db    import models
+from django.utils import timezone
 from phxweb.settings import choices_product, choices_customer, choices_s, TELEGRAM_API
 from dns.models      import cf_account
 
@@ -32,6 +33,7 @@ class cdn_account_t(models.Model):
     account   = models.CharField(max_length=64, null=False)
     secretid  = models.CharField(max_length=128, null=False)
     secretkey = models.CharField(max_length=128, null=False)
+    status    = models.IntegerField(choices=choices_s, default=1)
 
     class Meta:
         unique_together = ('name', 'account')
@@ -72,7 +74,7 @@ class domains(models.Model):
     cf_content = models.CharField(max_length=128, blank=True)
     ws_content = models.CharField(max_length=128, blank=True)
     ng_content = models.CharField(max_length=128, blank=True)
-    mod_date   = models.DateTimeField('解析最后修改日期', default=datetime.datetime.now())
+    mod_date   = models.DateTimeField('解析最后修改日期', default=timezone.now)
     
     def __str__(self):
         if self.group.ssl == 1:

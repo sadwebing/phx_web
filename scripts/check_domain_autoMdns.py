@@ -52,50 +52,18 @@ def getHtmlTitle(html):
     except:
         return None
 
-def getIps(service_type):
+def getDomains():
     '''
-        获取需要监控的ip列表
+        获取需要监控的域名列表
     '''
-    ip_list  = []
-    projects = project_t.objects.filter(product__in=[12, 16, 26],  alive=1, status=1).all() #获取所有项目
+    domain_list  = []
+    projects = project_t.objects.filter(autoMdns=1).all() #获取所有项目
     for project in projects:
-        domain = domains.objects.filter(product=project.product, name__icontains=project.url.strip('/'), status=1).first()
-        domain_tmpdict = {
-                'product':  (project.product, project.get_product_display()),
-                'customer': (project.customer, project.get_customer_display()),
-                'name':     project.url,
-            }
-        if domain:
-            domain_tmpdict['id']       = domain.id
-            domain_tmpdict['name']     = domain.name
-            domain_tmpdict['product']  = (domain.product, domain.get_product_display())
-            domain_tmpdict['customer'] = (domain.customer, domain.get_customer_display())
-            domain_tmpdict['content']  = domain.content
-            domain_tmpdict['status']   = domain.status
-            domain_tmpdict['group']    = domain.group.group
-            domain_tmpdict['client']   = domain.group.client
-            domain_tmpdict['method']   = domain.group.method
-            domain_tmpdict['ssl']      = domain.group.ssl
-            domain_tmpdict['retry']    = domain.group.retry
+        tmp_dict = {
 
+        }
 
-        for minion in project.minion_id.filter(service_type=service_type, alive=1, status=1).all():
-            for item in minion_ip_t.objects.filter(minion_id=minion.minion_id, alive=1, status=1).all():
-                tmpdict = {
-                        'url':     "http://" + item.ip_addr.strip(),
-                        'domain':  domain_tmpdict,
-                        'project': project.project,
-                    }
-                ip_list.append(tmpdict)
-                if project.project not in ["houtai"]:
-                    tmpdict = {
-                            'url':     "https://" + item.ip_addr.strip() + ":443",
-                            'domain':  domain_tmpdict,
-                            'project': project.project,
-                        }
-                    ip_list.append(tmpdict)
-
-    return ip_list
+    return domain_list
 
 class ReqIps(object):
     '''
@@ -247,6 +215,11 @@ if __name__ == '__main__':
         ip = commands.getoutput('curl -s https://ip.cn')
     else:
         ip = getIp()
+
+    print ip
+    print getDomains()
+
+    sys.exit()
 
     li = []
     results = []

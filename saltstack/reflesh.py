@@ -86,7 +86,7 @@ def refleshGetProject(request):
 
         data = {'cdn_proj': [], 'cdn': []}
         cdn_projs   = cdn_proj_t.objects.all()
-        cdns        = cdn_t.objects.all()
+        cdns        = cdn_t.objects.filter(status=1).all()
         for prot in cdn_projs:
             tmpdict = {}
             tmpdict['project'] = prot.get_project_display()
@@ -143,7 +143,7 @@ def refleshPurge(request):
         info  = {'failed': [], 'sccess': []}
         data  = json.loads(request.body)
         logger.info('%s is requesting. %s 执行参数：%s' %(clientip, request.get_full_path(), data))
-        cdns  = cdn_t.objects.all()
+        cdns  = cdn_t.objects.filter(status=1).all()
         for cdn in cdns:
             cdn_d[cdn.get_name_display()+"_"+cdn.account] = {
                 'name': cdn.get_name_display(),
@@ -253,7 +253,7 @@ def refleshExecute(request):
             ### two step ###
             info['step'] = 'two'
             cdn_d = {}
-            cdns  = cdn_t.objects.all()
+            cdns  = cdn_t.objects.filter(status=1).all()
             for cdn in cdns:
                 cdn_d[cdn.get_name_display()+"_"+cdn.account] = {
                     'name': cdn.get_name_display(),
@@ -337,7 +337,7 @@ def refleshExecuteCdn(request):
             ### two step ###
             info['step'] = 'two'
             cdn_d = {}
-            cdn   = cdn_t.objects.get(id=data['id'])
+            cdn   = cdn_t.objects.get(id=data['id'], status=1)
             cdn_d[cdn.get_name_display()+"_"+cdn.account] = {
                 'name': cdn.get_name_display(),
                 'domain': data['domain'],

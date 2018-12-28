@@ -164,7 +164,7 @@ def GetSvnRecords(request):
             return HttpResponseServerError(error)
         
         svnapi = SvnApi(svn_master.svn_code_url, svn_master.svn_code_u, svn_master.svn_code_p)
-        svn_records = svnapi.GetLog(limit=20)
+        svn_records = svnapi.GetLog(limit=30)
 
         return HttpResponse(json.dumps(svn_records))
     else:

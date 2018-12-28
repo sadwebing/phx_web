@@ -29,7 +29,7 @@ SECRET_KEY = 'm1!&%(kha(g04bl7ek*hh@ly$ibnm8@2zrnkmxxkzcf6jjc4d@'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '182.16.117.186', '182.16.117.187', '182.16.117.188', '182.16.117.189', '182.16.117.190', 'sa.l510881.com']
+ALLOWED_HOSTS = ['127.0.0.1', '119.28.4.12', '182.16.117.186', '182.16.117.187', '182.16.117.188', '182.16.117.189', '182.16.117.190', 'sa.l510881.com']
 
 
 LOGIN_REDIRECT_URL = '/home'
@@ -235,7 +235,7 @@ LOGGING = {
             'level':'DEBUG',
             'class':'logging.handlers.RotatingFileHandler',
             'filename': os.path.join(BASE_DIR+'/logs/','debug.log'),
-            'maxBytes': 1024*1024*5, # 5 MB
+            'maxBytes': 1024*1024*100, # 5 MB
             'backupCount': 10,
             'formatter':'standard',
         },
