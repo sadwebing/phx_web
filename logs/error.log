@@ -24874,3 +24874,95 @@ Traceback (most recent call last):
   File "J:\arno\test\phx_web\saltstack\reflesh.py", line 89, in refleshGetProject
     cdns        = cdn_t.objects.all(status=1)
 TypeError: all() got an unexpected keyword argument 'status'
+2018-12-28 17:09:47,193 ws_api.py [django:70] [ERROR]- Attention: 网宿域名获取失败，请检查:网宿URL:  + https://open.chinanetcenter.com/api/domain
+fgadmin : eRTZQB6q82pK3uT9cC15CGAtZSOwAmg+eXVAk/jfHKc=
+{"status":0,"result":"The HTTP authorization header is bad: authorization validate failed, possible causes: 1:apikey incorrect; 2:date error; 3:crypto logic error"}
+2018-12-28 17:09:49,494 exception.py [django.request:135] [ERROR]- Internal Server Error: /saltstack/reflesh/get_project
+Traceback (most recent call last):
+  File "J:\arno\test\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "J:\arno\test\lib\site-packages\channels\handler.py", line 243, in process_exception_by_middleware
+    return super(AsgiHandler, self).process_exception_by_middleware(exception, request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "J:\arno\test\lib\site-packages\django\views\decorators\csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "J:\arno\test\phx_web\saltstack\reflesh.py", line 120, in refleshGetProject
+    if line['enabled'] == 'true':
+TypeError: string indices must be integers, not str
+2018-12-28 17:10:47,467 ws_api.py [django:70] [ERROR]- Attention: 网宿域名获取失败，请检查:网宿URL:  + https://open.chinanetcenter.com/api/domain
+fgadmin : Y1iFEYa+T85MND55I37M7lDnHgtOhkUuiPe+M4Phsx8=
+{"status":0,"result":"The HTTP authorization header is bad: authorization validate failed, possible causes: 1:apikey incorrect; 2:date error; 3:crypto logic error"}
+2018-12-28 17:10:51,130 exception.py [django.request:135] [ERROR]- Internal Server Error: /saltstack/reflesh/get_project
+Traceback (most recent call last):
+  File "J:\arno\test\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "J:\arno\test\lib\site-packages\channels\handler.py", line 243, in process_exception_by_middleware
+    return super(AsgiHandler, self).process_exception_by_middleware(exception, request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "J:\arno\test\lib\site-packages\django\views\decorators\csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "J:\arno\test\phx_web\saltstack\reflesh.py", line 120, in refleshGetProject
+    if str(line['enabled']) == 'true':
+TypeError: string indices must be integers, not str
+2018-12-28 17:11:35,006 ws_api.py [django:70] [ERROR]- Attention: 网宿域名获取失败，请检查:网宿URL:  + https://open.chinanetcenter.com/api/domain
+fgadmin : 9L2cXzUGGKXSGXN0rHnx++DtKxne8JjBY4oibfhXpLI=
+{"status":0,"result":"The HTTP authorization header is bad: authorization validate failed, possible causes: 1:apikey incorrect; 2:date error; 3:crypto logic error"}
+2018-12-28 17:11:38,338 exception.py [django.request:135] [ERROR]- Internal Server Error: /saltstack/reflesh/get_project
+Traceback (most recent call last):
+  File "J:\arno\test\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "J:\arno\test\lib\site-packages\channels\handler.py", line 243, in process_exception_by_middleware
+    return super(AsgiHandler, self).process_exception_by_middleware(exception, request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "J:\arno\test\lib\site-packages\django\views\decorators\csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "J:\arno\test\phx_web\saltstack\reflesh.py", line 120, in refleshGetProject
+    if str(line['enabled']) == 'true':
+TypeError: string indices must be integers, not str
+2018-12-28 17:12:34,788 ws_api.py [django:70] [ERROR]- Attention: 网宿域名获取失败，请检查:网宿URL:  + https://open.chinanetcenter.com/api/domain
+fgadmin : xfFN1JsxLqsVvLikpK1RMzWo/g49FrYYmZZYBahuzPQ=
+{"status":0,"result":"The HTTP authorization header is bad: authorization validate failed, possible causes: 1:apikey incorrect; 2:date error; 3:crypto logic error"}
+2018-12-28 17:12:36,226 exception.py [django.request:135] [ERROR]- Internal Server Error: /saltstack/reflesh/get_project
+Traceback (most recent call last):
+  File "J:\arno\test\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "J:\arno\test\lib\site-packages\channels\handler.py", line 243, in process_exception_by_middleware
+    return super(AsgiHandler, self).process_exception_by_middleware(exception, request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "J:\arno\test\lib\site-packages\django\views\decorators\csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "J:\arno\test\phx_web\saltstack\reflesh.py", line 121, in refleshGetProject
+    if line['enabled'] == 'true':
+TypeError: string indices must be integers, not str
+2018-12-28 17:15:12,256 ws_api.py [django:70] [ERROR]- Attention: 网宿域名获取失败，请检查:网宿URL:  + https://open.chinanetcenter.com/api/domain
+fgadmin : 1gB/eIXdPWUQ0BfUMwz73KfG2Gi8e2XO2uhdBZXNxnE=
+{"status":0,"result":"The HTTP authorization header is bad: authorization validate failed, possible causes: 1:apikey incorrect; 2:date error; 3:crypto logic error"}
+2018-12-29 11:34:03,023 telegram.py [django:112] [ERROR]- Attention: send message failed!
+2018-12-29 11:34:03,023 telegram.py [django:113] [ERROR]- 400: {"ok":false,"error_code":400,"description":"Bad Request: message text is empty"}
+2018-12-29 11:34:03,023 telegram.py [django:114] [ERROR]- {'disable_web_page_preview': True, 'text': '', 'doc_name': 'message.txt_20181229113401', 'caption': '', 'chat_id': -204952096L, 'parse_mode': 'HTML'}
+2018-12-29 11:44:16,234 telegram.py [django:112] [ERROR]- Attention: send message failed!
+2018-12-29 11:44:16,234 telegram.py [django:113] [ERROR]- 400: {"ok":false,"error_code":400,"description":"Bad Request: message text is empty"}
+2018-12-29 11:44:16,236 telegram.py [django:114] [ERROR]- {'disable_web_page_preview': True, 'text': '', 'doc_name': 'message.txt_20181229114414', 'caption': '', 'chat_id': -204952096L, 'parse_mode': 'HTML'}
+2018-12-29 11:46:02,128 telegram.py [django:112] [ERROR]- Attention: send message failed!
+2018-12-29 11:46:02,128 telegram.py [django:113] [ERROR]- 400: {"ok":false,"error_code":400,"description":"Bad Request: message text is empty"}
+2018-12-29 11:46:02,128 telegram.py [django:114] [ERROR]- {'disable_web_page_preview': True, 'text': '', 'doc_name': 'message.txt_20181229114600', 'caption': '', 'chat_id': -204952096L, 'parse_mode': 'HTML'}

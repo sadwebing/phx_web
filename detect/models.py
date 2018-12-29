@@ -74,6 +74,7 @@ class domains(models.Model):
     cf_content = models.CharField(max_length=128, blank=True)
     ws_content = models.CharField(max_length=128, blank=True)
     ng_content = models.CharField(max_length=128, blank=True)
+    auto_m_dns = models.IntegerField(choices=choices_s, default=0)
     mod_date   = models.DateTimeField('解析最后修改日期', default=timezone.now)
     
     def __str__(self):

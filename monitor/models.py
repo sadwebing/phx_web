@@ -138,11 +138,6 @@ class project_t(models.Model):
     password      = models.TextField(null=False, default='/')
     server_type   = models.CharField(max_length=10, choices=choices_servert, default='front')
     role          = models.CharField(max_length=10, choices=choices_role, default='main')
-
-    #域名检测，自动切换线路
-    domain        = models.ManyToManyField(domains, blank=True, db_constraint=False)
-    autoMdns      = models.IntegerField(choices=choices_s, default=0)
-
     url           = models.CharField(max_length=128, default='https://arno.com')
     alive         = models.IntegerField(choices=choices_s, default=1)
     status        = models.IntegerField(choices=choices_s, default=1)

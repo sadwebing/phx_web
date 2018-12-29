@@ -251,7 +251,7 @@ def DomainsUpdate(request):
                     info.save()
             if int(datas['edit_cf_bool'][0]) == 1:
                 if info.cf:
-                    info.cf.remove()
+                    info.cf = None
                     info.save()
                 if len(datas['cf']) != 0:
                     info.cf = cf_account.objects.get(id=datas['cf'][0])
