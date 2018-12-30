@@ -5,7 +5,7 @@
 #    域名故障，自动切换线路，并实时预警
 #version: 2018/12/26  实现基本功能
 
-import os, sys, datetime, logging, multiprocessing, requests, json, pytz, urlparse, threading, platform, commands, re, time
+import os, sys, datetime, multiprocessing, requests, json, pytz, urlparse, threading, platform, commands, re, time
 import dnsr.resolver, redis
 from check.dependent  import getIp, timeNow, getDomainDns, getHtmlTitle
 from check.redis_api  import connRedis
@@ -174,7 +174,7 @@ class myThread(threading.Thread):
         
         #连接redis，获取域名的失败次数
         rdp = connRe.rdp()
-        val = rdp.get(self.__name)
+        val = int(rdp.get(self.__name)) if rdp.get(self.__name) else rdp.get(self.__name)
 
         #判断域名是否需要进行检测
         if val and val >= 2 and interval < reck_interval:
@@ -209,6 +209,7 @@ class myThread(threading.Thread):
                 self.t = ": ".join([self.__product + "_" +self.__customer, rd.__dict__['_ReqDomains__url'], error])
             else:
                 if val and val >= 2 and interval >= reck_interval:
+                    #logging.info(val)
                     message['text'] = "%s: 域名已经恢复。" %self.__name
                     sendTelegram(message).send()
                 rdp.set(self.__name, 0)
@@ -223,7 +224,7 @@ class myThread(threading.Thread):
             #message['group'] = "arno_test2"
             try:
                 message['text'] = "".join([
-                        ip,
+                        "%s\r\n" %ip,
                         "时间: %s\r\n" %timeNow().format(),
                         "管理: %s\r\n" %yunwei,
                         "产品: %s\r\n" %self.__product,
