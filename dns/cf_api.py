@@ -40,6 +40,17 @@ class CfApi(object):
         except:
             return {u'zone_id': None}
 
+    def GetDnsRecord(self, zone, record_name):
+        self.__zone_id   = self.GetZoneId(zone)['zone_id']
+        self.__record_id = self.GetDnsRecordId(self.__zone_id, record_name)
+        url = self.__url + '/%s/' %self.__zone_id + 'dns_records/%s' %self.__record_id
+        #logger.info(url)
+        try:
+            ret = requests.get(url, headers=self.__headers, verify=False)
+            return ret.json()
+        except:
+            return False
+
     def GetZoneRecords(self, zone_id):
         url = self.__url + '/%s/' %zone_id + 'dns_records?per_page=100'
         try:

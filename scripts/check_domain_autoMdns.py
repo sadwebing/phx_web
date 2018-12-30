@@ -5,10 +5,18 @@
 #    域名故障，自动切换线路，并实时预警
 #version: 2018/12/26  实现基本功能
 
-import os, sys, datetime, logging, multiprocessing, requests, json, urlparse, threading, platform, commands, re
+import os, sys, datetime, logging, multiprocessing, requests, json, pytz, urlparse, threading, platform, commands, re, time
+import dnsr.resolver, redis
+from check.dependent  import getIp, timeNow, getDomainDns, getHtmlTitle
+from check.redis_api  import connRedis
+from check.config     import yunwei, redis_cfg, failed_retry, failed_all, failed_timeout, mdns_interval, reck_interval, logging
+from check.modify_dns import modifyDns
 
-#reload(sys)
-#sys.setdefaultencoding('utf8')
+reload(sys)
+sys.setdefaultencoding('utf8')
+
+#当前脚本路径
+basedir = os.path.abspath(os.path.join(os.path.dirname(__file__)))
 
 #将上层目录加入环境变量，用于引用其他模块
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir)))
@@ -41,17 +49,7 @@ message = settings.message_TEST
 error_status  = u'失败'
 normal_status = [200, 404, 403]
 
-#当前脚本路径
-basedir = os.path.abspath(os.path.join(os.path.dirname(__file__)))
-
-#获取html的title
-def getHtmlTitle(html):
-    html = BeautifulSoup(html,'html.parser')
-    try:
-        return html.title.text
-    except:
-        return None
-
+#获取域名
 def getDomains():
     '''
         获取需要监控的域名列表
@@ -61,6 +59,7 @@ def getDomains():
     #domain_l = domains.objects.filter(status=1, auto_m_dns=1).all() #获取所有有效的域名
     for domain in domain_l:
         tmp_dict = {
+            'id':         domain.id,
             'name':       domain.name,
             'product':    (domain.product, domain.get_product_display()),
             'customer':   (domain.customer, domain.get_customer_display()),
@@ -72,7 +71,7 @@ def getDomains():
             'cf_content': domain.cf_content,
             'ws_content': domain.ws_content,
             'ng_content': domain.ng_content,
-            'mod_date':   domain.mod_date,
+            'mod_date':   domain.mod_date.replace(tzinfo=pytz.timezone('Asia/Shanghai')),
         }
 
         domain_list.append(tmp_dict)
@@ -88,8 +87,8 @@ class ReqDomains(object):
         self.__customer = ''
         self.__method   = 'head'
         self.__verify   = False
-        self.__timeout  = 5
-        self.__retry    = 1
+        self.__timeout  = failed_timeout
+        self.__retry    = failed_retry
         self.__reg      = '^.*[a-zA-Z0-9]+.*\.[a-zA-Z0-9]*[a-zA-Z]+[a-zA-Z0-9]*$'
         self.__headers  = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36 SE 2.X MetaSr 1.0', 'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'}
         if isinstance(domain, dict):
@@ -135,19 +134,19 @@ class ReqDomains(object):
         try:
             ret = s.send(req, verify=self.__verify, timeout=self.__timeout)
         except requests.exceptions.ConnectTimeout:
-            res.append({error_status: {self.__ip:'连接超时！'}})
+            res.append({error_status: u'连接超时！'})
         except requests.exceptions.ReadTimeout:
-            res.append({error_status: {self.__ip:'加载超时！'}})
+            res.append({error_status: u'加载超时！'})
         except requests.exceptions.SSLError:
-            res.append({error_status: {self.__ip:'证书认证错误！'}})
+            res.append({error_status: u'证书认证错误！'})
         #except requests.exceptions.NewConnectionError:
-        #    res.append({error_status: {self.__ip:'找不到主机名！'}})
+        #    res.append({error_status: u'找不到主机名！'})
         except requests.exceptions.MissingSchema:
-            res.append({error_status: {self.__ip:'协议头无效！'}})
+            res.append({error_status: u'协议头无效！'})
         except requests.exceptions.ConnectionError:
-            res.append({error_status: {self.__ip:'连接错误！'}})
+            res.append({error_status: u'连接错误！'})
         except Exception as e:
-            res.append({error_status: {self.__ip:e}})
+            res.append({error_status: str(e)})
         else:
             if len(ret.history) != 0:
                 for r in ret.history:
@@ -156,52 +155,109 @@ class ReqDomains(object):
             res.append({'title': getHtmlTitle(ret.content)})
         return res
 
+#并发执行
 class myThread(threading.Thread):
     def __init__(self, domain):
         threading.Thread.__init__(self)
         self.domain = domain
 
     def run(self):
+        #获取当前时间与上一次修改解析的时间差
+        now = timeNow().stamp()
+        interval = (now - self.domain['mod_date']).seconds - 360
+
         rd = ReqDomains(self.domain)
         self.__product  = rd.__dict__['_ReqDomains__product']
         self.__customer = rd.__dict__['_ReqDomains__customer']
+        self.__name     = rd.__dict__['_ReqDomains__name']
         self.t  = None
         
+        #连接redis，获取域名的失败次数
+        rdp = connRe.rdp()
+        val = rdp.get(self.__name)
+
+        #判断域名是否需要进行检测
+        if val and val >= 2 and interval < reck_interval:
+            return False
+
         for i in range(rd.__dict__['_ReqDomains__retry']):
             if not rd.IsNameVaild() or not rd.IsIpVaild():
                 #print (self.domain)
                 continue
 
         if not rd.IsNameVaild():
-            self.t = ": ".join([self.__product + "_" +self.__customer, rd.__dict__['_ReqDomains__url'], '域名无效.'])
+            error = '域名无效.'
+            self.t = ": ".join([self.__product + "_" +self.__customer, rd.__dict__['_ReqDomains__url'], error])
             print (self.t)
         elif not rd.IsIpVaild():
-            self.t = ": ".join([self.__product + "_" +self.__customer, rd.__dict__['_ReqDomains__url'], '域名解析无效.'])
+            error = '域名解析无效.'
+            self.t = ": ".join([self.__product + "_" +self.__customer, rd.__dict__['_ReqDomains__url'], error])
             print (self.t)
         else:
             for i in range(rd.__dict__['_ReqDomains__retry']):
                 res = rd.ExeReq()
-                print (self.__product + "_" +self.__customer, rd.__dict__['_ReqDomains__url'], str(res))
+                print ": ".join([self.__product + "_" +self.__customer, rd.__dict__['_ReqDomains__url'], str(res)])
                 #print ('.', end='')
                 if error_status not in res[0].keys() and 200 in res[-2].keys():
                     break
-                sleep(2)
+                sleep(1)
             if error_status in res[0].keys():
-                self.t = ": ".join([self.__product + "_" +self.__customer, rd.__dict__['_ReqDomains__url'], str(res[0][error_status])])
+                error = str(res[0][error_status])
+                self.t = ": ".join([self.__product + "_" +self.__customer, rd.__dict__['_ReqDomains__url'], error])
             elif 200 not in res[-2].keys():
-                self.t = ": ".join([self.__product + "_" +self.__customer, rd.__dict__['_ReqDomains__url'], str(res)])
+                error = str(res)
+                self.t = ": ".join([self.__product + "_" +self.__customer, rd.__dict__['_ReqDomains__url'], error])
+            else:
+                if val and val >= 2 and interval >= reck_interval:
+                    message['text'] = "%s: 域名已经恢复。" %self.__name
+                    sendTelegram(message).send()
+                rdp.set(self.__name, 0)
 
-        if self.t:
+        failed = 0
+        if self.t and interval >= mdns_interval:
+            if val: failed += int(val) + 1 
+            rdp.set(self.__name, failed)   #更新检测失败次数
+
             print "开始发送telegram预警：\r\n%s" % self.t
-            message['text'] = "".join([
-                    "管理人：@arno\r\n",
-                    "产品：%s" self.__product,
-                    "客户：%s" self.__customer,
-                    "当前域名：%s" self.domain,
-                    "当前线路：%s" self.domain,
-                    self.t,
-                ])
-            sendTelegram(message).send()
+            #message['group'] = "domain_autoMdns"
+            #message['group'] = "arno_test2"
+            try:
+                message['text'] = "".join([
+                        ip,
+                        "时间: %s\r\n" %timeNow().format(),
+                        "管理: %s\r\n" %yunwei,
+                        "产品: %s\r\n" %self.__product,
+                        "客户: %s\r\n" %self.__customer,
+                        "当前域名: %s\r\n" %self.__name,
+                        "当前线路: %s\r\n" %getDomainDns(self.__name),
+                        "检测失败: %d 次\r\n" %failed,
+                        "NG解析: %s\r\n" %self.domain['ng_content'] if self.domain['ng_content'] else "",
+                        "CF解析: %s\r\n" %self.domain['cf_content'] if self.domain['cf_content'] else "",
+                        "ws解析: %s\r\n" %self.domain['ws_content'] if self.domain['ws_content'] else "",
+                        "错误信息: %s" %str(error),
+                    ])
+                sendTelegram(message).send()
+            except Exception as e:
+                print "发送telegram 信息失败！"
+                print str(e)
+
+            if failed >= failed_all :
+                #rdp.set(self.__name, 0)   #更新检测失败次数
+                #修改域名的解析
+                mdns = modifyDns(self.__name, self.domain)
+                result, mdre = mdns.Modify()
+
+                #修改域名在数据库中的状态
+                dm = domains.objects.get(id=self.domain['id'])
+                dm.mod_date = timeNow().now()
+                dm.save()
+
+                #发送处理状态
+                if not result:
+                    message['text'] = '%s: 解析修改失败！' %self.__name
+                else:
+                    message['text'] = '%s: %s\r\n解析修改成功。' %(self.__name, mdre)
+                sendTelegram(message).send()
 
     def get_result(self):
         if self.t:
@@ -209,32 +265,18 @@ class myThread(threading.Thread):
         else:
             return None
 
-def sendAlert(ip, results):
-    if results:
-        message['text'] = ip + results
-        sendTelegram(message).send()
-
-def getIp():
-    try:
-        ret = requests.get('http://myip.ipip.net')
-    except Exception as e:
-        print u'获取当前IP失败......'
-        print str(e)
-        ip = gethostname()
-    else:
-        if ret.status_code == 200:
-            ip = ret.text
-        else:
-            ip = gethostname()
-    return ip
-
 if __name__ == '__main__':
-    #if platform.system() == "Linux":
-    #    ip = commands.getoutput('curl -s https://ip.cn')
-    #else:
-    #    ip = getIp()
+    #获取当前服务器IP
+    ip = getIp()
 
-    ip = ""
+    #ip = ""
+
+    #message['group'] = "domain_autoMdns"
+    message['group'] = "arno_test2"
+
+    #连接redis
+    connRe = connRedis(password=redis_cfg['password'])
+    connRe.test()
 
     li = []
     results = ""
