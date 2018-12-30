@@ -4,6 +4,7 @@
 #introduciton:
 #    域名故障，自动切换线路，并实时预警
 #version: 2018/12/26  实现基本功能
+#         2018/12/30  增添一系列限制参数
 
 import os, sys, datetime, multiprocessing, requests, json, pytz, urlparse, threading, platform, commands, re, time
 import dnsr.resolver, redis
@@ -21,16 +22,11 @@ basedir = os.path.abspath(os.path.join(os.path.dirname(__file__)))
 #将上层目录加入环境变量，用于引用其他模块
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir)))
 
-#设置django环境
-import django
-os.environ['DJANGO_SETTINGS_MODULE'] = 'phxweb.settings'
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "phxweb.settings")
-django.setup() #启动django
-
-from detect.telegram import sendTelegram
-from monitor.models  import project_t, minion_t, minion_ip_t
-from detect.models   import domains
-from phxweb          import settings
+#引用django中的模块和变量
+from check.config import sendTelegram, message
+from check.config import project_t, minion_t, minion_ip_t
+from check.config import domains
+from check.config import settings
 
 from bs4        import BeautifulSoup
 from time       import sleep
@@ -41,9 +37,6 @@ from socket     import gethostname, gethostbyname
 # 禁用安全请求警告
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
-
-#telegram 参数
-message = settings.message_TEST
 
 #状态定义
 error_status  = u'失败'
