@@ -216,8 +216,11 @@ class myThread(threading.Thread):
 
         failed = 0
         if self.t and interval >= mdns_interval:
-            if val: failed += int(val) + 1 
+            if isinstance(val, int): failed += int(val) + 1
             rdp.set(self.__name, failed)   #更新检测失败次数
+
+            mdns = modifyDns(self.__name, self.domain)
+            current_route = [mdns.GetDomainRoute()['result']['type'], mdns.GetDomainRoute()['result']['content'], str(mdns.GetDomainRoute()['result']['proxied'])] if mdns.GetDomainRoute() else "获取失败"
 
             print "开始发送telegram预警：\r\n%s" % self.t
             #message['group'] = "domain_autoMdns"
@@ -230,7 +233,8 @@ class myThread(threading.Thread):
                         "产品: %s\r\n" %self.__product,
                         "客户: %s\r\n" %self.__customer,
                         "当前域名: %s\r\n" %self.__name,
-                        "当前线路: %s\r\n" %getDomainDns(self.__name),
+                        "当前线路: %s\r\n" %" - ".join(current_route),
+                        "当前解析: %s\r\n" %getDomainDns(self.__name),
                         "检测失败: %d 次\r\n" %failed,
                         "NG解析: %s\r\n" %self.domain['ng_content'] if self.domain['ng_content'] else "",
                         "CF解析: %s\r\n" %self.domain['cf_content'] if self.domain['cf_content'] else "",
@@ -245,7 +249,6 @@ class myThread(threading.Thread):
             if failed >= failed_all :
                 #rdp.set(self.__name, 0)   #更新检测失败次数
                 #修改域名的解析
-                mdns = modifyDns(self.__name, self.domain)
                 result, mdre = mdns.Modify()
 
                 #修改域名在数据库中的状态
