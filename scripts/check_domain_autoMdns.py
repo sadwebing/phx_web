@@ -172,7 +172,7 @@ class myThread(threading.Thread):
         val = int(rdp.get(self.__name)) if rdp.get(self.__name) else rdp.get(self.__name)
 
         #判断域名是否需要进行检测
-        if val and val >= 2 and interval < reck_interval:
+        if val and val >= failed_all and interval < reck_interval:
             return False
 
         for i in range(rd.__dict__['_ReqDomains__retry']):
@@ -203,9 +203,10 @@ class myThread(threading.Thread):
                 error = str(res)
                 self.t = ": ".join([self.__product + "_" +self.__customer, rd.__dict__['_ReqDomains__url'], error])
             else:
-                if val and val >= 2 and interval >= reck_interval:
+                if val and val >= failed_all and interval >= reck_interval:
                     #logging.info(val)
                     message['text'] = "%s: 域名已经恢复。" %self.__name
+                    logging.info(message['text'] + "失败次数: %d" %val)
                     sendTelegram(message).send()
                 rdp.set(self.__name, 0)
 
