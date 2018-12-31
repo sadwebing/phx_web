@@ -41,7 +41,7 @@ class connRedis(object):
             self.rdp().get('test')
         except Exception as e:
             message['text'] = "".join([
-                    getIp().format(),
+                    "%s\r\n" %getIp().str(),
                     "管理: %s\r\n" %yunwei,
                     "连接本地redis失败: %s\r\n" %str(e),
                     "请及时修复，域名自动切换脚本已暂停！",

@@ -5,12 +5,14 @@
 #    域名故障，自动切换线路，并实时预警
 #version: 2018/12/26  实现基本功能
 #         2018/12/30  增添一系列限制参数
+#         2018/12/31  增添IP判断，发送信息到不同的群组
 
 import os, sys, datetime, multiprocessing, requests, json, pytz, urlparse, threading, platform, commands, re, time
 import dnsr.resolver, redis
 from check.dependent  import getIp, timeNow, getDomainDns, getHtmlTitle
 from check.redis_api  import connRedis
-from check.config     import yunwei, redis_cfg, failed_retry, failed_all, failed_timeout, mdns_interval, reck_interval, logging
+from check.config     import yunwei, redis_cfg, failed_retry, failed_all, failed_timeout, mdns_interval, reck_interval
+from check.config     import logging, groupIp
 from check.modify_dns import modifyDns
 
 reload(sys)
@@ -220,7 +222,7 @@ class myThread(threading.Thread):
             #message['group'] = "arno_test2"
             try:
                 message['text'] = "".join([
-                        "%s\r\n" %ip,
+                        "%s\r\n" %ip_str,
                         "时间: %s\r\n" %timeNow().format(),
                         "管理: %s\r\n" %yunwei,
                         "产品: %s\r\n" %self.__product,
@@ -264,12 +266,13 @@ class myThread(threading.Thread):
 
 if __name__ == '__main__':
     #获取当前服务器IP
-    ip = getIp()
+    getip  = getIp()
+    ip_str = getip.str()
+    ip     = getip.ip()
 
-    #ip = ""
-
+    #获取 telegram 群组
     #message['group'] = "domain_autoMdns"
-    message['group'] = "arno_test2"
+    message['group'] = groupIp(ip)
 
     #连接redis
     connRe = connRedis(password=redis_cfg['password'])
@@ -286,4 +289,4 @@ if __name__ == '__main__':
     #    t.join()
     #    if t.get_result(): results += t.get_result()
 
-    #sendAlert(ip, results)
+    #sendAlert(ip_str, results)

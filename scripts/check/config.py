@@ -6,7 +6,7 @@
 #version: 2018/12/30  一些依赖函数
 
 import os, sys, datetime, logging, multiprocessing, requests, json, pytz, urlparse, threading, platform, commands, re, time
-import dnsr.resolver, redis, logging
+import dnsr.resolver, redis, logging, IPy
 
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -70,6 +70,19 @@ failed_timeout = 5 #域名检测超时时间
 failed_all     = 2 #失败达到一定次数后进行解析切换
 mdns_interval  = 300 #5分钟内不重复切换域名解析
 reck_interval  = 120 #2分钟后再对已切换解析的域名进行检测
+
+#不同服务器的预警发送指定 telegram 群组
+group_ip_dict = {
+    '182.16.117.0/24': 'domain_autoMdns',
+}
+default_group = 'arno_test2'
+
+#获取 telegram 群组
+def groupIp(ip):
+    for ipnet in group_ip_dict.keys():
+        if ip in IPy.IP(ipnet):
+            return group_ip_dict[ipnet]
+    return default_group
 
 if __name__ == '__main__':
     print "no more."

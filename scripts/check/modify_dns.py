@@ -37,7 +37,7 @@ class modifyDns(object):
     def GetDomainRoute(self):
         ''' 获取域名的CF解析 '''
         self.__record = self.cfapi.GetDnsRecord(self.__zone, self.__domain)
-        logging.info(dir(self.cfapi))
+        #logging.info(dir(self.cfapi))
         if self.__record and self.__record['success']:
             return self.__record
         else:

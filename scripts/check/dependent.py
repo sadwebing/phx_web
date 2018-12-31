@@ -93,22 +93,31 @@ def isIP(str):
     else:
         return False
 
-def getIp():
-    if platform.system() == "Linux":
-        ip = commands.getoutput('curl -s https://ip.cn')
-        return ip
-    try:
-        ret = requests.get('http://myip.ipip.net')
-    except Exception as e:
-        print u'获取当前IP失败......'
-        print str(e)
-        ip = gethostname()
-    else:
-        if ret.status_code == 200:
-            ip = ret.text
+class getIp(object):
+    def __init__(self):
+        if platform.system() == "Linux":
+            self.__str = commands.getoutput('curl -s https://ip.cn')
+        try:
+            ret = requests.get('http://myip.ipip.net')
+        except Exception as e:
+            print u'获取当前IP失败......'
+            print str(e)
+            self.__str = gethostname()
         else:
-            ip = gethostname()
-    return ip
+            if ret.status_code == 200:
+                self.__str = ret.text
+            else:
+                self.__str = gethostname()
+
+    def str(self):
+        return self.__str
+
+    def ip(self):
+        self.__ip = re.findall(r'[0-9]+(?:\.[0-9]+){3}', self.__str)
+        if self.__ip:
+            return self.__ip[0]
+        else:
+            return '127.0.0.1'
 
 if __name__ == '__main__':
     print "no more."
