@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http                    import HttpResponse
 from django.views.decorators.csrf   import csrf_exempt, csrf_protect
 from dwebsocket                     import require_websocket, accept_websocket
-from models                         import domains
+from models                         import domains, department_user_t
 from monitor.models                 import telegram_ssl_alert_t
 from accounts.limit                 import LimitAccess
 from telegram                       import sendTelegram
@@ -100,5 +100,41 @@ def SendTelegram(request):
             return HttpResponse('发送成功！')
         else: 
             return HttpResponse(content='telegram 发送失败，参数错误！', status=502)
+    else:
+        return HttpResponse(status=403)
+
+@csrf_exempt
+def getAtUsers(request):
+    if request.META.has_key('HTTP_X_FORWARDED_FOR'):
+        clientip = request.META['HTTP_X_FORWARDED_FOR']
+    else:
+        clientip = request.META['REMOTE_ADDR']
+    logger.info('%s is requesting %s' %(clientip, request.get_full_path()))
+
+    if request.method == 'POST':
+        atUsers = {}
+        try:
+            for department in department_user_t.objects.filter(status=1).all():
+                atUsers[department.name] = {
+                    'users': [ 
+                        {
+                            'name': user.name,
+                            'user': user.user,
+                            'user_id': user.user_id,
+                        }
+                        for user in department.user.filter(status=1).all() ],
+                    'atUsers': department.AtUsers(),
+                    'display': department.display(),
+                }
+                
+        except Exception, e:
+            logger.error(e.message)
+            s = sendTelegram({'text': clientip + ': 发送telegram信息失败！\r\n' + e.message, 'bot': 'sa_monitor_bot', 'group': 'arno_test'}) #arno_test
+            if s.send():
+                return HttpResponse(content='参数错误！', status=500)
+            else: 
+                return HttpResponse(content='telegram 发送失败！', status=502)
+
+        return HttpResponse(json.dumps(atUsers))
     else:
         return HttpResponse(status=403)

@@ -41,9 +41,10 @@ class cdn_account_t(models.Model):
         return " | ".join([self.get_name_display(), self.account])
 
 class telegram_chat_group_t(models.Model):
-    name  = models.CharField(max_length=32, null=False)
-    group = models.CharField(max_length=32, null=False)
+    name     = models.CharField(max_length=32, null=False)
+    group    = models.CharField(max_length=32, null=False)
     group_id = models.IntegerField()
+    status   = models.IntegerField(choices=choices_s, default=1)
     class Meta:
         unique_together = ('group' ,'group_id')
 
@@ -51,14 +52,43 @@ class telegram_chat_group_t(models.Model):
         return " | ".join([self.name, self.group, str(self.group_id)])
 
 class telegram_user_id_t(models.Model):
-    user = models.CharField(max_length=32, null=False)
-    name = models.CharField(max_length=32, null=False)
+    user    = models.CharField(max_length=32, null=False)
+    name    = models.CharField(max_length=32, null=False)
     user_id = models.IntegerField()
+    status  = models.IntegerField(choices=choices_s, default=1)
     class Meta:
         unique_together = ('user' ,'user_id')
 
     def __str__(self):
         return " | ".join([self.user, self.name, str(self.user_id)])
+
+class department_user_t(models.Model):
+    name   = models.CharField(max_length=32, unique=True, null=False)
+    department = models.CharField(max_length=32, unique=False, null=False, default="未知组")
+    user   = models.ManyToManyField(telegram_user_id_t, blank=False, db_constraint=False)
+    status = models.IntegerField(choices=choices_s, default=1)
+
+    class Meta:
+        unique_together = ('name' ,'department')
+
+    def __str__(self):
+        users = ""
+        for i in self.user.filter(status=1).all():
+            users += i.name + " "
+        return " | ".join([self.name, self.department, users])
+
+    def AtUsers(self):
+        users = []
+        for i in self.user.filter(status=1).all():
+            users.append("@" + i.user)
+        return ", ".join(users)
+
+    def display(self):
+        users = []
+        for i in self.user.filter(status=1).all():
+            users.append(i.name)
+        return ", ".join(users)
+        
 
 class domains(models.Model):
     #protocol = models.IntegerField(choices=choices_n, default=1) 

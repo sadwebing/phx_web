@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.http      import HttpResponse, HttpResponseForbidden, HttpResponseServerError
 from accounts.views   import HasPermission, HasServerPermission, getIp, getProjects
 from monitor.models   import project_t, svn_master_t
+from detect.models    import department_user_t
 from upgrade.models   import svn_gray_lock_t, svn_customer_t
 from phxweb.svn_api   import SvnApi
 
@@ -33,6 +34,24 @@ def Operate(request):
     logger.info('%s is requesting %s' %(clientip, request.get_full_path()))
 
     projects = getProjects(request, 'execute') #用户必须具有执行权限才能升级
+
+    atUsers = {}
+    for department in department_user_t.objects.filter(status=1).all():
+        atUsers[department.name] = {
+            'id': department.id,
+            'department': department.department,
+            'users': [ 
+                {
+                    'name': user.name,
+                    'user': user.user,
+                    'user_id': user.user_id,
+                }
+                for user in department.user.filter(status=1).all() ],
+            'atUsers': department.AtUsers(),
+            'display': department.display().replace(' ', ''),
+        }
+
+    logger.info(atUsers)
 
     items = []
     for project in projects:
@@ -93,6 +112,7 @@ def Operate(request):
             'role':     role,
             'username': username,
             'items':    json.dumps(items),
+            'atUsers':  json.dumps(atUsers),
         }
     )
 

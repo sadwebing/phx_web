@@ -33,7 +33,7 @@ django.setup() #启动django
 
 from detect.telegram import sendTelegram
 from monitor.models  import project_t, minion_t, minion_ip_t
-from detect.models   import domains
+from detect.models   import domains, department_user_t
 from dns.cf_api      import CfApi
 from phxweb          import settings
 
@@ -55,7 +55,7 @@ error_status  = u'失败'
 normal_status = [200, 404, 403]
 
 #其他
-yunwei = "@arno, @trevor"
+yunwei = department_user_t.objects.get(name='yunwei').AtUsers()
 
 #redis配置
 redis_cfg = {

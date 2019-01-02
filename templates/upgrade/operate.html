@@ -72,6 +72,8 @@
                             </select>
                             <select class="form-control selectpicker show-tick" data-live-search="true" multiple data-actions-box="true" id="project_customer_ex" name="project_customer_ex" title="请选择不升级的客户" data-width="24%">
                             </select>
+                            <select class="form-control selectpicker show-tick" data-live-search="true" multiple data-actions-box="true" id="project_department" name="project_department" title="请选择需要通知的同事" data-width="24%">
+                            </select>
                         </form>
                     </div>
                 
@@ -140,15 +142,25 @@
 <script>
     //console.log("{{ items|safe }}");
     window.items = {{ items|safe }};
+    window.atUsers = {{ atUsers|safe }};
     //console.log(window.items[0]);
     window.envirHtml = ""
     window.productHtml = ""
+    window.atUsersHtml = ""
     for (var i = 0; i < items.length; i++){
         envirHtml = envirHtml + "<option value="+items[i]['envir'][0]+">"+items[i]['envir'][1]+"</option>";
         productHtml = productHtml + "<option value="+items[i]['product'][0]+">"+items[i]['product'][1]+"</option>";
     }
+
+    for (var department in atUsers) {
+        info = atUsers[department]
+        //console.log(info['display'])
+        atUsersHtml += "<option value="+info['id']+" data-subtext="+info['display']+">"+info['department']+"</option>";
+    }
+
     document.getElementById("project_envir").innerHTML=envirHtml;
     document.getElementById("apacheconfig_product").innerHTML=productHtml;
+    document.getElementById("project_department").innerHTML=atUsersHtml;
 </script>
 
 <script src="/static/custom/tablejs/public/public.js" type="text/javascript"></script>

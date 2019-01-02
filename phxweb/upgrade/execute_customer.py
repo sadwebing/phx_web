@@ -12,6 +12,7 @@ from accounts.limit    import LimitAccess
 from accounts.views    import getIp, getProjects
 from accounts.models   import user_project_authority_t
 from detect.telegram   import sendTelegram
+from detect.models     import department_user_t
 
 import json, logging, time, urlparse, requests
 
@@ -194,6 +195,15 @@ class UpgradeExecute(DefConsumer):
                     }
                     count += 1
 
+        #获取需要通知的部门同事
+        atUsers = {}
+        for id in data['department']:
+            department = department_user_t.objects.get(id=int(id), status=1)
+            atUsers[department.name] = {
+                'department': department.department,
+                'atUsers': department.AtUsers(),
+            }
+
         #调用接口执行代码同步
         while len(svn_files) !=0:
             #svn_files_c = svn_files[:20]
@@ -212,6 +222,7 @@ class UpgradeExecute(DefConsumer):
                     'changelist': svn_files_all,
                     'code_env': data['codeEnv'],
                     'svn_customer_dict': svn_customer_dict,
+                    'atUsers': atUsers,
                 }))
             except Exception as e:
                 message['text'] = api + '\nException: ' + str(e)

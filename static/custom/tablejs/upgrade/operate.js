@@ -290,6 +290,7 @@ var operate = {
             'codeEnv': public.showSelectedValue('project_codeEnv', false), //获取选中的代码环境
             //'items': items,
             'isdeletegraylock': public.showSelectedValue('project_isdeletegraylock', false), //获取选中是否删除记录锁
+            'department': public.showSelectedValue('project_department', true), //获取选中要通知的部门同事
         }
 
         if (postData['envir'].length != 1){

@@ -24978,3 +24978,63 @@ fgadmin : 1gB/eIXdPWUQ0BfUMwz73KfG2Gi8e2XO2uhdBZXNxnE=
 2018-12-29 13:47:07,118 telegram.py [django:112] [ERROR]- Attention: send message failed!
 2018-12-29 13:47:07,118 telegram.py [django:113] [ERROR]- 400: {"ok":false,"error_code":400,"description":"Bad Request: can't parse entities: Unsupported start tag \"cf_account:\" at byte offset 218"}
 2018-12-29 13:47:07,118 telegram.py [django:114] [ERROR]- {'disable_web_page_preview': True, 'text': u"\u7ba1\u7406\u4eba\uff1a<a href='tg://user?id=538338514'>\u963f\u8bfa</a>\r\n\u4ea7\u54c1\uff1a\u51e4\u51f0[fenghuang]\r\n\u5ba2\u6237\uff1a\u516c\u5171\u5ba2\u6237[pub]\r\n\u5f53\u524d\u57df\u540d\uff1a{'product': (12L, u'\\u51e4\\u51f0[fenghuang]'), 'ng_content': u'static.lebocdn.com', 'cf': <cf_account: \u4e09\u5fb7|\u5bcc\u8c6a|668 | richer668668@gmail.com>, 'ssl': 1L, 'mod_date': datetime.datetime(2018, 12, 27, 9, 13, 22), 'customer': (29L, u'\\u516c\\u5171\\u5ba2\\u6237[pub]'), 'retry': 3L, 'name': u'https://jkysxh.cn/img/wap/images/cl_5.png', 'client': u'pc', 'cf_content': u'static.lebocdn.com', 'ws_content': u'jkysxh.cn.whecloud.com', 'method': u'head'}\r\n\u5f53\u524d\u7ebf\u8def\uff1a{'product': (12L, u'\\u51e4\\u51f0[fenghuang]'), 'ng_content': u'static.lebocdn.com', 'cf': <cf_account: \u4e09\u5fb7|\u5bcc\u8c6a|668 | richer668668@gmail.com>, 'ssl': 1L, 'mod_date': datetime.datetime(2018, 12, 27, 9, 13, 22), 'customer': (29L, u'\\u516c\\u5171\\u5ba2\\u6237[pub]'), 'retry': 3L, 'name': u'https://jkysxh.cn/img/wap/images/cl_5.png', 'client': u'pc', 'cf_content': u'static.lebocdn.com', 'ws_content': u'jkysxh.cn.whecloud.com', 'method': u'head'}\r\n\u51e4\u51f0[fenghuang]_\u516c\u5171\u5ba2\u6237[pub]: https://jkysxh.cn/img/wap/images/cl_5.png: {'8.8.8.9': '\\xe8\\xbf\\x9e\\xe6\\x8e\\xa5\\xe8\\xb6\\x85\\xe6\\x97\\xb6\\xef\\xbc\\x81'}", 'doc_name': 'message.txt_20181229134705', 'caption': '', 'chat_id': -204952096L, 'parse_mode': 'HTML'}
+2019-01-02 11:15:23,252 exception.py [django.request:135] [ERROR]- Internal Server Error: /admin/detect/department_user_t/add/
+Traceback (most recent call last):
+  File "J:\arno\test\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "J:\arno\test\lib\site-packages\channels\handler.py", line 243, in process_exception_by_middleware
+    return super(AsgiHandler, self).process_exception_by_middleware(exception, request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "J:\arno\test\lib\site-packages\django\contrib\admin\options.py", line 551, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+  File "J:\arno\test\lib\site-packages\django\utils\decorators.py", line 149, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "J:\arno\test\lib\site-packages\django\views\decorators\cache.py", line 57, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "J:\arno\test\lib\site-packages\django\contrib\admin\sites.py", line 224, in inner
+    return view(request, *args, **kwargs)
+  File "J:\arno\test\lib\site-packages\django\contrib\admin\options.py", line 1508, in add_view
+    return self.changeform_view(request, None, form_url, extra_context)
+  File "J:\arno\test\lib\site-packages\django\utils\decorators.py", line 67, in _wrapper
+    return bound_func(*args, **kwargs)
+  File "J:\arno\test\lib\site-packages\django\utils\decorators.py", line 149, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "J:\arno\test\lib\site-packages\django\utils\decorators.py", line 63, in bound_func
+    return func.__get__(self, type(self))(*args2, **kwargs2)
+  File "J:\arno\test\lib\site-packages\django\contrib\admin\options.py", line 1408, in changeform_view
+    return self._changeform_view(request, object_id, form_url, extra_context)
+  File "J:\arno\test\lib\site-packages\django\contrib\admin\options.py", line 1452, in _changeform_view
+    self.log_addition(request, new_object, change_message)
+  File "J:\arno\test\lib\site-packages\django\contrib\admin\options.py", line 724, in log_addition
+    object_repr=force_text(object),
+  File "J:\arno\test\lib\site-packages\django\utils\encoding.py", line 80, in force_text
+    s = six.text_type(bytes(s), encoding, errors)
+  File "J:\arno\test\phx_web\detect\models.py", line 69, in __str__
+    for i in self.user:
+TypeError: 'ManyRelatedManager' object is not iterable
+2019-01-02 11:51:26,196 exception.py [django.request:135] [ERROR]- Internal Server Error: /detect/get_at_users
+Traceback (most recent call last):
+  File "J:\arno\test\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "J:\arno\test\lib\site-packages\channels\handler.py", line 243, in process_exception_by_middleware
+    return super(AsgiHandler, self).process_exception_by_middleware(exception, request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "J:\arno\test\lib\site-packages\django\views\decorators\csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "J:\arno\test\phx_web\detect\views.py", line 137, in getAtUsers
+    return HttpResponse(json.loads(atUsers))
+  File "c:\python27\Lib\json\__init__.py", line 339, in loads
+    return _default_decoder.decode(s)
+  File "c:\python27\Lib\json\decoder.py", line 364, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+TypeError: expected string or buffer
