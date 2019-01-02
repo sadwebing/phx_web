@@ -169,7 +169,8 @@ class myThread(threading.Thread):
         
         #连接redis，获取域名的失败次数
         rdp = connRe.rdp()
-        val = int(rdp.get(self.__name)) if rdp.get(self.__name) else rdp.get(self.__name)
+        faildr = rdp.get(self.__name)
+        val = int(faildr) if faildr else faildr
 
         #判断域名是否需要进行检测
         if val and val >= failed_all and interval < reck_interval:
