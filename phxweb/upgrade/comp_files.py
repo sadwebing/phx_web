@@ -19,7 +19,7 @@ logger = logging.getLogger('django')
 #telegram 参数
 message = settings.message_TEST
 
-def get_svn_lock_files(svn_master_id):
+def get_svn_lock_files(svn_master_id, excepts=[]):
     file_list = []
     try:
         svn_master = svn_master_t.objects.get(id=svn_master_id)
@@ -30,6 +30,13 @@ def get_svn_lock_files(svn_master_id):
         return False, file_list
     else:
         for svn_record in svn_master.svn_gray_lock.all():
+            isExcept = False
+            for excepti in excepts:
+                if svn_record.revision == excepti['revision']:
+                    logger.info("排除svn锁: %s" %excepti['revision'])
+                    isExcept = True
+                    break
+            if isExcept: continue
             for change in svn_record.changelist[1:-1].split('], ['):
                 file_list.append(change.split('\'')[3])
         return True, file_list

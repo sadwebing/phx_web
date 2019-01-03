@@ -119,6 +119,25 @@ class UpgradeExecute(DefConsumer):
             #info['results'][data['minion_id']] = "svn 记录锁 存入svn master 成功：%s" %svn_record
         
         elif len(data['codeEnv']) == 1 and data['codeEnv'][0] == 'online_env':
+            #判断是否存在文件冲突
+            islock = False
+            status, svn_lock_files = get_svn_lock_files(data['svn_master_id'], data['svn_records'])
+            logger.info(svn_lock_files)
+            for fileT in svn_files:
+                if is_file_in_list(fileT[1], svn_lock_files):
+                    islock = True
+                    logger.info(fileT[1])
+                    info['results'][data['minion_id']] += str(fileT)
+            if islock:
+                info['results'][data['minion_id']] = "文件锁存在，无法将灰度升级到运营：\r\n%s" %info['results'][data['minion_id']]
+                logger.info(info['results'][data['minion_id']])
+                project.svn_mst_lock = 0
+                project.save()
+                self.message.reply_channel.send({'text': json.dumps(info)})
+                self.close()
+                return False
+
+            #判断是需要将灰度锁删除
             if int(data['isdeletegraylock'][0]) == 1:
                 for svn_record in data['svn_records']:
                     try:
@@ -135,6 +154,7 @@ class UpgradeExecute(DefConsumer):
                         #logger.info(info['results'][data['minion_id']])
 
         elif len(data['codeEnv']) == 2:
+            #判断是否存在文件冲突
             islock = False
             status, svn_lock_files = get_svn_lock_files(data['svn_master_id'])
             logger.info(svn_lock_files)
