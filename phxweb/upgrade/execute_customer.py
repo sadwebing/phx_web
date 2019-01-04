@@ -2,7 +2,8 @@
 from phxweb.customer   import DefConsumer
 from phxweb            import settings
 from phxweb.svn_api    import SvnApi
-from phxweb.upgrade.comp_files import get_svn_lock_files, is_file_in_list
+from phxweb.upgrade.comp_files        import get_svn_lock_files, is_file_in_list
+from phxweb.upgrade.update_svn_record import updateSvnRecord
 from saltstack.saltapi import SaltAPI
 from monitor.models    import project_t, minion_t, minion_ip_t, svn_master_t
 from upgrade.models    import svn_customer_t
@@ -181,6 +182,7 @@ class UpgradeExecute(DefConsumer):
             return False
 
         #获取需要同步的客户
+        svn_customer_l = []
         for svn_customer_name in data['customer']['real']:
             #customer_name = svn_customer_name.split(',')[0]
             #info['results'][data['minion_id']] += name + '\r\n'
@@ -201,6 +203,7 @@ class UpgradeExecute(DefConsumer):
                     return False
                 else:
                     if svn_customer.isrsynccode == 0: continue
+                    svn_customer_l.append(svn_customer)
                     svn_customer_dict[svn_customer.name] = {
                         'master_ip': [ ip.strip() for ip in svn_customer.master_ip.split('\r\n') if ip.strip() != "" ],
                         'ip': [ ip.strip() for ip in svn_customer.ip.split('\r\n') if ip.strip() != "" ],
@@ -254,6 +257,13 @@ class UpgradeExecute(DefConsumer):
             
             break
 
+        #更新svn记录
+        if len(data['codeEnv']) == 1 and data['codeEnv'][0] == 'gray_env':
+            updateSvnRecord(revision=svn_record['revision'], svn_gray_l=svn_customer_l)
+        elif len(data['codeEnv']) == 1 and data['codeEnv'][0] == 'online_env':
+            updateSvnRecord(revision=svn_record['revision'], svn_online_l=svn_customer_l)
+        elif len(data['codeEnv']) == 2:
+            updateSvnRecord(revision=svn_record['revision'], svn_gray_l=svn_customer_l, svn_online_l=svn_customer_l)
 
         #给升级的产品解锁
         project.svn_mst_lock = 0
