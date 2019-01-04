@@ -81,8 +81,11 @@ def CurrentAdd(request):
                 )
                 sr.save()
         except Exception as e:
-            return HttpResponseServerError('failed: %s' %str(e))
+            error = 'failed: %s' %str(e)
+            logger.error(error)
+            return HttpResponseServerError(error)
         else:
+            logger.info("insert svn record: %s. success!" %record['revision'])
             return HttpResponse('success.')
     else:
         return HttpResponse('nothing!')
