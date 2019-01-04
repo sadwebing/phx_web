@@ -19,7 +19,7 @@ from django.contrib.auth import (
                                 REDIRECT_FIELD_NAME, get_user_model, login as auth_login,
                                 logout as auth_logout, update_session_auth_hash,
                             )
-import logging, datetime
+import logging, datetime, time, pytz
 logger = logging.getLogger('django')
 
 # Create your views here.
@@ -182,3 +182,17 @@ def insert_ah(clientip, username, pre_rec, now_rec, result=True, action='change'
         )
 
     insert_h.save()
+
+#获取当前时间
+class timeNow(object):
+    def __init__(self):
+        self.current_time = datetime.datetime.fromtimestamp(int(time.time()), pytz.timezone('Asia/Shanghai'))
+
+    def now(self):
+        return datetime.datetime.now()
+
+    def stamp(self):
+        return self.current_time
+    
+    def format(self):
+        return self.current_time.strftime('%Y/%m/%d %H:%M:%S')

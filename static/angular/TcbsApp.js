@@ -65,6 +65,10 @@ TcbsApp.config(function ($stateProvider, $urlRouterProvider) {
             url:"/upgrade_operate",
             templateUrl: "/upgrade/operate"
         })
+        .state("upgrade_current", {
+            url:"/upgrade_current",
+            templateUrl: "/upgrade/current"
+        })
         .state("upgrade_op_history", {
             url:"/upgrade_op_history",
             templateUrl: "/upgrade/op_history"

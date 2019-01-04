@@ -6,7 +6,7 @@ from django.http      import HttpResponse, HttpResponseForbidden, HttpResponseSe
 from accounts.views   import HasPermission, HasServerPermission, getIp, getProjects
 from monitor.models   import project_t, svn_master_t
 from detect.models    import department_user_t
-from upgrade.models   import svn_gray_lock_t, svn_customer_t
+from upgrade.models   import svn_gray_lock_t, svn_customer_t, svn_record_t
 from phxweb.svn_api   import SvnApi
 
 from django.contrib.auth.decorators import login_required
@@ -19,7 +19,7 @@ logger = logging.getLogger('django')
 @csrf_protect
 @login_required
 def Operate(request):
-    title = u'升级中心-基本操作'
+    title = u'升级中心-升级与APA推送'
     clientip = getIp(request)
     username = request.user.username
     try:
@@ -113,6 +113,34 @@ def Operate(request):
             'username': username,
             'items':    json.dumps(items),
             'atUsers':  json.dumps(atUsers),
+        }
+    )
+
+@csrf_protect
+@login_required
+def Current(request):
+    title = u'升级中心-当前SVN记录'
+    clientip = getIp(request)
+    username = request.user.username
+    try:
+        role = request.user.userprofile.role
+    except:
+        role = 'none'
+
+    if not username:
+        logger.info('user: 用户名未知 | [POST]%s is requesting. %s' %(clientip, request.get_full_path()))
+        return HttpResponseServerError("用户名未知！")
+    
+    logger.info('%s is requesting %s' %(clientip, request.get_full_path()))
+
+    return render(
+        request,
+        'upgrade/current.html',
+        {
+            'title':    title,
+            'clientip': clientip,
+            'role':     role,
+            'username': username,
         }
     )
 
