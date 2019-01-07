@@ -51,7 +51,7 @@ class sendTelegram(object):
         self.__timeout = timeout
         self.__url     = tg['url'][bot] if tg['url'].has_key(bot) else tg['url']['sa_monitor_bot']
         self.__message['parse_mode'] = message['parse_mode'] if message.has_key('parse_mode') else ''
-        self.__message['doc_name']   = message['doc_name'] +'_'+ getDate() if message.has_key('doc_name') else 'message.txt_'+getDate()
+        self.__message['doc_name']   = getDate() +'_'+ message['doc_name'] if message.has_key('doc_name') else getDate()+'_message.txt'
         self.__message['caption']    = self.getAtUsers(message['caption']) if message.has_key('caption')  else ''
         self.__message['text']       = self.getAtUsers(message['text'])    if message.has_key('text')     else ''
         self.__message['disable_web_page_preview'] = False if message.has_key('disable_web_page_preview') and str(message['disable_web_page_preview']).lower() == 'false' else True

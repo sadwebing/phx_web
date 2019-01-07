@@ -258,12 +258,13 @@ class UpgradeExecute(DefConsumer):
             break
 
         #更新svn记录
-        if len(data['codeEnv']) == 1 and data['codeEnv'][0] == 'gray_env':
-            updateSvnRecord(revision=svn_record['revision'], svn_gray_l=svn_customer_l)
-        elif len(data['codeEnv']) == 1 and data['codeEnv'][0] == 'online_env':
-            updateSvnRecord(revision=svn_record['revision'], svn_online_l=svn_customer_l)
-        elif len(data['codeEnv']) == 2:
-            updateSvnRecord(revision=svn_record['revision'], svn_gray_l=svn_customer_l, svn_online_l=svn_customer_l)
+        for svn_record in data['svn_records']:
+            if len(data['codeEnv']) == 1 and data['codeEnv'][0] == 'gray_env':
+                updateSvnRecord(revision=svn_record['revision'], svn_gray_l=svn_customer_l)
+            elif len(data['codeEnv']) == 1 and data['codeEnv'][0] == 'online_env':
+                updateSvnRecord(revision=svn_record['revision'], svn_online_l=svn_customer_l)
+            elif len(data['codeEnv']) == 2:
+                updateSvnRecord(revision=svn_record['revision'], svn_gray_l=svn_customer_l, svn_online_l=svn_customer_l)
 
         #给升级的产品解锁
         project.svn_mst_lock = 0

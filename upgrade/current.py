@@ -33,7 +33,7 @@ def CurrentQuery(request):
         logger.info('[POST]%s is requesting. %s' %(clientip, request.get_full_path()))
 
         record_list = []
-        svn_records = svn_record_t.objects.all()
+        svn_records = svn_record_t.objects.all().order_by('-id')
         for record in svn_records:
             tmpdict = {
                 'id':         record.id,
