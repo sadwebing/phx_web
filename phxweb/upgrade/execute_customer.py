@@ -158,7 +158,7 @@ class UpgradeExecute(DefConsumer):
             #判断是否存在文件冲突
             islock = False
             status, svn_lock_files = get_svn_lock_files(data['svn_master_id'])
-            logger.info(svn_lock_files)
+            #logger.info(svn_lock_files)
             for fileT in svn_files:
                 if is_file_in_list(fileT[1], svn_lock_files):
                     islock = True
@@ -228,7 +228,7 @@ class UpgradeExecute(DefConsumer):
             }
 
         #调用接口执行代码同步
-        while len(svn_files) !=0:
+        while len(svn_files) !=0 or int(data['isrsyncwhole'][0]) == 1:
             #svn_files_c = svn_files[:20]
             #svn_files   = svn_files[20:]
             svn_files_c = svn_files_all
@@ -237,13 +237,14 @@ class UpgradeExecute(DefConsumer):
                 svn_master = svn_master_t.objects.get(id=data['svn_master_id'])
                 api = svn_master.api.strip('/') + '/svn_code'
                 logger.info('posting: %s' %api)
-                #logger.info('posting: %s' %svn_customer_dict)
+                logger.info('posting: %d' %int(data['isrsyncwhole'][0]))
                 ret = requests.post(api, data=json.dumps({
                     'author': self.username.replace('_', ''),
                     'svn_records': data['svn_records'],
                     'changelist_c': svn_files_c,
                     'changelist': svn_files_all,
                     'code_env': data['codeEnv'],
+                    'isrsyncwhole': int(data['isrsyncwhole'][0]),
                     'svn_customer_dict': svn_customer_dict,
                     'atUsers': atUsers,
                 }))

@@ -74,6 +74,10 @@
                             </select>
                             <select class="form-control selectpicker show-tick" data-live-search="true" multiple data-actions-box="true" id="project_department" name="project_department" title="请选择需要通知的同事" data-width="24%">
                             </select>
+                            <select class="form-control selectpicker show-tick" id="project_isrsyncwhole" name="project_isrsyncwhole" title="是否全目录同步" data-width="24%">
+                                <option value=1>同步全目录</option>
+                                <option value=0 selected>不同步全目录</option>
+                            </select>
                         </form>
                     </div>
                 
@@ -99,6 +103,24 @@
                 <div class="modal-body">
                     <table id="records_table" class="table table-condensed" data-bind="myBootstrapTable:$root">
                     </table>
+                </div>
+                <div class="modal-footer" id="svnlogprocessFooter">
+                    <button type="button" id="btn_close" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+                    <input id="btn_commit_upgrade" type="button" onclick="operate.Submit('btn_submit_command2')" class="btn btn-default" value="确认升级">
+                </div>
+           </div>  
+       </div>  
+    </div>
+
+    <div class="modal fade" id="svnlogprocess-whole" tabindex="-1" role="dialog"   
+       aria-labelledby="svnlogprocessLabel" aria-hidden="true" data-backdrop="static" >   
+       <div class="modal-dialog">  
+           <div class="modal-content" >
+                <div class="modal-header">
+                    <span style="text-align:center;color:red" id="svnlogprocess_head">请注意：已选择升级整个版本库！</span><br/>
+                </div>
+                <div class="modal-body" id="svnlogprocess-whole-body">
+                    
                 </div>
                 <div class="modal-footer" id="svnlogprocessFooter">
                     <button type="button" id="btn_close" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>

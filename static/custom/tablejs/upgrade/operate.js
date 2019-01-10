@@ -290,6 +290,7 @@ var operate = {
             'codeEnv': public.showSelectedValue('project_codeEnv', false), //获取选中的代码环境
             //'items': items,
             'isdeletegraylock': public.showSelectedValue('project_isdeletegraylock', false), //获取选中是否删除记录锁
+            'isrsyncwhole': public.showSelectedValue('project_isrsyncwhole', false), //获取选中是否同步全目录
             'department': public.showSelectedValue('project_department', true), //获取选中要通知的部门同事
         }
 
@@ -308,7 +309,7 @@ var operate = {
             return false;
         }
 
-        if (postData['codeEnv'].length == 1 && postData['codeEnv'][0] == 'online_env'){
+        if (postData['codeEnv'].length == 1 && postData['codeEnv'][0] == 'online_env' && parseInt(postData['isrsyncwhole'][0]) == 0){
             if (postData['isdeletegraylock'].length != 1){
                 alert('请选择是否删除记录锁！');
                 return false;
@@ -343,8 +344,22 @@ var operate = {
         }
         var uri = "/upgrade/execute";
 
-        $('#svnlogprocess').modal('show');
-        svn.GetSvnRecords(postData);
+        //console.log(postData);
+
+        //判断是否升级全目录
+        if (parseInt(postData['isrsyncwhole'][0]) == 0){
+            $('#svnlogprocess').modal('show');
+            svn.GetSvnRecords(postData);
+        }else {
+            $('#svnlogprocess-whole').modal('show');
+            var envir = "升级的环境: " + postData['codeEnv'].join(", ")
+            var customers_in = "升级的客户有:"
+            var customers_ex = "不升级的客户有:"
+            customers_in = customers_in + postData['customer']['in'].join(", ")
+            customers_ex = customers_ex + postData['customer']['ex'].join(", ")
+            document.getElementById('svnlogprocess-whole-body').innerHTML = envir +"</br>"+ customers_in +"</br>"+ customers_ex
+        }
+
         upgrade_postData = postData;
         //console.log(upgrade_postData);
         return false;
@@ -378,30 +393,39 @@ var operate = {
             }
             var uri = "/upgrade/deploy/apache_config";
         }else if (submit == 'btn_submit_command2'){
-            upgrade_postData['svn_records'] = []
+            upgrade_postData['svn_records'] = [];
 
-            var arrselectedData = tableInit.myViewModel.getSelections();
-            if (arrselectedData.length == 0){
-                alert("请至少选择一行数据");
-                return false;
+            if (parseInt(upgrade_postData['isrsyncwhole'][0]) == 0){
+                var arrselectedData = tableInit.myViewModel.getSelections();
+                if (arrselectedData.length == 0){
+                    alert("请至少选择一行数据");
+                    return false;
+                }
+
+                for (var i=0;i<arrselectedData.length;i++){
+                    upgrade_postData['svn_records'].push({
+                        'revision': arrselectedData[i].revision,
+                        'author': arrselectedData[i].author,
+                        'date': arrselectedData[i].date,
+                        'log': arrselectedData[i].log,
+                        'changelist': arrselectedData[i].changelist,
+                    });
+                }
+
+                var postData = upgrade_postData;
+                //对svn 记录进行排序，先提交的记录排在前面，顺序升级
+                postData['svn_records'] = upgrade_postData['svn_records'].sort(public.compare('revision', true));
+                $('#svnlogprocess').modal('hide');
+            }else {
+                var postData = upgrade_postData;
+                postData['svn_records'] = [];
+                postData['isdeletegraylock'] = [0];
+                $('#svnlogprocess-whole').modal('hide');
             }
 
-            for (var i=0;i<arrselectedData.length;i++){
-                upgrade_postData['svn_records'].push({
-                    'revision': arrselectedData[i].revision,
-                    'author': arrselectedData[i].author,
-                    'date': arrselectedData[i].date,
-                    'log': arrselectedData[i].log,
-                    'changelist': arrselectedData[i].changelist,
-                });
-            }
-
-            var postData = upgrade_postData;
-            //对svn 记录进行排序，先提交的记录排在前面，顺序升级
-            postData['svn_records'] = upgrade_postData['svn_records'].sort(public.compare('revision', true));
-            console.log(upgrade_postData);
+            console.log(postData);
             var uri = "/upgrade/execute";
-            $('#svnlogprocess').modal('hide');
+            
 
         }else {
             return false;
