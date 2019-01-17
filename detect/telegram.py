@@ -90,6 +90,9 @@ class sendTelegram(object):
         return text
 
     def send(self):
+        self.__message['text'] = self.__message['text'].decode('utf8')
+        #logger.info(self.__message['text'])
+        #logger.info(type(self.__message['text']))
         try:
             if (not self.__doc) or str(self.__doc).lower() == 'false':
                 ret = requests.post(self.__url+'sendMessage', data=self.__message, timeout=self.__timeout)
