@@ -338,6 +338,9 @@ choices_customer = (
             (31, u'恒隆[henglong]'),
             (35, u'迪拜吧[dibaiba]'),
 
+            #越众棋牌
+            (101001, u'BB棋牌'),
+            (101002, u'汪汪棋牌'),
             )
 
 choices_product = ( 
@@ -346,4 +349,5 @@ choices_product = (
             (16, u'勇士[warrior]'),
             (27, u'瑞银[ruiyin|UBS]'),
             (26, u'JAVA'),
+            (101, u'越众棋牌'),
             )
