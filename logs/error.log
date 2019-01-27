@@ -25076,3 +25076,300 @@ Traceback (most recent call last):
   File "J:\arno\test\phx_web\accounts\views.py", line 189, in __init__
     self.current_time = datetime.datetime.fromtimestamp(int(time.time()), pytz.timezone('Asia/Shanghai'))
 NameError: global name 'pytz' is not defined
+2019-01-09 18:32:49,948 exception.py [django.request:135] [ERROR]- Internal Server Error: /monitor/project/Query
+Traceback (most recent call last):
+  File "J:\arno\test\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "J:\arno\test\lib\site-packages\channels\handler.py", line 243, in process_exception_by_middleware
+    return super(AsgiHandler, self).process_exception_by_middleware(exception, request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "J:\arno\test\lib\site-packages\django\views\decorators\csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "J:\arno\test\phx_web\monitor\project.py", line 55, in ProjectQuery
+    tmp_dict['domain'] = project.domain
+AttributeError: 'project_t' object has no attribute 'domain'
+2019-01-16 11:32:44,526 cf.py [django:48] [ERROR]- 获取CF DNS失败：{u'result': [], u'success': False}
+2019-01-16 11:43:45,717 cf_api.py [django:31] [ERROR]- 获取CF dns列表失败: No JSON object could be decoded
+2019-01-16 11:43:45,765 cf.py [django:48] [ERROR]- 获取CF DNS失败：{u'result': ['No JSON object could be decoded'], u'success': False}
+2019-01-17 16:19:10,910 views.py [django:90] [ERROR]- Invalid \escape: line 4 column 10 (char 51)
+2019-01-17 16:25:16,128 exception.py [django.request:135] [ERROR]- Internal Server Error: /detect/send_telegram
+Traceback (most recent call last):
+  File "J:\arno\test\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "J:\arno\test\lib\site-packages\channels\handler.py", line 243, in process_exception_by_middleware
+    return super(AsgiHandler, self).process_exception_by_middleware(exception, request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "J:\arno\test\lib\site-packages\django\views\decorators\csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "J:\arno\test\phx_web\detect\views.py", line 99, in SendTelegram
+    if s.send():
+  File "J:\arno\test\phx_web\detect\telegram.py", line 93, in send
+    self.__message['text'] = unicode(self.__message['text'], "utf-8")
+TypeError: decoding Unicode is not supported
+2019-01-17 17:02:58,295 views.py [django:90] [ERROR]- Invalid \uXXXX escape: line 4 column 25 (char 66)
+2019-01-17 17:04:53,091 views.py [django:90] [ERROR]- Invalid \uXXXX escape: line 4 column 25 (char 66)
+2019-01-17 17:07:53,019 views.py [django:90] [ERROR]- Invalid \uXXXX escape: line 4 column 25 (char 66)
+2019-01-17 17:12:36,552 exception.py [django.request:135] [ERROR]- Internal Server Error: /detect/send_telegram
+Traceback (most recent call last):
+  File "J:\arno\test\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "J:\arno\test\lib\site-packages\channels\handler.py", line 243, in process_exception_by_middleware
+    return super(AsgiHandler, self).process_exception_by_middleware(exception, request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "J:\arno\test\lib\site-packages\django\views\decorators\csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "J:\arno\test\phx_web\detect\views.py", line 80, in SendTelegram
+    message = json.loads(request.body)
+  File "c:\python27\Lib\json\__init__.py", line 339, in loads
+    return _default_decoder.decode(s)
+  File "c:\python27\Lib\json\decoder.py", line 364, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "c:\python27\Lib\json\decoder.py", line 380, in raw_decode
+    obj, end = self.scan_once(s, idx)
+ValueError: Invalid \uXXXX escape: line 4 column 25 (char 66)
+2019-01-20 11:16:02,904 exception.py [django.request:135] [ERROR]- Internal Server Error: /upgrade/remote_exe
+Traceback (most recent call last):
+  File "J:\arno\test\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "J:\arno\test\lib\site-packages\channels\handler.py", line 243, in process_exception_by_middleware
+    return super(AsgiHandler, self).process_exception_by_middleware(exception, request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "J:\arno\test\lib\site-packages\django\utils\decorators.py", line 149, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "J:\arno\test\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "J:\arno\test\phx_web\upgrade\views.py", line 196, in remoteExe
+    'items':    json.dumps(items),
+  File "J:\arno\test\lib\site-packages\django\shortcuts.py", line 30, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "J:\arno\test\lib\site-packages\django\template\loader.py", line 67, in render_to_string
+    template = get_template(template_name, using=using)
+  File "J:\arno\test\lib\site-packages\django\template\loader.py", line 25, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+TemplateDoesNotExist: upgrade/remote_exe.html
+2019-01-20 11:36:00,647 exception.py [django.request:135] [ERROR]- Internal Server Error: /
+Traceback (most recent call last):
+  File "J:\arno\test\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "J:\arno\test\lib\site-packages\channels\handler.py", line 243, in process_exception_by_middleware
+    return super(AsgiHandler, self).process_exception_by_middleware(exception, request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "J:\arno\test\lib\site-packages\django\utils\decorators.py", line 149, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "J:\arno\test\lib\site-packages\django\contrib\auth\decorators.py", line 22, in _wrapped_view
+    if test_func(request.user):
+  File "J:\arno\test\lib\site-packages\django\contrib\auth\decorators.py", line 46, in <lambda>
+    lambda u: u.is_authenticated,
+  File "J:\arno\test\lib\site-packages\django\utils\functional.py", line 238, in inner
+    self._setup()
+  File "J:\arno\test\lib\site-packages\django\utils\functional.py", line 385, in _setup
+    self._wrapped = self._setupfunc()
+  File "J:\arno\test\lib\site-packages\django\contrib\auth\middleware.py", line 24, in <lambda>
+    request.user = SimpleLazyObject(lambda: get_user(request))
+  File "J:\arno\test\lib\site-packages\django\contrib\auth\middleware.py", line 12, in get_user
+    request._cached_user = auth.get_user(request)
+  File "J:\arno\test\lib\site-packages\django\contrib\auth\__init__.py", line 206, in get_user
+    user_id = _get_user_session_key(request)
+  File "J:\arno\test\lib\site-packages\django\contrib\auth\__init__.py", line 61, in _get_user_session_key
+    return get_user_model()._meta.pk.to_python(request.session[SESSION_KEY])
+  File "J:\arno\test\lib\site-packages\django\contrib\sessions\backends\base.py", line 57, in __getitem__
+    return self._session[key]
+  File "J:\arno\test\lib\site-packages\django\contrib\sessions\backends\base.py", line 207, in _get_session
+    self._session_cache = self.load()
+  File "J:\arno\test\lib\site-packages\django\contrib\sessions\backends\db.py", line 35, in load
+    expire_date__gt=timezone.now()
+  File "J:\arno\test\lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "J:\arno\test\lib\site-packages\django\db\models\query.py", line 373, in get
+    num = len(clone)
+  File "J:\arno\test\lib\site-packages\django\db\models\query.py", line 232, in __len__
+    self._fetch_all()
+  File "J:\arno\test\lib\site-packages\django\db\models\query.py", line 1102, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "J:\arno\test\lib\site-packages\django\db\models\query.py", line 53, in __iter__
+    results = compiler.execute_sql(chunked_fetch=self.chunked_fetch)
+  File "J:\arno\test\lib\site-packages\django\db\models\sql\compiler.py", line 874, in execute_sql
+    cursor = self.connection.cursor()
+  File "J:\arno\test\lib\site-packages\django\db\backends\base\base.py", line 254, in cursor
+    return self._cursor()
+  File "J:\arno\test\lib\site-packages\django\db\backends\base\base.py", line 229, in _cursor
+    self.ensure_connection()
+  File "J:\arno\test\lib\site-packages\django\db\backends\base\base.py", line 213, in ensure_connection
+    self.connect()
+  File "J:\arno\test\lib\site-packages\django\db\utils.py", line 94, in __exit__
+    six.reraise(dj_exc_type, dj_exc_value, traceback)
+  File "J:\arno\test\lib\site-packages\django\db\backends\base\base.py", line 213, in ensure_connection
+    self.connect()
+  File "J:\arno\test\lib\site-packages\django\db\backends\base\base.py", line 189, in connect
+    self.connection = self.get_new_connection(conn_params)
+  File "J:\arno\test\lib\site-packages\django\db\backends\mysql\base.py", line 274, in get_new_connection
+    conn = Database.connect(**conn_params)
+  File "J:\arno\test\lib\site-packages\MySQLdb\__init__.py", line 81, in Connect
+    return Connection(*args, **kwargs)
+  File "J:\arno\test\lib\site-packages\MySQLdb\connections.py", line 193, in __init__
+    super(Connection, self).__init__(*args, **kwargs2)
+OperationalError: (2003, "Can't connect to MySQL server on '182.16.117.187' (10060)")
+2019-01-20 11:36:04,398 exception.py [django.request:135] [ERROR]- Internal Server Error: /
+Traceback (most recent call last):
+  File "J:\arno\test\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "J:\arno\test\lib\site-packages\channels\handler.py", line 243, in process_exception_by_middleware
+    return super(AsgiHandler, self).process_exception_by_middleware(exception, request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "J:\arno\test\lib\site-packages\django\utils\decorators.py", line 149, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "J:\arno\test\lib\site-packages\django\contrib\auth\decorators.py", line 22, in _wrapped_view
+    if test_func(request.user):
+  File "J:\arno\test\lib\site-packages\django\contrib\auth\decorators.py", line 46, in <lambda>
+    lambda u: u.is_authenticated,
+  File "J:\arno\test\lib\site-packages\django\utils\functional.py", line 238, in inner
+    self._setup()
+  File "J:\arno\test\lib\site-packages\django\utils\functional.py", line 385, in _setup
+    self._wrapped = self._setupfunc()
+  File "J:\arno\test\lib\site-packages\django\contrib\auth\middleware.py", line 24, in <lambda>
+    request.user = SimpleLazyObject(lambda: get_user(request))
+  File "J:\arno\test\lib\site-packages\django\contrib\auth\middleware.py", line 12, in get_user
+    request._cached_user = auth.get_user(request)
+  File "J:\arno\test\lib\site-packages\django\contrib\auth\__init__.py", line 206, in get_user
+    user_id = _get_user_session_key(request)
+  File "J:\arno\test\lib\site-packages\django\contrib\auth\__init__.py", line 61, in _get_user_session_key
+    return get_user_model()._meta.pk.to_python(request.session[SESSION_KEY])
+  File "J:\arno\test\lib\site-packages\django\contrib\sessions\backends\base.py", line 57, in __getitem__
+    return self._session[key]
+  File "J:\arno\test\lib\site-packages\django\contrib\sessions\backends\base.py", line 207, in _get_session
+    self._session_cache = self.load()
+  File "J:\arno\test\lib\site-packages\django\contrib\sessions\backends\db.py", line 35, in load
+    expire_date__gt=timezone.now()
+  File "J:\arno\test\lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "J:\arno\test\lib\site-packages\django\db\models\query.py", line 373, in get
+    num = len(clone)
+  File "J:\arno\test\lib\site-packages\django\db\models\query.py", line 232, in __len__
+    self._fetch_all()
+  File "J:\arno\test\lib\site-packages\django\db\models\query.py", line 1102, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "J:\arno\test\lib\site-packages\django\db\models\query.py", line 53, in __iter__
+    results = compiler.execute_sql(chunked_fetch=self.chunked_fetch)
+  File "J:\arno\test\lib\site-packages\django\db\models\sql\compiler.py", line 874, in execute_sql
+    cursor = self.connection.cursor()
+  File "J:\arno\test\lib\site-packages\django\db\backends\base\base.py", line 254, in cursor
+    return self._cursor()
+  File "J:\arno\test\lib\site-packages\django\db\backends\base\base.py", line 229, in _cursor
+    self.ensure_connection()
+  File "J:\arno\test\lib\site-packages\django\db\backends\base\base.py", line 213, in ensure_connection
+    self.connect()
+  File "J:\arno\test\lib\site-packages\django\db\utils.py", line 94, in __exit__
+    six.reraise(dj_exc_type, dj_exc_value, traceback)
+  File "J:\arno\test\lib\site-packages\django\db\backends\base\base.py", line 213, in ensure_connection
+    self.connect()
+  File "J:\arno\test\lib\site-packages\django\db\backends\base\base.py", line 189, in connect
+    self.connection = self.get_new_connection(conn_params)
+  File "J:\arno\test\lib\site-packages\django\db\backends\mysql\base.py", line 274, in get_new_connection
+    conn = Database.connect(**conn_params)
+  File "J:\arno\test\lib\site-packages\MySQLdb\__init__.py", line 81, in Connect
+    return Connection(*args, **kwargs)
+  File "J:\arno\test\lib\site-packages\MySQLdb\connections.py", line 193, in __init__
+    super(Connection, self).__init__(*args, **kwargs2)
+OperationalError: (2003, "Can't connect to MySQL server on '182.16.117.187' (10060)")
+2019-01-20 11:36:15,117 exception.py [django.request:135] [ERROR]- Internal Server Error: /
+Traceback (most recent call last):
+  File "J:\arno\test\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "J:\arno\test\lib\site-packages\channels\handler.py", line 243, in process_exception_by_middleware
+    return super(AsgiHandler, self).process_exception_by_middleware(exception, request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "J:\arno\test\lib\site-packages\django\utils\decorators.py", line 149, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "J:\arno\test\lib\site-packages\django\contrib\auth\decorators.py", line 22, in _wrapped_view
+    if test_func(request.user):
+  File "J:\arno\test\lib\site-packages\django\contrib\auth\decorators.py", line 46, in <lambda>
+    lambda u: u.is_authenticated,
+  File "J:\arno\test\lib\site-packages\django\utils\functional.py", line 238, in inner
+    self._setup()
+  File "J:\arno\test\lib\site-packages\django\utils\functional.py", line 385, in _setup
+    self._wrapped = self._setupfunc()
+  File "J:\arno\test\lib\site-packages\django\contrib\auth\middleware.py", line 24, in <lambda>
+    request.user = SimpleLazyObject(lambda: get_user(request))
+  File "J:\arno\test\lib\site-packages\django\contrib\auth\middleware.py", line 12, in get_user
+    request._cached_user = auth.get_user(request)
+  File "J:\arno\test\lib\site-packages\django\contrib\auth\__init__.py", line 206, in get_user
+    user_id = _get_user_session_key(request)
+  File "J:\arno\test\lib\site-packages\django\contrib\auth\__init__.py", line 61, in _get_user_session_key
+    return get_user_model()._meta.pk.to_python(request.session[SESSION_KEY])
+  File "J:\arno\test\lib\site-packages\django\contrib\sessions\backends\base.py", line 57, in __getitem__
+    return self._session[key]
+  File "J:\arno\test\lib\site-packages\django\contrib\sessions\backends\base.py", line 207, in _get_session
+    self._session_cache = self.load()
+  File "J:\arno\test\lib\site-packages\django\contrib\sessions\backends\db.py", line 35, in load
+    expire_date__gt=timezone.now()
+  File "J:\arno\test\lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "J:\arno\test\lib\site-packages\django\db\models\query.py", line 373, in get
+    num = len(clone)
+  File "J:\arno\test\lib\site-packages\django\db\models\query.py", line 232, in __len__
+    self._fetch_all()
+  File "J:\arno\test\lib\site-packages\django\db\models\query.py", line 1102, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "J:\arno\test\lib\site-packages\django\db\models\query.py", line 53, in __iter__
+    results = compiler.execute_sql(chunked_fetch=self.chunked_fetch)
+  File "J:\arno\test\lib\site-packages\django\db\models\sql\compiler.py", line 874, in execute_sql
+    cursor = self.connection.cursor()
+  File "J:\arno\test\lib\site-packages\django\db\backends\base\base.py", line 254, in cursor
+    return self._cursor()
+  File "J:\arno\test\lib\site-packages\django\db\backends\base\base.py", line 229, in _cursor
+    self.ensure_connection()
+  File "J:\arno\test\lib\site-packages\django\db\backends\base\base.py", line 213, in ensure_connection
+    self.connect()
+  File "J:\arno\test\lib\site-packages\django\db\utils.py", line 94, in __exit__
+    six.reraise(dj_exc_type, dj_exc_value, traceback)
+  File "J:\arno\test\lib\site-packages\django\db\backends\base\base.py", line 213, in ensure_connection
+    self.connect()
+  File "J:\arno\test\lib\site-packages\django\db\backends\base\base.py", line 189, in connect
+    self.connection = self.get_new_connection(conn_params)
+  File "J:\arno\test\lib\site-packages\django\db\backends\mysql\base.py", line 274, in get_new_connection
+    conn = Database.connect(**conn_params)
+  File "J:\arno\test\lib\site-packages\MySQLdb\__init__.py", line 81, in Connect
+    return Connection(*args, **kwargs)
+  File "J:\arno\test\lib\site-packages\MySQLdb\connections.py", line 193, in __init__
+    super(Connection, self).__init__(*args, **kwargs2)
+OperationalError: (2003, "Can't connect to MySQL server on '182.16.117.187' (10060)")
+2019-01-20 16:58:35,868 remote_exe_customer.py [django:134] [ERROR]- http://52.78.53.187:8000/remote/execute
+Exception: HTTPConnectionPool(host='52.78.53.187', port=8000): Max retries exceeded with url: /remote/execute (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x06DF5450>: Failed to establish a new connection: [Errno 10061] ',))
+2019-01-20 16:58:37,115 telegram.py [django:115] [ERROR]- Attention: send message failed!
+2019-01-20 16:58:37,117 telegram.py [django:116] [ERROR]- 400: {"ok":false,"error_code":400,"description":"Bad Request: can't parse entities: Unsupported start tag \"urllib3.connection.httpconnection\" at byte offset 181"}
+2019-01-20 16:58:37,117 telegram.py [django:117] [ERROR]- {'disable_web_page_preview': True, 'text': u"http://52.78.53.187:8000/remote/execute\nException: HTTPConnectionPool(host='52.78.53.187', port=8000): Max retries exceeded with url: /remote/execute (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x06DF5450>: Failed to establish a new connection: [Errno 10061] ',))", 'doc_name': '20190120165835_message.txt', 'caption': '', 'chat_id': -204952096L, 'parse_mode': 'HTML'}

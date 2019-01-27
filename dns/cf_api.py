@@ -27,8 +27,9 @@ class CfApi(object):
         try:
             ret = requests.get(url, headers=self.__headers, verify=False)
             return ret.json()
-        except:
-            return {u'result': [], u'success': False}
+        except Exception as e:
+            logger.error("获取CF dns列表失败: %s" %str(e))
+            return {u'result': [str(e)], u'success': False}
 
     def GetZoneId(self, zone):
         url = self.__url + '?name=%s' %(zone)

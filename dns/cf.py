@@ -44,6 +44,9 @@ def GetProductRecords(request):
             cfapi       = CfApi(CF_URL, cf_acc.email, cf_acc.key)
             page        = 1
             result      = cfapi.GetDnsLists(page=page)
+            if not result.has_key('result_info'):
+                logger.error("获取CF DNS失败：%s" %str(result))
+                return HttpResponseServerError("获取CF DNS失败：%s" %str(result))
             total_pages = result['result_info']['total_pages']
             tmp_dict = {
                 'product':    product.name,

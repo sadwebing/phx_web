@@ -118,6 +118,87 @@ def Operate(request):
 
 @csrf_protect
 @login_required
+def remoteExe(request):
+    title = u'升级中心-远程执行'
+    clientip = getIp(request)
+    username = request.user.username
+    try:
+        role = request.user.userprofile.role
+    except:
+        role = 'none'
+
+    if not username:
+        logger.info('user: 用户名未知 | [POST]%s is requesting. %s' %(clientip, request.get_full_path()))
+        return HttpResponseServerError("用户名未知！")
+    
+    logger.info('%s is requesting %s' %(clientip, request.get_full_path()))
+
+    projects = getProjects(request, 'execute') #用户必须具有执行权限才能升级
+
+    items = []
+    for project in projects:
+        if project.svn_mst_alive == 0: continue
+        svn_customer_together = [ svn_customer.replace(' ', '') for svn_customer in project.svn_customer_together.split('\r\n') if svn_customer.strip() != "" ] if project.svn_customer_together else []
+        svn_customer_single   = []
+        svn_customer_all      = []
+        svn_customer_tmp      = []
+
+        for rec in svn_customer_together:
+            for i in rec.strip().split(','):
+                if i.strip() != '': svn_customer_tmp.append(i.strip())
+
+        for rec in project.svn_customer.all():
+            name = rec.name.replace(' ', '')
+            tmpdict = {
+                'id': rec.id,
+                'name': name,
+                'isrsynccode': rec.isrsynccode,
+            }
+            svn_customer_all.append(tmpdict)
+            #if rec.isrsynccode == 0: continue
+            if name not in svn_customer_tmp:
+                    svn_customer_single.append(name)
+
+        tmpdict = {
+            'id':       project.id,
+            'envir':    (project.envir, project.get_envir_display()),
+            'product':  (project.product, project.get_product_display()),
+            'project':  (project.project, project.get_project_display()),
+            'customer': (project.customer, project.get_customer_display()),
+            'server_type': (project.server_type, project.get_server_type_display()),
+            'info':     project.info,
+            'svn_master':  {
+                'id':         project.svn_master.id,
+                'name':       project.svn_master.name,
+                'minion_id':  project.svn_master.minion_id.minion_id,
+                'api':        project.svn_master.api,
+                'gray_env':   [cmd.strip() for cmd in project.svn_master.gray_env.split('\r\n') if cmd.strip() != "" ],
+                'online_env': [cmd.strip() for cmd in project.svn_master.online_env.split('\r\n') if cmd.strip() != "" ],
+                'rollback':   [cmd.strip() for cmd in project.svn_master.rollback.split('\r\n') if cmd.strip() != "" ],
+            },
+            'svn_customer': {
+                'in': svn_customer_all,
+                'ex': svn_customer_single + svn_customer_together,
+            },
+
+        }
+
+        items.append(tmpdict)
+
+    return render(
+        request,
+        'upgrade/remote_exe.html',
+        {
+            'title':    title,
+            'clientip': clientip,
+            'role':     role,
+            'username': username,
+            'items':    json.dumps(items),
+        }
+    )
+
+@csrf_protect
+@login_required
 def Current(request):
     title = u'升级中心-当前SVN记录'
     clientip = getIp(request)

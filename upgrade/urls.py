@@ -7,6 +7,7 @@ from current import *
 
 urlpatterns = [
     url('^operate$', views.Operate, name='Operate'),
+    url('^remote_exe$', views.remoteExe, name='remoteExe'),
 
     #当前svn记录
     url('^current$', views.Current, name='Current'),
