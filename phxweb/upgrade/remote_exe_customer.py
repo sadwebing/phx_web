@@ -80,6 +80,9 @@ class RemoteExecute(DefConsumer):
             count = 1
             for customer_name in svn_customer_name.split(','):
                 customer_name = customer_name.strip()
+
+                #if count > 1: continue
+
                 try:
                     svn_customer = svn_customer_t.objects.get(name=customer_name)
                 except Exception as e:
@@ -97,7 +100,7 @@ class RemoteExecute(DefConsumer):
                     svn_customer_l.append(svn_customer)
                     svn_customer_dict[svn_customer.name] = {
                         'master_ip': [ ip.strip() for ip in svn_customer.master_ip.split('\r\n') if ip.strip() != "" ],
-                        'ip': [ ip.strip() for ip in svn_customer.ip.split('\r\n') if ip.strip() != "" ],
+                        'ip': [ ip.strip() for ip in svn_customer.ip.split('\r\n') if ip.strip() != "" ] if count == 1 else [],
                         'port': svn_customer.port,
                         'ismaster': True if svn_customer.ismaster == 1 else False, 
                         'isrsynccode': True if count == 1 else False,
@@ -107,7 +110,7 @@ class RemoteExecute(DefConsumer):
                         'src_d': svn_customer.src_d,
                         'dst_d': svn_customer.dst_d,
                     }
-                    count += 1
+                count += 1
 
         #调用接口执行代码同步
         numAll = len(svn_customer_dict)
