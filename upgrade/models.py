@@ -16,6 +16,7 @@ class svn_customer_t(models.Model):
     master_ip     = models.TextField(blank=True, null=True)
     port          = models.CharField(max_length=6, null=False, default='22')
     ip            = models.TextField(blank=True, null=True)
+    zypismaster   = models.IntegerField(choices=choices_s, default=0)
     ismaster      = models.IntegerField(choices=choices_s, default=0)
     isrsynccode   = models.IntegerField(choices=choices_s, default=0)
     cmd           = models.TextField(blank=True, null=True)

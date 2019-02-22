@@ -65,6 +65,10 @@ TcbsApp.config(function ($stateProvider, $urlRouterProvider) {
             url:"/upgrade_operate",
             templateUrl: "/upgrade/operate"
         })
+        .state("upgrade_operate_zyp", {
+            url:"/upgrade_operate_zyp",
+            templateUrl: "/upgrade/operatezyp"
+        })
         .state("upgrade_remoteExe", {
             url:"/upgrade_remoteExe",
             templateUrl: "/upgrade/remote_exe"

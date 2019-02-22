@@ -268,15 +268,16 @@ choices_s = (
     )
 
 choices_proj = (
-        ('other',   '其他[other]'), 
-        ('caipiao', '彩票[caipiao]'), 
-        ('sport',   '体育[sport]'),
-        ('houtai',  '后台[houtai]'),
-        ('pay',     '支付[pay]'),
-        ('ggz',     '广告站[ggz]'),
-        ('image',   '图片[image]'),
-        ('vpn',     'vpn'),
-        ('httpdns', 'httpdns'),
+        ('other',      '其他[other]'), 
+        ('caipiao',    '彩票[caipiao]'), 
+        ('zhuanyepan', '专业盘[zyp]'), 
+        ('sport',      '体育[sport]'),
+        ('houtai',     '后台[houtai]'),
+        ('pay',        '支付[pay]'),
+        ('ggz',        '广告站[ggz]'),
+        ('image',      '图片[image]'),
+        ('vpn',        'vpn'),
+        ('httpdns',    'httpdns'),
     )
 
 choices_permission = (
