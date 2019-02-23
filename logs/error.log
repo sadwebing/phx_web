@@ -25373,3 +25373,41 @@ Exception: HTTPConnectionPool(host='52.78.53.187', port=8000): Max retries excee
 2019-01-20 16:58:37,115 telegram.py [django:115] [ERROR]- Attention: send message failed!
 2019-01-20 16:58:37,117 telegram.py [django:116] [ERROR]- 400: {"ok":false,"error_code":400,"description":"Bad Request: can't parse entities: Unsupported start tag \"urllib3.connection.httpconnection\" at byte offset 181"}
 2019-01-20 16:58:37,117 telegram.py [django:117] [ERROR]- {'disable_web_page_preview': True, 'text': u"http://52.78.53.187:8000/remote/execute\nException: HTTPConnectionPool(host='52.78.53.187', port=8000): Max retries exceeded with url: /remote/execute (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x06DF5450>: Failed to establish a new connection: [Errno 10061] ',))", 'doc_name': '20190120165835_message.txt', 'caption': '', 'chat_id': -204952096L, 'parse_mode': 'HTML'}
+2019-02-23 13:34:40,042 exception.py [django.request:135] [ERROR]- Internal Server Error: /upgrade/get_svn_lock_records
+Traceback (most recent call last):
+  File "J:\arno\test\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "J:\arno\test\lib\site-packages\channels\handler.py", line 243, in process_exception_by_middleware
+    return super(AsgiHandler, self).process_exception_by_middleware(exception, request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "J:\arno\test\lib\site-packages\django\views\decorators\csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "J:\arno\test\phx_web\upgrade\views.py", line 432, in GetSvnLockRecords
+    if data['key'] == "fenghuang_caipiao":
+KeyError: u'key'
+2019-02-23 13:35:32,513 exception.py [django.request:135] [ERROR]- Internal Server Error: /upgrade/get_svn_lock_records
+Traceback (most recent call last):
+  File "J:\arno\test\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "J:\arno\test\lib\site-packages\channels\handler.py", line 243, in process_exception_by_middleware
+    return super(AsgiHandler, self).process_exception_by_middleware(exception, request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "J:\arno\test\lib\site-packages\django\views\decorators\csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "J:\arno\test\phx_web\upgrade\views.py", line 435, in GetSvnLockRecords
+    locks = svn_master.svn_zyp_lottery_gray_lock_t.all()
+AttributeError: 'svn_master_t' object has no attribute 'svn_zyp_lottery_gray_lock_t'
+2019-02-23 14:12:10,605 execute_customer.py [django:114] [ERROR]- svn 记录锁已存在：{u'date': u'2019/02/23 11:23:05', u'changelist': [[u'M', u'/app/models/admin/Bill_model.php']], u'author': u'xiaoye', u'log': u'\u4f18\u5316\u4ee3\u7801', u'revision': 235}
+2019-02-23 14:13:45,592 execute_customer.py [django:114] [ERROR]- svn 记录锁已存在：{u'date': u'2019/02/23 11:23:05', u'changelist': [[u'M', u'/app/models/admin/Bill_model.php']], u'author': u'xiaoye', u'log': u'\u4f18\u5316\u4ee3\u7801', u'revision': 235}
+2019-02-23 14:16:20,068 execute_customer.py [django:114] [ERROR]- int() argument must be a string or a number, not 'tuple'
+2019-02-23 14:16:20,068 execute_customer.py [django:115] [ERROR]- svn 记录锁已存在：{u'date': u'2019/02/23 11:23:05', u'changelist': [[u'M', u'/app/models/admin/Bill_model.php']], u'author': u'xiaoye', u'log': u'\u4f18\u5316\u4ee3\u7801', u'revision': 235}

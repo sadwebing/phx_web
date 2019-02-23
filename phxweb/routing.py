@@ -35,5 +35,6 @@ channel_routing = [
     route_class(UpgradeExecute, path=r"^/upgrade/execute"),
     route_class(RemoteExecute, path=r"^/upgrade/remote_execute"),
     route_class(ApacheConfig, path=r"^/upgrade/deploy/apache_config"),
-
+    ##专业盘彩票
+    #route_class(UpgradeExecuteZyp, path=r"^/upgrade/executezyp"),
 ]

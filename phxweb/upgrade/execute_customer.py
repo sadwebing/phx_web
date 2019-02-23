@@ -7,7 +7,7 @@ from phxweb.upgrade.update_svn_record import updateSvnRecord
 from saltstack.saltapi import SaltAPI
 from monitor.models    import project_t, minion_t, minion_ip_t, svn_master_t
 from upgrade.models    import svn_customer_t
-from upgrade.models    import svn_gray_lock_t
+from upgrade.models    import svn_gray_lock_t, svn_zyp_lottery_gray_lock_t
 from saltstack.command import Command
 from accounts.limit    import LimitAccess
 from accounts.views    import getIp, getProjects
@@ -87,25 +87,47 @@ class UpgradeExecute(DefConsumer):
 
         #给升级到灰度的svn 文件上锁以及解锁
         if len(data['codeEnv']) == 1 and data['codeEnv'][0] == 'gray_env':
+            if data['key'] == "fenghuang_caipiao":
+                sr = svn_gray_lock_t()
+            elif data['key'] == "fenghuang_zyp":
+                sr = svn_zyp_lottery_gray_lock_t()
+            else:
+                message['text'] = "@arno\r\n未找到灰度锁表"
+                info['results'][data['minion_id']] = "@arno\r\n未找到灰度锁表"
+                logger.error(message['text'])
+                sendTelegram(message).send()
+                project.svn_mst_lock = 0
+                project.save()
+                self.message.reply_channel.send({'text': json.dumps(info)})
+                self.close()
+                return False
+
             for svn_record in data['svn_records']:
-                sr = svn_gray_lock_t(
-                    revision   = svn_record['revision'],
-                    author     = svn_record['author'],
-                    date       = svn_record['date'],
-                    log        = svn_record['log'],
-                    changelist = svn_record['changelist'],
-                )
+                sr.revision   = svn_record['revision']
+                sr.author     = svn_record['author']
+                sr.date       = svn_record['date']
+                sr.log        = svn_record['log']
+                sr.changelist = svn_record['changelist']
                 try:
                     sr.save()
                 except Exception as e:
+                    logger.error(str(e))
                     logger.error("svn 记录锁已存在：%s" %svn_record)
-                    sr = svn_gray_lock_t.objects.get(revision=svn_record['revision'])
+                    if data['key'] == "fenghuang_caipiao":
+                        sr = svn_gray_lock_t.objects.get(revision=svn_record['revision'])
+                    elif data['key'] == "fenghuang_zyp":
+                        sr = svn_zyp_lottery_gray_lock_t.objects.get(revision=svn_record['revision'])
+
                 else:
                     logger.info("svn 记录锁：%s" %svn_record)
 
                 try:
                     svn_master = svn_master_t.objects.get(id=data['svn_master_id'])
-                    svn_master.svn_gray_lock.add(sr)
+                    if data['key'] == "fenghuang_caipiao":
+                        svn_master.svn_gray_lock.add(sr)
+                    elif data['key'] == "fenghuang_zyp":
+                        svn_master.svnzyp_gray_lock.add(sr)
+                    
                 except Exception as e:
                     message['text'] = "@arno\r\nsvn 记录锁 存入svn master 失败：%s\r\n%s" %(svn_record, str(e))
                     info['results'][data['minion_id']] = "svn 记录锁 存入svn master 失败：%s\r\n%s" %(svn_record, str(e))
@@ -122,7 +144,7 @@ class UpgradeExecute(DefConsumer):
         elif len(data['codeEnv']) == 1 and data['codeEnv'][0] == 'online_env':
             #判断是否存在文件冲突
             islock = False
-            status, svn_lock_files = get_svn_lock_files(data['svn_master_id'], data['svn_records'])
+            status, svn_lock_files = get_svn_lock_files(data['svn_master_id'], data['svn_records'], data['key'])
             logger.info(svn_lock_files)
             for fileT in svn_files:
                 if is_file_in_list(fileT[1], svn_lock_files):
@@ -142,7 +164,10 @@ class UpgradeExecute(DefConsumer):
             if int(data['isdeletegraylock'][0]) == 1:
                 for svn_record in data['svn_records']:
                     try:
-                        sr = svn_gray_lock_t.objects.filter(revision=svn_record['revision']).delete()
+                        if data['key'] == "fenghuang_caipiao":
+                            sr = svn_gray_lock_t.objects.filter(revision=svn_record['revision']).delete()
+                        elif data['key'] == "fenghuang_zyp":
+                            sr = svn_zyp_lottery_gray_lock_t.objects.filter(revision=svn_record['revision']).delete()
                     except Exception as e:
                         info['results'][data['minion_id']] = "svn 记录锁删除失败：%s" %svn_record
                         logger.error(info['results'][data['minion_id']])
@@ -157,7 +182,7 @@ class UpgradeExecute(DefConsumer):
         elif len(data['codeEnv']) == 2:
             #判断是否存在文件冲突
             islock = False
-            status, svn_lock_files = get_svn_lock_files(data['svn_master_id'])
+            status, svn_lock_files = get_svn_lock_files(data['svn_master_id'], key=data['key'])
             #logger.info(svn_lock_files)
             for fileT in svn_files:
                 if is_file_in_list(fileT[1], svn_lock_files):
@@ -202,21 +227,38 @@ class UpgradeExecute(DefConsumer):
                     self.close()
                     return False
                 else:
-                    if svn_customer.isrsynccode == 0: continue
-                    svn_customer_l.append(svn_customer)
-                    svn_customer_dict[svn_customer.name] = {
-                        'master_ip': [ ip.strip() for ip in svn_customer.master_ip.split('\r\n') if ip.strip() != "" ],
-                        'ip': [ ip.strip() for ip in svn_customer.ip.split('\r\n') if ip.strip() != "" ],
-                        'port': svn_customer.port,
-                        'ismaster': True if svn_customer.ismaster == 1 else False, 
-                        'isrsynccode': True if count == 1 else False,
-                        'cmd': [cmd.strip() for cmd in svn_customer.cmd.split('\r\n') if cmd.strip() != "" ],
-                        'gray_domain':   svn_customer.gray_domain,
-                        'online_domain': svn_customer.online_domain,
-                        'src_d': svn_customer.src_d,
-                        'dst_d': svn_customer.dst_d,
-                    }
-                    count += 1
+                    if data['key'] == "fenghuang_caipiao":
+                        if svn_customer.isrsynccode == 0: continue
+                        svn_customer_l.append(svn_customer)
+                        svn_customer_dict[svn_customer.name] = {
+                            'master_ip': [ ip.strip() for ip in svn_customer.master_ip.split('\r\n') if ip.strip() != "" ],
+                            'ip': [ ip.strip() for ip in svn_customer.ip.split('\r\n') if ip.strip() != "" ],
+                            'port': svn_customer.port,
+                            'ismaster': True if svn_customer.ismaster == 1 else False, 
+                            'isrsynccode': True if count == 1 else False,
+                            'cmd': [cmd.strip() for cmd in svn_customer.cmd.split('\r\n') if cmd.strip() != "" ],
+                            'gray_domain':   svn_customer.gray_domain,
+                            'online_domain': svn_customer.online_domain,
+                            'src_d': svn_customer.src_d,
+                            'dst_d': svn_customer.dst_d,
+                        }
+                        count += 1
+                    elif data['key'] == "fenghuang_zyp":
+                        if svn_customer.isrsynczypcode == 0: continue
+                        svn_customer_l.append(svn_customer)
+                        svn_customer_dict[svn_customer.name] = {
+                            'master_ip': [ ip.strip() for ip in svn_customer.master_ip.split('\r\n') if ip.strip() != "" ],
+                            'ip': [ ip.strip() for ip in svn_customer.ip.split('\r\n') if ip.strip() != "" ],
+                            'port': svn_customer.port,
+                            'ismaster': True if svn_customer.iszypmaster == 1 else False, 
+                            'isrsynccode': True if count == 1 else False,
+                            'cmd': [cmd.strip() for cmd in svn_customer.cmd.split('\r\n') if cmd.strip() != "" ],
+                            'gray_domain':   svn_customer.gray_domain,
+                            'online_domain': svn_customer.online_domain,
+                            'src_d': svn_customer.src_d,
+                            'dst_d': svn_customer.dst_d,
+                        }
+                        count += 1
 
         #获取需要通知的部门同事
         atUsers = {}
@@ -259,13 +301,14 @@ class UpgradeExecute(DefConsumer):
             break
 
         #更新svn记录
-        for svn_record in data['svn_records']:
-            if len(data['codeEnv']) == 1 and data['codeEnv'][0] == 'gray_env':
-                updateSvnRecord(revision=svn_record['revision'], svn_gray_l=svn_customer_l)
-            elif len(data['codeEnv']) == 1 and data['codeEnv'][0] == 'online_env':
-                updateSvnRecord(revision=svn_record['revision'], svn_online_l=svn_customer_l)
-            elif len(data['codeEnv']) == 2:
-                updateSvnRecord(revision=svn_record['revision'], svn_gray_l=svn_customer_l, svn_online_l=svn_customer_l)
+        if data['key'] == "fenghuang_caipiao":
+            for svn_record in data['svn_records']:
+                if len(data['codeEnv']) == 1 and data['codeEnv'][0] == 'gray_env':
+                    updateSvnRecord(revision=svn_record['revision'], svn_gray_l=svn_customer_l)
+                elif len(data['codeEnv']) == 1 and data['codeEnv'][0] == 'online_env':
+                    updateSvnRecord(revision=svn_record['revision'], svn_online_l=svn_customer_l)
+                elif len(data['codeEnv']) == 2:
+                    updateSvnRecord(revision=svn_record['revision'], svn_gray_l=svn_customer_l, svn_online_l=svn_customer_l)
 
         #给升级的产品解锁
         project.svn_mst_lock = 0

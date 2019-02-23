@@ -18,7 +18,9 @@ class svn_customer_t(models.Model):
     ip            = models.TextField(blank=True, null=True)
     zypismaster   = models.IntegerField(choices=choices_s, default=0)
     ismaster      = models.IntegerField(choices=choices_s, default=0)
+    iszypmaster   = models.IntegerField(choices=choices_s, default=0)
     isrsynccode   = models.IntegerField(choices=choices_s, default=0)
+    isrsynczypcode = models.IntegerField(choices=choices_s, default=0)
     cmd           = models.TextField(blank=True, null=True)
     gray_domain   = models.CharField(max_length=128, blank=True)
     online_domain = models.CharField(max_length=128, blank=True)
@@ -36,6 +38,19 @@ class svn_customer_t(models.Model):
 class svn_gray_lock_t(models.Model):
     '''
         svn灰度锁，记录锁住的svn记录
+    '''
+    revision   = models.IntegerField(unique=True, null=False)
+    author     = models.CharField(max_length=32, null=False)
+    date       = models.CharField(max_length=32, null=False)
+    log        = models.TextField(blank=True, null=True)
+    changelist = models.TextField(blank=False, null=False)
+
+    def __str__(self):
+        return " - ".join([str(self.revision), self.author, self.date, self.log])
+
+class svn_zyp_lottery_gray_lock_t(models.Model):
+    '''
+        专业盘彩票后端代码svn灰度锁，记录锁住的svn记录
     '''
     revision   = models.IntegerField(unique=True, null=False)
     author     = models.CharField(max_length=32, null=False)

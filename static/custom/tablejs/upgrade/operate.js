@@ -349,7 +349,7 @@ var operate = {
         //判断是否升级全目录
         if (parseInt(postData['isrsyncwhole'][0]) == 0){
             $('#svnlogprocess').modal('show');
-            svn.GetSvnRecords(postData);
+            svn.GetSvnRecords(postData, "fenghuang_caipiao");
         }else {
             $('#svnlogprocess-whole').modal('show');
             var envir = "升级的环境: " + postData['codeEnv'].join(", ")
@@ -423,7 +423,8 @@ var operate = {
                 $('#svnlogprocess-whole').modal('hide');
             }
 
-            console.log(postData);
+            //console.log(postData);
+            postData['key'] = "fenghuang_caipiao"
             var uri = "/upgrade/execute";
             
 

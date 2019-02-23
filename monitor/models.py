@@ -7,7 +7,7 @@ from django.core                import exceptions
 from phxweb.settings            import choices_customer, choices_product, choices_permission, choices_s, choices_proj
 from detect.models              import domains, telegram_chat_group_t, telegram_user_id_t
 from dns.models                 import cf_account, dnspod_account
-from upgrade.models             import svn_customer_t, svn_gray_lock_t
+from upgrade.models             import svn_customer_t, svn_gray_lock_t, svn_zyp_lottery_gray_lock_t
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -101,6 +101,7 @@ class svn_master_t(models.Model):
     svn_code_p    = models.CharField(max_length=32, null=False)
     minion_id     = models.ForeignKey(minion_t, db_constraint=False)
     svn_gray_lock = models.ManyToManyField(svn_gray_lock_t, blank=True)
+    svnzyp_gray_lock = models.ManyToManyField(svn_zyp_lottery_gray_lock_t, blank=True)
     gray_lock     = models.TextField(blank=True, null=True, default='')
     gray_env      = models.TextField(blank=True, null=True, default='')
     online_env    = models.TextField(blank=True, null=True, default='')

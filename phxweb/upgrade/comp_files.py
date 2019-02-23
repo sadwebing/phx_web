@@ -19,7 +19,7 @@ logger = logging.getLogger('django')
 #telegram 参数
 message = settings.message_TEST
 
-def get_svn_lock_files(svn_master_id, excepts=[]):
+def get_svn_lock_files(svn_master_id, excepts=[], key=None):
     file_list = []
     try:
         svn_master = svn_master_t.objects.get(id=svn_master_id)
@@ -29,7 +29,14 @@ def get_svn_lock_files(svn_master_id, excepts=[]):
         sendTelegram(message).send()
         return False, file_list
     else:
-        for svn_record in svn_master.svn_gray_lock.all():
+        if key == "fenghuang_caipiao":
+            locks = svn_master.svn_gray_lock.all()
+        elif key == "fenghuang_zyp":
+            locks = svn_master.svnzyp_gray_lock.all()
+        else:
+            locks = []
+
+        for svn_record in locks:
             isExcept = False
             for excepti in excepts:
                 if svn_record.revision == excepti['revision']:

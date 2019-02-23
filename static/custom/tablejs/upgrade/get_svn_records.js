@@ -12,9 +12,11 @@ var svn = {
         //this.getItemsValue();
     },
 
-    GetSvnRecords: function(data){
+    GetSvnRecords: function(data, value){
         var postData = data;
         toastr.info("正在获取数据，请耐心等待返回...");
+
+        postData['key'] = value;
 
         if (public.isStrinList('gray_env', postData['codeEnv'])){
             url = "/upgrade/get_svn_records";

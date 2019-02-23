@@ -6,7 +6,7 @@ from django.http      import HttpResponse, HttpResponseForbidden, HttpResponseSe
 from accounts.views   import HasPermission, HasServerPermission, getIp, getProjects
 from monitor.models   import project_t, svn_master_t
 from detect.models    import department_user_t
-from upgrade.models   import svn_gray_lock_t, svn_customer_t, svn_record_t
+from upgrade.models   import svn_gray_lock_t, svn_zyp_lottery_gray_lock_t, svn_customer_t, svn_record_t
 from phxweb.svn_api   import SvnApi
 
 from django.contrib.auth.decorators import login_required
@@ -120,7 +120,7 @@ def Operate(request):
 @csrf_protect
 @login_required
 def Operatezyp(request):
-    title = u'升级中心-升级与APA推送'
+    title = u'升级中心-专业盘彩票升级'
     clientip = getIp(request)
     username = request.user.username
     try:
@@ -172,10 +172,10 @@ def Operatezyp(request):
             tmpdict = {
                 'id': rec.id,
                 'name': name,
-                'isrsynccode': rec.isrsynccode,
+                'isrsynccode': rec.isrsynczypcode,
             }
             svn_customer_all.append(tmpdict)
-            if rec.isrsynccode == 0: continue
+            if rec.isrsynczypcode == 0: continue
             if name not in svn_customer_tmp:
                     svn_customer_single.append(name)
 
@@ -429,7 +429,14 @@ def GetSvnLockRecords(request):
         
         svn_records = []
 
-        for svn_record in svn_master.svn_gray_lock.all():
+        if data['key'] == "fenghuang_caipiao":
+            locks = svn_master.svn_gray_lock.all()
+        elif data['key'] == "fenghuang_zyp":
+            locks = svn_master.svnzyp_gray_lock.all()
+        else:
+            locks = []
+
+        for svn_record in locks:
             tmpdict = {
                     'revision':   svn_record.revision,
                     'author':     svn_record.author,
