@@ -240,6 +240,7 @@ def remoteExe(request):
     items = []
     for project in projects:
         if project.svn_mst_alive == 0: continue
+        if project.project != "caipiao": continue
         svn_customer_together = [ svn_customer.replace(' ', '') for svn_customer in project.svn_customer_together.split('\r\n') if svn_customer.strip() != "" ] if project.svn_customer_together else []
         svn_customer_single   = []
         svn_customer_all      = []
@@ -394,8 +395,17 @@ def GetSvnRecords(request):
             logger.error(error)
             return HttpResponseServerError(error)
         
-        svnapi = SvnApi(svn_master.svn_code_url, svn_master.svn_code_u, svn_master.svn_code_p)
-        svn_records = svnapi.GetLog(limit=30)
+        if data['key'] == "fenghuang_zypfront":
+            url      = svn_master.svn_frontcode_url
+            user     = svn_master.svn_frontcode_u
+            password = svn_master.svn_frontcode_p
+        else:
+            url      = svn_master.svn_code_url
+            user     = svn_master.svn_code_u
+            password = svn_master.svn_code_p
+
+        svnapi = SvnApi(url, user, password)
+        svn_records = svnapi.GetLog(limit=100)
 
         return HttpResponse(json.dumps(svn_records))
     else:
