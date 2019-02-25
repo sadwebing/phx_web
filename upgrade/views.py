@@ -443,6 +443,8 @@ def GetSvnLockRecords(request):
             locks = svn_master.svn_gray_lock.all()
         elif data['key'] == "fenghuang_zyp":
             locks = svn_master.svnzyp_gray_lock.all()
+        elif data['key'] == "fenghuang_zypfront":
+            locks = svn_master.svnzypfront_gray_lock.all()
         else:
             locks = []
 

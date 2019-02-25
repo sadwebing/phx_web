@@ -523,7 +523,7 @@ class UpgradeExecuteZypFront(DefConsumer):
 
                     #获取minion ssh 登陆信息
                     minion_dict = {}
-                    for minion_id in svn_customer_dict['minion']:
+                    for minion_id in svn_customer_dict[svn_customer.name]['minion']:
                         try:
                             minion = minion_t.objects.get(minion_id=minion_id, status=1)
                         except Exception as e:

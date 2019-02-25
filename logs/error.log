@@ -25545,3 +25545,22 @@ Traceback (most recent call last):
     t = info.next()
 StopIteration
 2019-02-24 14:52:08,095 execute_customer.py [django:537] [ERROR]- 请在 linux 环境里面进行代码同步。
+2019-02-25 16:31:34,526 execute_customer.py [django:590] [ERROR]- http://127.0.0.1:8888/svn_code
+Exception: HTTPConnectionPool(host='127.0.0.1', port=8888): Max retries exceeded with url: /svn_code (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x067F2C10>: Failed to establish a new connection: [Errno 10061] ',))
+2019-02-25 16:31:35,881 telegram.py [django:115] [ERROR]- Attention: send message failed!
+2019-02-25 16:31:35,881 telegram.py [django:116] [ERROR]- 400: {"ok":false,"error_code":400,"description":"Bad Request: can't parse entities: Unsupported start tag \"urllib3.connection.httpconnection\" at byte offset 163"}
+2019-02-25 16:31:35,882 telegram.py [django:117] [ERROR]- {'disable_web_page_preview': True, 'text': u"http://127.0.0.1:8888/svn_code\nException: HTTPConnectionPool(host='127.0.0.1', port=8888): Max retries exceeded with url: /svn_code (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x067F2C10>: Failed to establish a new connection: [Errno 10061] ',))", 'doc_name': '20190225163134_message.txt', 'caption': '', 'chat_id': -204952096L, 'parse_mode': 'HTML'}
+2019-02-25 16:39:55,325 execute_customer.py [django:590] [ERROR]- http://182.16.117.186:8888/svn_code
+Exception: ('Connection aborted.', BadStatusLine("''",))
+2019-02-25 16:43:03,842 execute_customer.py [django:590] [ERROR]- http://182.16.117.186:8888/svn_code
+Exception: HTTPConnectionPool(host='182.16.117.186', port=8888): Max retries exceeded with url: /svn_code (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x068359D0>: Failed to establish a new connection: [Errno 10061] ',))
+2019-02-25 16:43:05,000 telegram.py [django:115] [ERROR]- Attention: send message failed!
+2019-02-25 16:43:05,000 telegram.py [django:116] [ERROR]- 400: {"ok":false,"error_code":400,"description":"Bad Request: can't parse entities: Unsupported start tag \"urllib3.connection.httpconnection\" at byte offset 173"}
+2019-02-25 16:43:05,000 telegram.py [django:117] [ERROR]- {'disable_web_page_preview': True, 'text': u"http://182.16.117.186:8888/svn_code\nException: HTTPConnectionPool(host='182.16.117.186', port=8888): Max retries exceeded with url: /svn_code (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x068359D0>: Failed to establish a new connection: [Errno 10061] ',))", 'doc_name': '20190225164303_message.txt', 'caption': '', 'chat_id': -204952096L, 'parse_mode': 'HTML'}
+2019-02-25 16:51:20,072 execute_customer.py [django:590] [ERROR]- http://182.16.117.186:8888/svn_code
+Exception: HTTPConnectionPool(host='182.16.117.186', port=8888): Max retries exceeded with url: /svn_code (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x06954370>: Failed to establish a new connection: [Errno 10061] ',))
+2019-02-25 16:51:21,411 telegram.py [django:115] [ERROR]- Attention: send message failed!
+2019-02-25 16:51:21,413 telegram.py [django:116] [ERROR]- 400: {"ok":false,"error_code":400,"description":"Bad Request: can't parse entities: Unsupported start tag \"urllib3.connection.httpconnection\" at byte offset 173"}
+2019-02-25 16:51:21,413 telegram.py [django:117] [ERROR]- {'disable_web_page_preview': True, 'text': u"http://182.16.117.186:8888/svn_code\nException: HTTPConnectionPool(host='182.16.117.186', port=8888): Max retries exceeded with url: /svn_code (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x06954370>: Failed to establish a new connection: [Errno 10061] ',))", 'doc_name': '20190225165120_message.txt', 'caption': '', 'chat_id': -204952096L, 'parse_mode': 'HTML'}
+2019-02-25 17:02:48,888 execute_customer.py [django:396] [ERROR]- (1062, "Duplicate entry '3127' for key 'revision'")
+2019-02-25 17:02:48,891 execute_customer.py [django:397] [ERROR]- svn 记录锁已存在：{u'date': u'2019/01/28 16:56:22', u'changelist': [[u'M', u'/fenghuang/houtai/html/zhuanyepan/pc/static/platform/wanyou.config.js'], [u'M', u'/fenghuang/houtai/html/zhuanyepan/wap/static/platform/wanyou/wanyou.config.js']], u'author': u'arno', u'log': u'1', u'revision': 3127}
