@@ -17,7 +17,6 @@
             <div class="panel-body" style="padding-top: 5px; padding-bottom: 5px;">
             <div class="row">
             <div class="col-xs-9 col-sm-9 col-md-9">
-                {% comment %}
                 <div class="col-xs-12 col-sm-12 col-md-12">
                     <form class="form-group form-inline" role="form" style="margin-bottom: 5px;">
                         <div class="input-group">
@@ -31,18 +30,38 @@
                 <div class="col-xs-12 col-sm-12 col-md-12" id="command_form" style="display: inline; background-color: #F0F8FF;">
                     <br>
                     <div class="col-xs-11 col-sm-11 col-md-11">
-                        <form class="form-group form-inline" role="form" id="apacheconfigDeploy" name="apacheconfigDeploy"> 
-                            <select class="form-control selectpicker show-tick" onchange="operate.GetapacheconfigCust()" id="apacheconfig_product" name="apacheconfig_product" title="请选择产品" data-width="48%">
-                            </select>
-                            <select class="form-control selectpicker show-tick" data-live-search="true" id="apacheconfig_customer" name="apacheconfig_customer" multiple data-actions-box="true" title="请选择客户" data-width="48%">
-                            </select>
-                        </form>
-                    </div>
-                    <div class="col-xs-1 col-sm-1 col-md-1">
-                        <input id="btn_submit_command" type="submit" onclick="operate.Submit('btn_submit_command')" class="btn btn-default" style="width:100%;" value="升级">
-                    </div>
+                            <form class="form-group form-inline" role="form" id="projectupgrade" name="projectupgrade"> 
+                                <select class="form-control selectpicker show-tick" onchange="operate.GetProjectProd('front')" id="project_envir_front" name="project_envir_front" title="请选择环境" data-width="24%">
+                                </select>
+                                <select class="form-control selectpicker show-tick" onchange="operate.GetProjectCust('front')" id="project_product_front" name="project_product_front" title="请选择产品" data-width="24%">
+                                </select>
+                                <select class="form-control selectpicker show-tick" id="project_codeEnv_front" multiple name="project_codeEnv_front" title="请选择代码环境" data-width="24%">
+                                </select>
+                                <select class="form-control selectpicker show-tick" id="project_isdeletegraylock_front" name="project_isdeletegraylock_front" title="请选择是否删除记录锁" data-width="24%">
+                                    <option value=0>不删除灰度锁</option>
+                                    <option value=1>删除灰度锁</option>
+                                </select>
+                            </form>
+                            <form class="form-group form-inline" role="form" id="projectupgrade" name="projectupgrade"> 
+                                <select class="form-control selectpicker show-tick" data-live-search="true" multiple data-actions-box="true" id="project_customer_in_front" name="project_customer_in_front" title="请选择只升级的客户" data-width="24%">
+                                </select>
+                                <select class="form-control selectpicker show-tick" data-live-search="true" multiple data-actions-box="true" id="project_customer_ex_front" name="project_customer_ex_front" title="请选择不升级的客户" data-width="24%">
+                                </select>
+                                <select class="form-control selectpicker show-tick" data-live-search="true" multiple data-actions-box="true" id="project_department_front" name="project_department_front" title="请选择需要通知的同事" data-width="24%">
+                                </select>
+                                <select class="form-control selectpicker show-tick" id="project_isrsyncwhole_front" name="project_isrsyncwhole_front" title="是否全目录同步" data-width="24%">
+                                    <option value=1>同步全目录</option>
+                                    <option value=0 selected>不同步全目录</option>
+                                </select>
+                            </form>
+                        </div>
+                    
+                        <div class="col-xs-1 col-sm-1 col-md-1">
+                            <form class="form-group form-inline" role="form">
+                                <input id="btn_submit_command" type="button" onclick="operate.PreSubmit('front')" class="btn btn-default" style="width: 100%; height: 82px;" value="升级">
+                            </form>
+                        </div>
                 </div>
-                {% endcomment %}
                 <div class="col-xs-12 col-sm-12 col-md-12">
                     <form class="form-group form-inline" role="form" style="margin-bottom: 5px;">
                         <hr size=1>
@@ -58,9 +77,9 @@
                     <br>
                     <div class="col-xs-11 col-sm-11 col-md-11">
                         <form class="form-group form-inline" role="form" id="projectupgrade" name="projectupgrade"> 
-                            <select class="form-control selectpicker show-tick" onchange="operate.GetProjectProd()" id="project_envir" name="project_envir" title="请选择环境" data-width="24%">
+                            <select class="form-control selectpicker show-tick" onchange="operate.GetProjectProd('lottery')" id="project_envir" name="project_envir" title="请选择环境" data-width="24%">
                             </select>
-                            <select class="form-control selectpicker show-tick" onchange="operate.GetProjectCust()" id="project_product" name="project_product" title="请选择产品" data-width="24%">
+                            <select class="form-control selectpicker show-tick" onchange="operate.GetProjectCust('lottery')" id="project_product" name="project_product" title="请选择产品" data-width="24%">
                             </select>
                             <select class="form-control selectpicker show-tick" id="project_codeEnv" multiple name="project_codeEnv" title="请选择代码环境" data-width="24%">
                             </select>
@@ -85,7 +104,7 @@
                 
                     <div class="col-xs-1 col-sm-1 col-md-1">
                         <form class="form-group form-inline" role="form">
-                            <input id="btn_submit_command2" type="button" onclick="operate.PreSubmit('btn_submit_command2')" class="btn btn-default" style="width: 100%; height: 82px;" value="升级">
+                            <input id="btn_submit_command2" type="button" onclick="operate.PreSubmit('lottery')" class="btn btn-default" style="width: 100%; height: 82px;" value="升级">
                         </form>
                     </div>
                 </div>
@@ -181,6 +200,9 @@
         //console.log(info['display'])
         atUsersHtml += "<option value="+info['id']+" data-subtext="+info['display']+">"+info['department']+"</option>";
     }
+
+    document.getElementById("project_envir_front").innerHTML=envirHtml;
+    document.getElementById("project_department_front").innerHTML=atUsersHtml;
 
     document.getElementById("project_envir").innerHTML=envirHtml;
     document.getElementById("project_department").innerHTML=atUsersHtml;

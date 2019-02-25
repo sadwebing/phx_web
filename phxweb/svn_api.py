@@ -44,7 +44,10 @@ class SvnApi(object):
             sendTelegram(message).send()
         else:
             for i in range(limit):
-                t = info.next()
+                try:
+                    t = info.next()
+                except Exception as e:
+                    continue
                 if not t: break
                 tmpdict = {
                     'revision': t.revision,

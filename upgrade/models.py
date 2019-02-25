@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django.db       import models
 from django.utils    import timezone
 from phxweb.settings import choices_customer, choices_product, choices_permission, choices_s, choices_proj
+
 # Create your models here.
 
 class svn_customer_t(models.Model):
@@ -16,7 +17,7 @@ class svn_customer_t(models.Model):
     master_ip     = models.TextField(blank=True, null=True)
     port          = models.CharField(max_length=6, null=False, default='22')
     ip            = models.TextField(blank=True, null=True)
-    zypismaster   = models.IntegerField(choices=choices_s, default=0)
+    minion        = models.TextField(blank=True, null=True)
     ismaster      = models.IntegerField(choices=choices_s, default=0)
     iszypmaster   = models.IntegerField(choices=choices_s, default=0)
     isrsynccode   = models.IntegerField(choices=choices_s, default=0)
@@ -51,6 +52,19 @@ class svn_gray_lock_t(models.Model):
 class svn_zyp_lottery_gray_lock_t(models.Model):
     '''
         专业盘彩票后端代码svn灰度锁，记录锁住的svn记录
+    '''
+    revision   = models.IntegerField(unique=True, null=False)
+    author     = models.CharField(max_length=32, null=False)
+    date       = models.CharField(max_length=32, null=False)
+    log        = models.TextField(blank=True, null=True)
+    changelist = models.TextField(blank=False, null=False)
+
+    def __str__(self):
+        return " - ".join([str(self.revision), self.author, self.date, self.log])
+
+class svn_zyp_front_gray_lock_t(models.Model):
+    '''
+        专业盘彩票前端代码svn灰度锁，记录锁住的svn记录
     '''
     revision   = models.IntegerField(unique=True, null=False)
     author     = models.CharField(max_length=32, null=False)

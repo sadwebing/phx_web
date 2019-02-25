@@ -25411,3 +25411,137 @@ AttributeError: 'svn_master_t' object has no attribute 'svn_zyp_lottery_gray_loc
 2019-02-23 14:13:45,592 execute_customer.py [django:114] [ERROR]- svn 记录锁已存在：{u'date': u'2019/02/23 11:23:05', u'changelist': [[u'M', u'/app/models/admin/Bill_model.php']], u'author': u'xiaoye', u'log': u'\u4f18\u5316\u4ee3\u7801', u'revision': 235}
 2019-02-23 14:16:20,068 execute_customer.py [django:114] [ERROR]- int() argument must be a string or a number, not 'tuple'
 2019-02-23 14:16:20,068 execute_customer.py [django:115] [ERROR]- svn 记录锁已存在：{u'date': u'2019/02/23 11:23:05', u'changelist': [[u'M', u'/app/models/admin/Bill_model.php']], u'author': u'xiaoye', u'log': u'\u4f18\u5316\u4ee3\u7801', u'revision': 235}
+2019-02-23 17:38:29,505 exception.py [django.request:135] [ERROR]- Internal Server Error: /upgrade/get_svn_records
+Traceback (most recent call last):
+  File "J:\arno\test\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "J:\arno\test\lib\site-packages\channels\handler.py", line 243, in process_exception_by_middleware
+    return super(AsgiHandler, self).process_exception_by_middleware(exception, request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "J:\arno\test\lib\site-packages\django\views\decorators\csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "J:\arno\test\phx_web\upgrade\views.py", line 401, in GetSvnRecords
+    svn_records = svnapi.GetLog(limit=30)
+  File "J:\arno\test\phx_web\phxweb\svn_api.py", line 47, in GetLog
+    t = info.next()
+StopIteration
+2019-02-23 17:41:22,507 exception.py [django.request:135] [ERROR]- Internal Server Error: /upgrade/get_svn_records
+Traceback (most recent call last):
+  File "J:\arno\test\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "J:\arno\test\lib\site-packages\channels\handler.py", line 243, in process_exception_by_middleware
+    return super(AsgiHandler, self).process_exception_by_middleware(exception, request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "J:\arno\test\lib\site-packages\django\views\decorators\csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "J:\arno\test\phx_web\upgrade\views.py", line 401, in GetSvnRecords
+    svn_records = svnapi.GetLog(limit=100)
+  File "J:\arno\test\phx_web\phxweb\svn_api.py", line 47, in GetLog
+    t = info.next()
+StopIteration
+2019-02-23 17:47:10,450 exception.py [django.request:135] [ERROR]- Internal Server Error: /upgrade/get_svn_records
+Traceback (most recent call last):
+  File "J:\arno\test\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "J:\arno\test\lib\site-packages\channels\handler.py", line 243, in process_exception_by_middleware
+    return super(AsgiHandler, self).process_exception_by_middleware(exception, request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "J:\arno\test\lib\site-packages\django\views\decorators\csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "J:\arno\test\phx_web\upgrade\views.py", line 401, in GetSvnRecords
+    svn_records = svnapi.GetLog(limit=100)
+  File "J:\arno\test\phx_web\phxweb\svn_api.py", line 47, in GetLog
+    t = info.next()
+StopIteration
+2019-02-23 17:49:17,496 exception.py [django.request:135] [ERROR]- Internal Server Error: /upgrade/get_svn_records
+Traceback (most recent call last):
+  File "J:\arno\test\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "J:\arno\test\lib\site-packages\channels\handler.py", line 243, in process_exception_by_middleware
+    return super(AsgiHandler, self).process_exception_by_middleware(exception, request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "J:\arno\test\lib\site-packages\django\views\decorators\csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "J:\arno\test\phx_web\upgrade\views.py", line 401, in GetSvnRecords
+    svn_records = svnapi.GetLog(limit=100)
+  File "J:\arno\test\phx_web\phxweb\svn_api.py", line 47, in GetLog
+    t = info.next()
+StopIteration
+2019-02-23 17:50:07,361 exception.py [django.request:135] [ERROR]- Internal Server Error: /upgrade/get_svn_records
+Traceback (most recent call last):
+  File "J:\arno\test\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "J:\arno\test\lib\site-packages\channels\handler.py", line 243, in process_exception_by_middleware
+    return super(AsgiHandler, self).process_exception_by_middleware(exception, request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "J:\arno\test\lib\site-packages\django\views\decorators\csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "J:\arno\test\phx_web\upgrade\views.py", line 402, in GetSvnRecords
+    svn_records = svnapi.GetLog(limit=100)
+  File "J:\arno\test\phx_web\phxweb\svn_api.py", line 47, in GetLog
+    t = info.next()
+StopIteration
+2019-02-23 17:52:16,812 exception.py [django.request:135] [ERROR]- Internal Server Error: /upgrade/get_svn_records
+Traceback (most recent call last):
+  File "J:\arno\test\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "J:\arno\test\lib\site-packages\channels\handler.py", line 243, in process_exception_by_middleware
+    return super(AsgiHandler, self).process_exception_by_middleware(exception, request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "J:\arno\test\lib\site-packages\django\views\decorators\csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "J:\arno\test\phx_web\upgrade\views.py", line 409, in GetSvnRecords
+    svn_records = svnapi.GetLog(limit=100)
+  File "J:\arno\test\phx_web\phxweb\svn_api.py", line 47, in GetLog
+    t = info.next()
+StopIteration
+2019-02-23 17:54:33,660 exception.py [django.request:135] [ERROR]- Internal Server Error: /upgrade/get_svn_records
+Traceback (most recent call last):
+  File "J:\arno\test\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "J:\arno\test\lib\site-packages\channels\handler.py", line 243, in process_exception_by_middleware
+    return super(AsgiHandler, self).process_exception_by_middleware(exception, request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "J:\arno\test\lib\site-packages\django\views\decorators\csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "J:\arno\test\phx_web\upgrade\views.py", line 411, in GetSvnRecords
+    svn_records = svnapi.GetLog(limit=100)
+  File "J:\arno\test\phx_web\phxweb\svn_api.py", line 47, in GetLog
+    t = info.next()
+StopIteration
+2019-02-24 14:52:08,095 execute_customer.py [django:537] [ERROR]- 请在 linux 环境里面进行代码同步。

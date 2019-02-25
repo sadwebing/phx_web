@@ -176,8 +176,13 @@ var operate = {
         $('.selectpicker').selectpicker('refresh');
     },
     
-    GetProjectProd: function (){
-        var envir = public.showSelectedValue('project_envir'); //获取选中的产品环境
+    GetProjectProd: function (value){
+        if (value == 'lottery'){
+            var envir = public.showSelectedValue('project_envir'); //获取选中的产品环境
+        }else if (value == 'front'){
+            var envir = public.showSelectedValue('project_envir_front'); //获取选中的产品环境
+        }
+        
         //console.log(envir);
 
         if (envir.length != 1){
@@ -195,13 +200,24 @@ var operate = {
             };
         }
 
-        document.getElementById("project_product").innerHTML=productHtml;
+        if (value == 'lottery'){
+            document.getElementById("project_product").innerHTML=productHtml;
+        }else if (value == 'front'){
+            document.getElementById("project_product_front").innerHTML=productHtml;
+        }
+
         $('.selectpicker').selectpicker('refresh');
     },
 
-    GetProjectCust: function (){
-        var envir = public.showSelectedValue('project_envir'); //获取选中的产品环境
-        var product = public.showSelectedValue('project_product'); //获取选中的产品
+    GetProjectCust: function (value){
+        if (value == 'lottery'){
+            var envir = public.showSelectedValue('project_envir'); //获取选中的产品环境
+            var product = public.showSelectedValue('project_product'); //获取选中的产品
+        }else if (value == 'front'){
+            var envir = public.showSelectedValue('project_envir_front'); //获取选中的产品环境
+            var product = public.showSelectedValue('project_product_front'); //获取选中的产品
+        }
+        
         //console.log(envir);
 
         if (envir.length != 1){
@@ -232,9 +248,16 @@ var operate = {
             };
         }
 
-        document.getElementById("project_customer_in").innerHTML=customerInHtml;
-        document.getElementById("project_customer_ex").innerHTML=customerExHtml;
-        document.getElementById("project_codeEnv").innerHTML=codeEnvHtml;
+        if (value == 'lottery'){
+            document.getElementById("project_customer_in").innerHTML=customerInHtml;
+            document.getElementById("project_customer_ex").innerHTML=customerExHtml;
+            document.getElementById("project_codeEnv").innerHTML=codeEnvHtml;
+        }else if (value == 'front'){
+            document.getElementById("project_customer_in_front").innerHTML=customerInHtml;
+            document.getElementById("project_customer_ex_front").innerHTML=customerExHtml;
+            document.getElementById("project_codeEnv_front").innerHTML=codeEnvHtml;
+        }
+
         $('.selectpicker').selectpicker('refresh');
     },
 
@@ -277,22 +300,44 @@ var operate = {
         $('.selectpicker').selectpicker('refresh');
     },
 
-    PreSubmit: function(submit){
+    PreSubmit: function(value){
         public.disableButtons(['btn_commit_upgrade'], true);
-        var postData = {
-            'envir': public.showSelectedValue('project_envir', false), //获取选中的产品环境
-            'product': public.showSelectedValue('project_product', false), //获取选中的产品
-            'customer': {
-                    'in': public.showSelectedValue('project_customer_in', false), //获取选中的只升级的客户
-                    'ex': public.showSelectedValue('project_customer_ex', false), //获取选中的不升级的客户
-                    'real':[],
-                },
-            'codeEnv': public.showSelectedValue('project_codeEnv', false), //获取选中的代码环境
-            //'items': items,
-            'isdeletegraylock': public.showSelectedValue('project_isdeletegraylock', false), //获取选中是否删除记录锁
-            'isrsyncwhole': public.showSelectedValue('project_isrsyncwhole', false), //获取选中是否同步全目录
-            'department': public.showSelectedValue('project_department', true), //获取选中要通知的部门同事
+        if (value == 'lottery'){
+            var postData = {
+                'envir': public.showSelectedValue('project_envir', false), //获取选中的产品环境
+                'product': public.showSelectedValue('project_product', false), //获取选中的产品
+                'customer': {
+                        'in': public.showSelectedValue('project_customer_in', false), //获取选中的只升级的客户
+                        'ex': public.showSelectedValue('project_customer_ex', false), //获取选中的不升级的客户
+                        'real':[],
+                    },
+                'codeEnv': public.showSelectedValue('project_codeEnv', false), //获取选中的代码环境
+                //'items': items,
+                'isdeletegraylock': public.showSelectedValue('project_isdeletegraylock', false), //获取选中是否删除记录锁
+                'isrsyncwhole': public.showSelectedValue('project_isrsyncwhole', false), //获取选中是否同步全目录
+                'department': public.showSelectedValue('project_department', true), //获取选中要通知的部门同事
+                'end': value,
+            }
+        }else if (value == 'front') {
+            var postData = {
+                'envir': public.showSelectedValue('project_envir_front', false), //获取选中的产品环境
+                'product': public.showSelectedValue('project_product_front', false), //获取选中的产品
+                'customer': {
+                        'in': public.showSelectedValue('project_customer_in_front', false), //获取选中的只升级的客户
+                        'ex': public.showSelectedValue('project_customer_ex_front', false), //获取选中的不升级的客户
+                        'real':[],
+                    },
+                'codeEnv': public.showSelectedValue('project_codeEnv_front', false), //获取选中的代码环境
+                //'items': items,
+                'isdeletegraylock': public.showSelectedValue('project_isdeletegraylock_front', false), //获取选中是否删除记录锁
+                'isrsyncwhole': public.showSelectedValue('project_isrsyncwhole_front', false), //获取选中是否同步全目录
+                'department': public.showSelectedValue('project_department_front', true), //获取选中要通知的部门同事
+                'end': value,
+            }
+        }else {
+            return false;
         }
+        
 
         if (postData['envir'].length != 1){
             alert('产品环境选择错误！');
@@ -342,14 +387,27 @@ var operate = {
                 postData['svn_master_id'] = items[i]['svn_master']['id'];
             };
         }
-        var uri = "/upgrade/execute";
+        if (value == 'lottery'){
+            var uri = "/upgrade/execute";
+        }else if (value == 'front') {
+            var uri = "/upgrade/execute/zypfront";
+        }else {
+            return false;
+        }
 
         //console.log(postData);
 
         //判断是否升级全目录
         if (parseInt(postData['isrsyncwhole'][0]) == 0){
             $('#svnlogprocess').modal('show');
-            svn.GetSvnRecords(postData, "fenghuang_zyp");
+            if (value == 'lottery'){
+                svn.GetSvnRecords(postData, "fenghuang_zyp");
+            }else if (value == 'front') {
+                svn.GetSvnRecords(postData, "fenghuang_zypfront");
+            }else {
+                return false;
+            }
+            
         }else {
             $('#svnlogprocess-whole').modal('show');
             var envir = "升级的环境: " + postData['codeEnv'].join(", ")
@@ -365,73 +423,48 @@ var operate = {
         return false;
     },
 
-    Submit: function(submit){
-        if (submit == 'btn_submit_command'){
-            var postData = {
-                'product': public.showSelectedValue('apacheconfig_product', false), //获取选中的产品
-                'customer': public.showSelectedValue('apacheconfig_customer', false), //获取选中的客户
-                //'items': items,
-            }
+    Submit: function(value){
+        upgrade_postData['svn_records'] = [];
 
-            if (postData['product'].length != 1){
-                alert('产品选择错误！');
+        if (parseInt(upgrade_postData['isrsyncwhole'][0]) == 0){
+            var arrselectedData = tableInit.myViewModel.getSelections();
+            if (arrselectedData.length == 0){
+                alert("请至少选择一行数据");
                 return false;
             }
-    
-            if (postData['customer'].length == 0){
-                alert('客户选择错误！');
-                return false;
-            }
-            for (var i = 0; i < items.length; i++){
-                if (items[i]['product'][0] == postData['product'][0]){
-                    postData['item'] = items[i]
-                    postData['cmd'] = items[i]['svn_master'][postData['codeEnv']];
-                    postData['minion_id'] = items[i]['svn_master']['minion_id'];
-                    postData['id'] = items[i]['id'];
-                    postData['svn_master_id'] = items[i]['svn_master']['id'];
-                };
-            }
-            var uri = "/upgrade/deploy/apache_config";
-        }else if (submit == 'btn_submit_command2'){
-            upgrade_postData['svn_records'] = [];
 
-            if (parseInt(upgrade_postData['isrsyncwhole'][0]) == 0){
-                var arrselectedData = tableInit.myViewModel.getSelections();
-                if (arrselectedData.length == 0){
-                    alert("请至少选择一行数据");
-                    return false;
-                }
-
-                for (var i=0;i<arrselectedData.length;i++){
-                    upgrade_postData['svn_records'].push({
-                        'revision': arrselectedData[i].revision,
-                        'author': arrselectedData[i].author,
-                        'date': arrselectedData[i].date,
-                        'log': arrselectedData[i].log,
-                        'changelist': arrselectedData[i].changelist,
-                    });
-                }
-
-                var postData = upgrade_postData;
-                //对svn 记录进行排序，先提交的记录排在前面，顺序升级
-                postData['svn_records'] = upgrade_postData['svn_records'].sort(public.compare('revision', true));
-                $('#svnlogprocess').modal('hide');
-            }else {
-                var postData = upgrade_postData;
-                postData['svn_records'] = [];
-                postData['isdeletegraylock'] = [0];
-                $('#svnlogprocess-whole').modal('hide');
+            for (var i=0;i<arrselectedData.length;i++){
+                upgrade_postData['svn_records'].push({
+                    'revision': arrselectedData[i].revision,
+                    'author': arrselectedData[i].author,
+                    'date': arrselectedData[i].date,
+                    'log': arrselectedData[i].log,
+                    'changelist': arrselectedData[i].changelist,
+                });
             }
 
-            //console.log(postData);
+            var postData = upgrade_postData;
+            //对svn 记录进行排序，先提交的记录排在前面，顺序升级
+            postData['svn_records'] = upgrade_postData['svn_records'].sort(public.compare('revision', true));
+            $('#svnlogprocess').modal('hide');
+        }else {
+            var postData = upgrade_postData;
+            postData['svn_records'] = [];
+            postData['isdeletegraylock'] = [0];
+            $('#svnlogprocess-whole').modal('hide');
+        }
+
+        //console.log(postData);
+        if (postData['end'] == "lottery"){
             postData['key'] = "fenghuang_zyp"
             var uri = "/upgrade/execute";
-            
-
+        }else if (postData['end'] == "front"){
+            postData['key'] = "fenghuang_zyp_front"
+            var uri = "/upgrade/execute/zypfront";
         }else {
             return false;
         }
-
+        
         //alert("获取到的表单数据为:"+JSON.stringify(postData));
         $('#runprogress').modal('show');
         modal_results.innerHTML = "";

@@ -7,7 +7,7 @@ from dns.cloudflare_customer import DnsCloudflareRecordUpdate, DnsCloudflareReco
 from saltstack.reflesh_customer import SaltstackRefleshExecuteCdn, SaltstackRefleshExecute
 from saltstack.command_customer import SaltstackCommandDeploy, SaltstackCommandExecute
 from servers.index_customer  import ServersUpdate
-from upgrade.execute_customer import UpgradeExecute
+from upgrade.execute_customer import UpgradeExecute, UpgradeExecuteZypFront
 from upgrade.remote_exe_customer import RemoteExecute
 from upgrade.deploy.apache_config_customer import ApacheConfig
 
@@ -32,9 +32,9 @@ channel_routing = [
     route_class(ServersUpdate, path=r"^/servers/update"),
 
     #/upgrade/
-    route_class(UpgradeExecute, path=r"^/upgrade/execute"),
+    route_class(UpgradeExecute, path=r"^/upgrade/execute$"),
     route_class(RemoteExecute, path=r"^/upgrade/remote_execute"),
     route_class(ApacheConfig, path=r"^/upgrade/deploy/apache_config"),
     ##专业盘彩票
-    #route_class(UpgradeExecuteZyp, path=r"^/upgrade/executezyp"),
+    route_class(UpgradeExecuteZypFront, path=r"^/upgrade/execute/zypfront"),
 ]
