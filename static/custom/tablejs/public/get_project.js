@@ -90,6 +90,9 @@ var gp = {
                                                     '<optgroup label="瑞银[ruiyin|UBS]">',
                                                     html_dict['瑞银[ruiyin|UBS]2'],
                                                     '</optgroup>',
+                                                    '<optgroup label="越众棋牌">',
+                                                    html_dict['越众棋牌2'],
+                                                    '</optgroup>',
                                                     ].join("")
                 if (document.getElementById('project_active')){
                     document.getElementById('project_active').innerHTML=html_project_active;
