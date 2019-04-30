@@ -50,10 +50,10 @@ if __name__ == '__main__':
     name2 = [ "@"+user.user for user in department2.user.all()]
 
     message['text'] = "\r\n".join([
-        "周报提醒 - %s" %timeNow().format(),
+        "周报提醒 - %s" %timeNow().format('%Y/%m/%d %a'),
         "%s: %s" %(department.department, ", ".join(name + name2)),
         "负责人: @arno", 
     ])
 
-    message['group'] = "yunwei"
+    #message['group'] = "yunwei"
     sendTelegram(message).send()
