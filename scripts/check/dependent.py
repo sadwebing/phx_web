@@ -45,8 +45,8 @@ class timeNow(object):
     def stamp(self):
         return self.current_time
     
-    def format(self):
-        return self.current_time.strftime('%Y/%m/%d %H:%M:%S')
+    def format(self, form='%Y/%m/%d %H:%M:%S'):
+        return self.current_time.strftime(form)
 
 #获取域名解析
 def getDomainDns(domain):

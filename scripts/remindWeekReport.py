@@ -55,5 +55,5 @@ if __name__ == '__main__':
         "负责人: @arno", 
     ])
 
-    #message['group'] = "yunwei"
+    message['group'] = "yunwei"
     sendTelegram(message).send()
