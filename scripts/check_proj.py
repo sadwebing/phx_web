@@ -243,10 +243,12 @@ def sendAlert(ip, results):
         sendTelegram(message).send()
 
 if __name__ == '__main__':
-    if platform.system() == "Linux":
-        ip = commands.getoutput('curl -s https://ip.cn')
-    else:
-        ip = getIp()
+    # if platform.system() == "Linux":
+    #     ip = commands.getoutput('curl -s https://ip.cn')
+    # else:
+    #     ip = getIp()
+
+    ip = gethostname()
 
     li = []
     results = []
