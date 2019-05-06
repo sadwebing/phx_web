@@ -207,31 +207,49 @@ def sendAlert(ip, results):
     java      = ""
     ruiying   = ""
     fenghuang = ""
+    yuezhong  = ""
     for result in results:
-        if result[0] == "java":
+        if result[0] == 26:
             java += '\r\n' + result[1]
-        elif result[0] == "ruiying":
+        elif result[0] == 27:
             ruiying += '\r\n' + result[1]
+        elif result[0] == 101:
+            yuezhong += '\r\n' + result[1]
         else:
             fenghuang += '\r\n' + result[1]
     if java:
-        if len(java) >= 4096:
-            message['doc'] = True
+        message['doc']  = False
         message['text'] = ip + java
-        message['group'] = 'java_domain'
-        sendTelegram(message)
+        message['group'] = 'java_domain' #java_domain
+        if len(message['text']) >= 4096:
+            message['doc']  = True
+            message['text'] = message['text'].replace('\r\n', '\n')
+        sendTelegram(message).send()
     if ruiying:
-        if len(ruiying) >= 4096:
-            message['doc'] = True
+        message['doc']  = False
         message['text'] = ip + ruiying
-        message['group'] = 'ruiying_domain'
-        sendTelegram(message)
+        message['group'] = 'arno_test' #ruiying_domain
+        if len(message['text']) >= 4096:
+            message['doc']  = True
+            message['text'] = message['text'].replace('\r\n', '\n')
+        sendTelegram(message).send()
+    if yuezhong:
+        message['doc']  = False
+        message['text'] = ip + yuezhong
+        message['group'] = 'yuezhong_domain' #yuezhong_domain
+        if len(message['text']) >= 4096:
+            message['doc']  = True
+            message['text'] = message['text'].replace('\r\n', '\n')
+        sendTelegram(message).send()
     if fenghuang:
-        if len(fenghuang) >= 4096:
-            message['doc'] = True
+        message['doc']  = False
         message['text'] = ip + fenghuang
         message['group'] = 'domain_alert' #domain_alert
-        sendTelegram(message)
+        if len(message['text']) >= 4096:
+            message['doc']  = True
+            message['text'] = message['text'].replace('\r\n', '\n')
+        sendTelegram(message).send()
+
         
 if __name__ == '__main__':
     ip = getoutput('curl -s http://ip.cn')
