@@ -213,7 +213,7 @@ def sendAlert(ip, results):
             java += '\r\n' + result[1]
         elif result[0] == 27:
             ruiying += '\r\n' + result[1]
-        elif result[0] == 101:
+        elif result[0] == "越众棋牌":
             yuezhong += '\r\n' + result[1]
         else:
             fenghuang += '\r\n' + result[1]
@@ -224,7 +224,7 @@ def sendAlert(ip, results):
         if len(message['text']) >= 4096:
             message['doc']  = True
             message['text'] = message['text'].replace('\r\n', '\n')
-        sendTelegram(message).send()
+        sendTelegram(message)
     if ruiying:
         message['doc']  = False
         message['text'] = ip + ruiying
@@ -232,7 +232,7 @@ def sendAlert(ip, results):
         if len(message['text']) >= 4096:
             message['doc']  = True
             message['text'] = message['text'].replace('\r\n', '\n')
-        sendTelegram(message).send()
+        sendTelegram(message)
     if yuezhong:
         message['doc']  = False
         message['text'] = ip + yuezhong
@@ -240,7 +240,7 @@ def sendAlert(ip, results):
         if len(message['text']) >= 4096:
             message['doc']  = True
             message['text'] = message['text'].replace('\r\n', '\n')
-        sendTelegram(message).send()
+        sendTelegram(message)
     if fenghuang:
         message['doc']  = False
         message['text'] = ip + fenghuang
@@ -248,7 +248,7 @@ def sendAlert(ip, results):
         if len(message['text']) >= 4096:
             message['doc']  = True
             message['text'] = message['text'].replace('\r\n', '\n')
-        sendTelegram(message).send()
+        sendTelegram(message)
 
         
 if __name__ == '__main__':
