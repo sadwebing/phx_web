@@ -6,6 +6,7 @@
 #version: 2018/06/12 实现基本功能
 #         2018/07/26 域名区分产品和客户, 信息长度大于4096，以文件形式发送信息
 #         2018/07/29 域名区分产品和客户, 发送到相应的客户群组
+#         2019/04/01 做一些异常处理
 
 import os, sys, datetime, logging, ssl, socket, threading, requests, json, urlparse
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir)))
@@ -71,17 +72,9 @@ class sslExpiry(object):
         '''
     
         if bundle:
-            if "le723.com" in self.__domain:
-                context = ssl._create_unverified_context(cafile="%s/bundle/%s" %(current_dir, bundle))
-                logger.info("%s: _create_unverified_context：%s/bundle/%s" %(self.__domain, current_dir, bundle))
-            else:
-                context = ssl.create_default_context(cafile="%s/bundle/%s" %(current_dir, bundle))
+            context = ssl.create_default_context(cafile="%s/bundle/%s" %(current_dir, bundle))
         else:
-            if "le723.com" in self.__domain:
-                logger.info("_create_unverified_context")
-                context = ssl._create_unverified_context()
-            else:
-                context = ssl.create_default_context()
+            context = ssl.create_default_context()
         context.verify_mode = ssl.CERT_REQUIRED #是否验证证书
         #context.verify_mode = ssl.CERT_NONE
         #context.verify_mode = ssl.CERT_OPTIONAL
