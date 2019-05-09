@@ -29,8 +29,8 @@ message['parse_mode'] = "HTML"
 message['doc_name']   = 'message.txt'
 
 #django接口
-#dj_url = 'sa.l510881.com'
-dj_url = '127.0.0.1:5000'
+dj_url = 'sa.l510881.com'
+#dj_url = '127.0.0.1:5000'
 
 #一个月，半年，一年到期的时间
 d_one_y      = datetime.datetime.now() + datetime.timedelta(365)
@@ -71,10 +71,23 @@ class sslExpiry(object):
         '''
     
         if bundle:
-            context = ssl.create_default_context(cafile="%s/bundle/%s" %(current_dir, bundle))
+            if "le723.com" in self.__domain:
+                context = ssl._create_unverified_context(cafile="%s/bundle/%s" %(current_dir, bundle))
+                logger.info("%s: _create_unverified_context：%s/bundle/%s" %(self.__domain, current_dir, bundle))
+            else:
+                context = ssl.create_default_context(cafile="%s/bundle/%s" %(current_dir, bundle))
         else:
-            context = ssl.create_default_context()
-        context.verify_mode = ssl.CERT_REQUIRED
+            if "le723.com" in self.__domain:
+                logger.info("_create_unverified_context")
+                context = ssl._create_unverified_context()
+            else:
+                context = ssl.create_default_context()
+        context.verify_mode = ssl.CERT_REQUIRED #是否验证证书
+        #context.verify_mode = ssl.CERT_NONE
+        #context.verify_mode = ssl.CERT_OPTIONAL
+        #context.post_handshake_auth = False
+        context.check_hostname = True #是否检查主机域名
+
         conn    = context.wrap_socket(
             socket.socket(socket.AF_INET),
             server_hostname=self.__domain,
@@ -92,14 +105,27 @@ class sslExpiry(object):
         while not ssl:
             #print index
             conn = self.setConn(bundle=bundles[index])
+            #if "le723.com" in self.__domain:
+            #    logger.error('%s 443 ssl error: %s' %(self.__domain, bundles[index]))
             try:
                 conn.connect((self.__domain, 443))
             except (SSLError, CertificateError):
                 index += 1
+                
                 if index < len(bundles):
                     continue
                 else:
                     logger.error('%s 443 ssl error' %(self.__domain))
+
+                    #如果指定ca文件无法正常获取证书，再请求一次
+                    try:
+                        conn = self.setConn(bundle=None)
+                        conn.connect((self.__domain, 443))
+                        ssl_info = conn.getpeercert()
+                        return datetime.datetime.strptime(ssl_info['notAfter'], ssl_date_fmt)
+                    except Exception as e:
+                        logger.error('%s return error: \n %s' %(self.__domain, e))
+                        return SSLError
                     return SSLError
             except Exception, e:
                 logger.error('%s 443 connection error: \n %s' %(self.__domain, e))
@@ -107,8 +133,15 @@ class sslExpiry(object):
             else:
                 ssl = True
                 ssl_info = conn.getpeercert()
+                logger.info(ssl_info)
             #return datetime.datetime.strptime(ssl_info['notAfter'], ssl_date_fmt)
-        return datetime.datetime.strptime(ssl_info['notAfter'], ssl_date_fmt)
+
+        #在返回ssl 证书过期时间时，做一个异常控制
+        try:
+            return datetime.datetime.strptime(ssl_info['notAfter'], ssl_date_fmt)
+        except Exception as e:
+            logger.error('%s return error: \n %s' %(self.__domain, e))
+            return SSLError
     
 class myThread(threading.Thread):
     def __init__(self,domain_l):
@@ -153,6 +186,9 @@ if __name__ == "__main__":
             continue
         scheme = urlparse.urlsplit(domain_l['name']).scheme
 
+        #测试 www.le723.com 域名
+        #if "www.le723.com" not in domain_l['name']:
+        #    continue
         if scheme == "https":
             t = myThread(domain_l)
             li.append(t)
@@ -209,5 +245,6 @@ if __name__ == "__main__":
             continue
 
         for group in alert['chat_group']:
+            #message['group'] = "arno_test2"
             message['group'] = group
             sendTelegram(message)
