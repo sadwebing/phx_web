@@ -53,7 +53,7 @@ if __name__ == '__main__':
         "周报提醒 - %s" %timeNow().format('%Y/%m/%d %a'),
         "%s: %s" %(department.department, ", ".join(name + name2)),
         "负责人: @arno", 
-        "每周二为截止日期，请认真对待。",
+        "\r\n每周二为截止日期，请认真对待。",
     ])
 
     message['group'] = "yunwei"
