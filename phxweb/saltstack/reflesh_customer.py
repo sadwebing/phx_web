@@ -112,7 +112,6 @@ class SaltstackRefleshExecuteCdn(DefConsumer):
 
         info['step'] = 'final'
         self.message.reply_channel.send({'text': json.dumps(info)})
-        message['group'] = 'arno_test2'
         for cdn in cdn_d:
             if cdn_d[cdn]['failed']:
                 message["text"] = cdn_d[cdn]['failed']
