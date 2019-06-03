@@ -10,6 +10,7 @@
 #         2018/05/26 故障域名循环检测，避免一时的网络问题导致误报
 #         2018/06/29 域名分产品报警
 #         2018/07/26 域名区分产品和客户，信息长度大于4096，以文件形式发送信息
+#         2019/05/07 添加越众棋牌域名的预警
 
 import re,os,sys,requests,datetime,multiprocessing,json,threading
 #sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir)))
@@ -213,7 +214,7 @@ def sendAlert(ip, results):
             java += '\r\n' + result[1]
         elif result[0] == 27:
             ruiying += '\r\n' + result[1]
-        elif result[0] == "越众棋牌":
+        elif result[0] == "越众棋牌_公共客户[pub]":
             yuezhong += '\r\n' + result[1]
         else:
             fenghuang += '\r\n' + result[1]
@@ -252,7 +253,8 @@ def sendAlert(ip, results):
 
         
 if __name__ == '__main__':
-    ip = getoutput('curl -s http://ip.cn')
+    # ip = getoutput('curl -s http://ip.cn')
+    ip = gethostname()
     li = []
     results = []
 

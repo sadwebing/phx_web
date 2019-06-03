@@ -4,6 +4,7 @@ from phxweb                import settings
 from accounts.views        import getIp
 from saltstack.tencent_api import tcApi
 from saltstack.ws_api      import wsApi
+from saltstack.aws_api     import awsApi
 from dns.cf_api            import CfApi
 from phxweb.settings       import CF_URL
 from saltstack.reflesh     import sendTelegramRe
@@ -73,27 +74,45 @@ class SaltstackRefleshExecuteCdn(DefConsumer):
                     req = tcApi(cdn_d[cdn]['secretid'], cdn_d[cdn]['secretkey'])
                 elif cdn_d[cdn]['name'] == "wangsu":
                     req = wsApi(cdn_d[cdn]['secretid'], cdn_d[cdn]['secretkey'])
+                elif cdn_d[cdn]['name'] == "aws":
+                    req = awsApi(cdn_d[cdn]['secretid'], cdn_d[cdn]['secretkey'])
                 else:
                     info['result'] = ["CDN 接口不存在！"]
                     cdn_d[cdn]['failed'].append("%s: 接口不存在！" %cdn)
                     self.message.reply_channel.send({'text': json.dumps(info)})
                     continue
 
-                while len(cdn_d[cdn]['domain']) != 0 :
-                    domains_c            = cdn_d[cdn]['domain'][:10]
-                    cdn_d[cdn]['domain'] = cdn_d[cdn]['domain'][10:]
-
-                    for uri in data['uri']:
-                        result, status = req.purge(domains_c, uri)
+                if cdn_d[cdn]['name'] == "aws": # aws cdn 域名清理
+                    for Id in cdn_d[cdn]['domain']:
+                        result, status = req.purge(Id, data['uri'])
+                        name = cdn + " - " + Id
                         if status:
-                            info['result'] = [ domain+uri+": 清缓存成功。" for domain in domains_c ]
-                            cdn_d[cdn]['success'] += [ domain+uri for domain in domains_c ]
+                            info['result'] = name + ": 缓存清理执行中......"
+                            cdn_d[cdn]['success'] += [ name ]
                         else:
-                            info['result'] = [ domain+uri+": 清缓存失败！" for domain in domains_c ]
-                            cdn_d[cdn]['failed'] += [ domain+uri for domain in domains_c ]
+                            info['result'] = name + ": 缓存清理失败！"
+                            cdn_d[cdn]['failed'] += [ name ]
+
                         self.message.reply_channel.send({'text': json.dumps(info)})
+
+                else:
+                    while len(cdn_d[cdn]['domain']) != 0 :
+                        domains_c            = cdn_d[cdn]['domain'][:10]
+                        cdn_d[cdn]['domain'] = cdn_d[cdn]['domain'][10:]
+
+                        for uri in data['uri']:
+                            result, status = req.purge(domains_c, uri)
+                            if status:
+                                info['result'] = [ domain+uri+": 清缓存成功。" for domain in domains_c ]
+                                cdn_d[cdn]['success'] += [ domain+uri for domain in domains_c ]
+                            else:
+                                info['result'] = [ domain+uri+": 清缓存失败！" for domain in domains_c ]
+                                cdn_d[cdn]['failed'] += [ domain+uri for domain in domains_c ]
+                            self.message.reply_channel.send({'text': json.dumps(info)})
+
         info['step'] = 'final'
         self.message.reply_channel.send({'text': json.dumps(info)})
+        message['group'] = 'arno_test2'
         for cdn in cdn_d:
             if cdn_d[cdn]['failed']:
                 message["text"] = cdn_d[cdn]['failed']

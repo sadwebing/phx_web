@@ -5,6 +5,7 @@ from phxweb          import settings
 from accounts.views  import getIp
 from tencent_api     import tcApi
 from ws_api          import wsApi
+from aws_api         import awsApi
 from dns.cf_api      import CfApi
 from phxweb.settings import CF_URL
 from detect.models   import domains
@@ -87,6 +88,8 @@ def refleshGetProject(request):
         data = {'cdn_proj': [], 'cdn': []}
         cdn_projs   = cdn_proj_t.objects.all()
         cdns        = cdn_t.objects.filter(status=1).all()
+
+        # 获取 cdn缓存项目
         for prot in cdn_projs:
             tmpdict = {}
             tmpdict['project'] = prot.get_project_display()
@@ -97,6 +100,8 @@ def refleshGetProject(request):
             #tmpdict['cdn']     = [ {'name': cdn.get_name_display(),
             #                        'account': cdn.account} for cdn in cdn_t.objects.all() ]
             data['cdn_proj'].append(tmpdict)
+
+        # 获取指定 cdn 的域名
         for cdn in cdns:
             tmpdict = {
                 'id':      cdn.id,
@@ -110,9 +115,9 @@ def refleshGetProject(request):
                 for line in results['data']['hosts']:
                     if line['disabled'] == 0 and line['status'] in [3, 4, 5]:
                         tmpdict['domain'].append({
-                            'name': line['host'],
-                            'ssl' : 1 if line['ssl_type']!=0 else 0,
-                        })
+                                'name': line['host'],
+                                'ssl' : 1 if line['ssl_type']!=0 else 0,
+                            })
             elif cdn.get_name_display() == "wangsu":
                 req = wsApi(cdn.secretid, cdn.secretkey)
                 results, status = req.getdomains()
@@ -120,9 +125,22 @@ def refleshGetProject(request):
                     for line in results:
                         if line['enabled'] == 'true':
                             tmpdict['domain'].append({
-                                'name': line['domain-name'],
-                                'ssl' : 1 if line['service-type']=='web-https' else 0,
+                                    'name': line['domain-name'],
+                                    'ssl' : 1 if line['service-type']=='web-https' else 0,
+                                })
+            elif cdn.get_name_display() == "aws":
+                req = awsApi(cdn.secretid, cdn.secretkey)
+                results, status = req.getdomains(['fenghuang'])
+                if status:
+                    for item in results:
+                        tmpdict['domain'].append({
+                                'Id': item['Id'],
+                                'name': item['domains'],
+                                'ssl' : 0,
+                                'product':  item['product'],
+                                'customer': item['customer']
                             })
+
             else:
                 tmpdict['domain'] = []
 

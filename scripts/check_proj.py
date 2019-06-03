@@ -210,11 +210,14 @@ def sendAlert(ip, results):
     java      = ""
     ruiying   = ""
     fenghuang = ""
+    yuezhong  = ""
     for result in results:
         if result[0] == 26:
             java += '\r\n' + result[1]
         elif result[0] == 27:
             ruiying += '\r\n' + result[1]
+        elif result[0] == 101:
+            yuezhong += '\r\n' + result[1]
         else:
             fenghuang += '\r\n' + result[1]
     if java:
@@ -229,6 +232,14 @@ def sendAlert(ip, results):
         message['doc']  = False
         message['text'] = ip + ruiying
         message['group'] = 'arno_test' #ruiying_domain
+        if len(message['text']) >= 4096:
+            message['doc']  = True
+            message['text'] = message['text'].replace('\r\n', '\n')
+        sendTelegram(message).send()
+    if yuezhong:
+        message['doc']  = False
+        message['text'] = ip + yuezhong
+        message['group'] = 'yuezhong_domain' #yuezhong_domain
         if len(message['text']) >= 4096:
             message['doc']  = True
             message['text'] = message['text'].replace('\r\n', '\n')

@@ -29,6 +29,10 @@ TcbsApp.config(function ($stateProvider, $urlRouterProvider) {
             url:"/dns/cloudflare",
             templateUrl: "/dns/cloudflare/index"
         })
+        .state("dns_cloudflare_spectrum", {
+            url:"/dns/cloudflare/spectrum",
+            templateUrl: "/dns/cloudflare/spectrum/index"
+        })
         .state("dns_dnspod", {
             url:"/dns/dnspod",
             templateUrl: "/dns/dnspod/index"

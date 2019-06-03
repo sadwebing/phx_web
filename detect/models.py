@@ -27,6 +27,7 @@ class cdn_account_t(models.Model):
     choices_cdn = (
         (0, 'tencent'),
         (1, 'wangsu'),
+        (2, 'aws'),
         )
 
     name      = models.IntegerField(choices=choices_cdn)

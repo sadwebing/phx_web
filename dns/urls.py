@@ -3,6 +3,7 @@ from django.views.generic.base import RedirectView
 from . import views
 from . import nginx
 from . import httpdns
+from . import spectrum
 
 urlpatterns = [
     url('^getDns$', httpdns.GetDns, name='GetDns'),
@@ -17,6 +18,9 @@ urlpatterns = [
     url('^cloudflare/delete_records$', views.DeleteRecords, name='DeleteRecords'),
     url('^cloudflare/update_api_route$', views.UpdateApiRoute, name='UpdateApiRoute'),
     url('^cloudflare/get_api_route$', views.GetApiRoute, name='GetApiRoute'),
+
+    #cloudflare/spectrum
+    url('^cloudflare/spectrum/index$', spectrum.Index, name='spectrumIndex'),
 
     #dnspod
     url('^dnspod/index$', views.DndpodIndex, name='DndpodIndex'),

@@ -25564,3 +25564,155 @@ Exception: HTTPConnectionPool(host='182.16.117.186', port=8888): Max retries exc
 2019-02-25 16:51:21,413 telegram.py [django:117] [ERROR]- {'disable_web_page_preview': True, 'text': u"http://182.16.117.186:8888/svn_code\nException: HTTPConnectionPool(host='182.16.117.186', port=8888): Max retries exceeded with url: /svn_code (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x06954370>: Failed to establish a new connection: [Errno 10061] ',))", 'doc_name': '20190225165120_message.txt', 'caption': '', 'chat_id': -204952096L, 'parse_mode': 'HTML'}
 2019-02-25 17:02:48,888 execute_customer.py [django:396] [ERROR]- (1062, "Duplicate entry '3127' for key 'revision'")
 2019-02-25 17:02:48,891 execute_customer.py [django:397] [ERROR]- svn 记录锁已存在：{u'date': u'2019/01/28 16:56:22', u'changelist': [[u'M', u'/fenghuang/houtai/html/zhuanyepan/pc/static/platform/wanyou.config.js'], [u'M', u'/fenghuang/houtai/html/zhuanyepan/wap/static/platform/wanyou/wanyou.config.js']], u'author': u'arno', u'log': u'1', u'revision': 3127}
+2019-06-02 17:46:15,216 exception.py [django.request:135] [ERROR]- Internal Server Error: /admin/dns/aws_account/
+Traceback (most recent call last):
+  File "J:\arno\test\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "J:\arno\test\lib\site-packages\channels\handler.py", line 243, in process_exception_by_middleware
+    return super(AsgiHandler, self).process_exception_by_middleware(exception, request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "J:\arno\test\lib\site-packages\django\contrib\admin\options.py", line 551, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+  File "J:\arno\test\lib\site-packages\django\utils\decorators.py", line 149, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "J:\arno\test\lib\site-packages\django\views\decorators\cache.py", line 57, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "J:\arno\test\lib\site-packages\django\contrib\admin\sites.py", line 224, in inner
+    return view(request, *args, **kwargs)
+  File "J:\arno\test\lib\site-packages\django\utils\decorators.py", line 67, in _wrapper
+    return bound_func(*args, **kwargs)
+  File "J:\arno\test\lib\site-packages\django\utils\decorators.py", line 149, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "J:\arno\test\lib\site-packages\django\utils\decorators.py", line 63, in bound_func
+    return func.__get__(self, type(self))(*args2, **kwargs2)
+  File "J:\arno\test\lib\site-packages\django\contrib\admin\options.py", line 1542, in changelist_view
+    self.list_max_show_all, self.list_editable, self,
+  File "J:\arno\test\lib\site-packages\django\contrib\admin\views\main.py", line 79, in __init__
+    self.get_results(request)
+  File "J:\arno\test\lib\site-packages\django\contrib\admin\views\main.py", line 177, in get_results
+    result_count = paginator.count
+  File "J:\arno\test\lib\site-packages\django\utils\functional.py", line 35, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "J:\arno\test\lib\site-packages\django\core\paginator.py", line 79, in count
+    return self.object_list.count()
+  File "J:\arno\test\lib\site-packages\django\db\models\query.py", line 363, in count
+    return self.query.get_count(using=self.db)
+  File "J:\arno\test\lib\site-packages\django\db\models\sql\query.py", line 498, in get_count
+    number = obj.get_aggregation(using, ['__count'])['__count']
+  File "J:\arno\test\lib\site-packages\django\db\models\sql\query.py", line 479, in get_aggregation
+    result = compiler.execute_sql(SINGLE)
+  File "J:\arno\test\lib\site-packages\django\db\models\sql\compiler.py", line 876, in execute_sql
+    cursor.execute(sql, params)
+  File "J:\arno\test\lib\site-packages\django\db\backends\utils.py", line 80, in execute
+    return super(CursorDebugWrapper, self).execute(sql, params)
+  File "J:\arno\test\lib\site-packages\django\db\backends\utils.py", line 65, in execute
+    return self.cursor.execute(sql, params)
+  File "J:\arno\test\lib\site-packages\django\db\utils.py", line 94, in __exit__
+    six.reraise(dj_exc_type, dj_exc_value, traceback)
+  File "J:\arno\test\lib\site-packages\django\db\backends\utils.py", line 65, in execute
+    return self.cursor.execute(sql, params)
+  File "J:\arno\test\lib\site-packages\django\db\backends\mysql\base.py", line 101, in execute
+    return self.cursor.execute(query, args)
+  File "J:\arno\test\lib\site-packages\MySQLdb\cursors.py", line 205, in execute
+    self.errorhandler(self, exc, value)
+  File "J:\arno\test\lib\site-packages\MySQLdb\connections.py", line 36, in defaulterrorhandler
+    raise errorclass, errorvalue
+ProgrammingError: (1146, "Table 'phxweb.dns_aws_account' doesn't exist")
+2019-06-03 16:18:19,299 exception.py [django.request:135] [ERROR]- Internal Server Error: /saltstack/reflesh/get_project
+Traceback (most recent call last):
+  File "J:\arno\test\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "J:\arno\test\lib\site-packages\channels\handler.py", line 243, in process_exception_by_middleware
+    return super(AsgiHandler, self).process_exception_by_middleware(exception, request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "J:\arno\test\lib\site-packages\django\views\decorators\csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "J:\arno\test\phx_web\saltstack\reflesh.py", line 131, in refleshGetProject
+    req = awsApi(cdn.secretid, cdn.secretkey)
+NameError: global name 'awsApi' is not defined
+2019-06-03 16:22:23,881 exception.py [django.request:135] [ERROR]- Internal Server Error: /saltstack/reflesh/get_project
+Traceback (most recent call last):
+  File "J:\arno\test\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "J:\arno\test\lib\site-packages\channels\handler.py", line 243, in process_exception_by_middleware
+    return super(AsgiHandler, self).process_exception_by_middleware(exception, request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "J:\arno\test\lib\site-packages\django\views\decorators\csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "J:\arno\test\phx_web\saltstack\reflesh.py", line 133, in refleshGetProject
+    results, status = req.getdomains(['fenghuang'])
+  File "J:\arno\test\phx_web\saltstack\aws_api.py", line 97, in getdomains
+    for item in ret['DistributionList']['items']:
+KeyError: 'items'
+2019-06-03 16:26:08,674 exception.py [django.request:135] [ERROR]- Internal Server Error: /saltstack/reflesh/get_project
+Traceback (most recent call last):
+  File "J:\arno\test\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "J:\arno\test\lib\site-packages\channels\handler.py", line 243, in process_exception_by_middleware
+    return super(AsgiHandler, self).process_exception_by_middleware(exception, request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "J:\arno\test\lib\site-packages\django\views\decorators\csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "J:\arno\test\phx_web\saltstack\reflesh.py", line 133, in refleshGetProject
+    results, status = req.getdomains(['fenghuang'])
+  File "J:\arno\test\phx_web\saltstack\aws_api.py", line 98, in getdomains
+    li = item['CustomErrorResponses']['Comment'].replace(' ').split('-') # 获取注释，并拆分为列表
+KeyError: 'Comment'
+2019-06-03 16:28:03,642 exception.py [django.request:135] [ERROR]- Internal Server Error: /saltstack/reflesh/get_project
+Traceback (most recent call last):
+  File "J:\arno\test\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "J:\arno\test\lib\site-packages\channels\handler.py", line 243, in process_exception_by_middleware
+    return super(AsgiHandler, self).process_exception_by_middleware(exception, request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "J:\arno\test\lib\site-packages\django\views\decorators\csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "J:\arno\test\phx_web\saltstack\reflesh.py", line 133, in refleshGetProject
+    results, status = req.getdomains(['fenghuang'])
+  File "J:\arno\test\phx_web\saltstack\aws_api.py", line 98, in getdomains
+    li = item['Comment'].replace(' ').split('-') # 获取注释，并拆分为列表
+TypeError: replace() takes at least 2 arguments (1 given)
+2019-06-03 17:18:40,286 exception.py [django.request:135] [ERROR]- Internal Server Error: /saltstack/reflesh/get_project
+Traceback (most recent call last):
+  File "J:\arno\test\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "J:\arno\test\lib\site-packages\channels\handler.py", line 243, in process_exception_by_middleware
+    return super(AsgiHandler, self).process_exception_by_middleware(exception, request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "J:\arno\test\lib\site-packages\django\views\decorators\csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "J:\arno\test\phx_web\saltstack\reflesh.py", line 133, in refleshGetProject
+    results, status = req.getdomains(['fenghuang'])
+  File "J:\arno\test\phx_web\saltstack\aws_api.py", line 105, in getdomains
+    'product':  len[0],
+TypeError: 'builtin_function_or_method' object has no attribute '__getitem__'

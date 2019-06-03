@@ -69,14 +69,19 @@ var operate = {
                     var domain_html = "";
                     cdn_html = cdn_html + "<option value="+item.id+" data-subtext='"+item.name+"'>"+item.account+"</option>";
                     
-                    $.each(item.domain, function (index, domain) {
-                        if (domain.ssl === 1){
-                            domain_html = domain_html + "<option value=https://"+domain.name+">https://"+domain.name+"</option>";
-                        }else {
-                            domain_html = domain_html + "<option value=http://"+domain.name+">http://"+domain.name+"</option>";
-                        }
-                        
-                    })
+                    if (item.name == 'aws'){ //如果是aws 域名，进行特殊处理
+                        $.each(item.domain, function (index, domain) {
+                            domain_html = domain_html + "<option value="+domain.Id+" data-subtext='"+domain.product+" "+domain.customer+"'>"+domain.Id+": "+domain.name.join(", ")+"</option>";
+                        })
+                    }else {
+                        $.each(item.domain, function (index, domain) {
+                            if (domain.ssl === 1){
+                                domain_html = domain_html + "<option value=https://"+domain.name+">https://"+domain.name+"</option>";
+                            }else {
+                                domain_html = domain_html + "<option value=http://"+domain.name+">http://"+domain.name+"</option>";
+                            }
+                        })
+                    }
                     
                     cdn_list_html[item.id] = {'domain_html': domain_html};
                 })

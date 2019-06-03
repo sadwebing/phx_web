@@ -14,13 +14,15 @@
 					{% endcomment %}
 					{% if role == 'sa' %}
 					<li id='monitor_saltstack'>
-						<i class="glyphicon glyphicon-list-alt text-primary"> <span> 监控与部署 </span></i>
+						<i class="glyphicon glyphicon-list-alt text-primary"> <span> 监控 </span></i>
 						<ul>
 							<li id="monitor">
 								<i class="glyphicon glyphicon-text-height text-primary"> <span> Monitor </span></i>
+								{% comment %}  
 								<ul>
 								    <li><a ui-sref="monitor_services"><i class="glyphicon glyphicon-edit"></i>   services</a></li>
 								</ul>
+								{% endcomment %}
                                 <ul>
 								    <li><a ui-sref="monitor_domains"><i class="glyphicon glyphicon-edit"></i>   domains</a></li>
 								</ul>
@@ -44,6 +46,11 @@
 						<ul>  
 						    <li><a ui-sref="dns_cloudflare"><i class="glyphicon glyphicon-align-right"></i>   CloudFlare</a></li>
 						</ul>
+						{% comment %}
+						<ul>  
+						    <li><a ui-sref="dns_cloudflare_spectrum"><i class="glyphicon glyphicon-align-right"></i>   CloudFlare-tcp</a></li>
+						</ul>
+						{% endcomment %}
                         <ul>  
 						    <li><a ui-sref="dns_dnspod"><i class="glyphicon glyphicon-align-right"></i>   DnsPod</a></li>
 						</ul>
@@ -67,6 +74,9 @@
 							<li><a ui-sref="upgrade_operate"><i class="glyphicon glyphicon-align-right"></i>   凤凰彩票</a></li>  
 							{% if user.username == "phexus_sa" %}
 							<li><a ui-sref="upgrade_remoteExe"><i class="glyphicon glyphicon-align-right"></i>   远程操作</a></li>  
+							{% endif %}
+							{% if user.username == "trevor" %}
+							<li><a ui-sref="upgrade_remoteExe"><i class="glyphicon glyphicon-align-right"></i>   远程操作</a></li>
 							{% endif %}
 							<li><a ui-sref="upgrade_current"><i class="glyphicon glyphicon-edit"></i>   当前SVN记录</a></li>  
 							<li><a ui-sref="upgrade_operate_zyp"><i class="glyphicon glyphicon-align-right"></i>   专业盘彩票</a></li>  
