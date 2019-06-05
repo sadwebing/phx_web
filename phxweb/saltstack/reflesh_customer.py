@@ -87,10 +87,10 @@ class SaltstackRefleshExecuteCdn(DefConsumer):
                         result, status = req.purge(Id, data['uri'])
                         name = cdn + " - " + Id
                         if status:
-                            info['result'] = name + ": 缓存清理执行中......"
+                            info['result'] = [ name + ": 缓存清理执行中......" ]
                             cdn_d[cdn]['success'] += [ name ]
                         else:
-                            info['result'] = name + ": 缓存清理失败！"
+                            info['result'] = [ name + ": 缓存清理失败！" ]
                             cdn_d[cdn]['failed'] += [ name ]
 
                         self.message.reply_channel.send({'text': json.dumps(info)})
