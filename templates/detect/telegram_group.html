@@ -1,0 +1,106 @@
+{% if title %}
+    <title>{{title}}</title>
+{% else %}
+    <title>管理中心</title>
+{% endif %}
+<style>
+    hr {
+        margin-top:5px;
+        margin-bottom: 3px;
+    },
+ </style>
+    <div class="placeholder">
+        <div class="panel panel-default" style="margin-bottom: 5px;">
+            <div class="panel-heading">
+                <h4 class="panel-title">message-telegramGroup</h4>
+            </div>
+            <div class="panel-body" style="padding-top: 5px; padding-bottom: 5px;">
+            <div class="row">
+            <div class="col-xs-9 col-sm-9 col-md-9">
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <form class="form-group form-inline" role="form" style="margin-bottom: 5px;">
+                        <div class="input-group">
+                            <span class="input-group-btn">
+                                <button id="command_panel" class="btn btn-info" type="submit" title="隐藏" style="width: 35px;">-</button>
+                            </span>
+                            <span class="form-control" style="width: auto;">发送信息到指定群组</span>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12" id="command_form" style="display: inline; background-color: #F0F8FF;">
+                    <br>
+                    <div class="col-xs-11 col-sm-11 col-md-11">
+                        <form class="form-group form-inline" role="form" id="telegram_group_atusers" name="telegram_group"> 
+                            <select class="form-control selectpicker show-tick" data-live-search="true" id="telegram_group" name="telegram_group" title="请选择要通知的群组" data-width="48%">
+                            </select>
+                            <select class="form-control selectpicker show-tick" data-live-search="true" multiple data-actions-box="true" id="telegram_atusers" name="telegram_atusers" title="请选择需要通知的同事" data-width="48%">
+                            </select>
+                        </form>
+                        <form class="form-group form-inline" role="form">
+                            <textarea class="form-control" id="textarea_telegram_text" name="textarea_telegram_text" style="height: 300px;width: 96%; max-width: 96%; margin-bottom: 10px;" placeholder="信息文本可指定@人员，例如@arno"></textarea>
+                        </form>
+                    </div>
+                    <div class="col-xs-1 col-sm-1 col-md-1">
+                        <input id="btn_submit_command" type="submit" onclick="operate.Submit('btn_submit_command')" class="btn btn-default" style="width:100%;" value="发送">
+                    </div>
+                </div>
+            </div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="runprogress" tabindex="-1" role="dialog"   
+       aria-labelledby="runprogressLabel" aria-hidden="true" data-backdrop="static">   
+       <div class="modal-dialog">  
+           <div class="modal-content" >
+                <div class="modal-header">
+                    <span style="text-align:center;color:blue" id="progress_head">操作进行中，请勿刷新页面......</span><br/>
+                </div>
+                <div class="modal-body">
+                    <div class="progress progress-striped active">  
+                        <div class="progress-bar progress-bar-success" role="progressbar" id="progress_bar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 30%;">
+                        </div>
+                    </div>
+                    <pre class="pre-scrollable" id="OperateRestartresults"></pre>
+                </div>
+                <div class="modal-footer" id="progressFooter">
+                </div>
+           </div>  
+       </div>  
+    </div>  
+
+    <div class="placeholder">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">返回结果</h4>
+            </div>
+            <div class="panel-body">
+                <pre class="pre-scrollable" id="commandresults"></pre>
+            </div>
+        </div>
+    </div>
+
+<script>
+    //console.log("{{ items|safe }}");
+    window.groups = {{ groups|safe }};
+    window.atUsers = {{ atUsers|safe }};
+    //console.log(window.items[0]);
+    window.groupHtml = ""
+    window.atUsersHtml = ""
+    for (var group in groups){
+        groupHtml = groupHtml + "<option value="+group+">"+groups[group]['name']+"</option>";
+    }
+
+    for (var department in atUsers) {
+        info = atUsers[department]
+        //console.log(info['display'])
+        atUsersHtml += "<option value="+info['id']+" data-subtext="+info['display']+">"+info['department']+"</option>";
+    }
+
+    document.getElementById("telegram_group").innerHTML   = groupHtml;
+    document.getElementById("telegram_atusers").innerHTML = atUsersHtml;
+</script>
+
+<script src="/static/custom/tablejs/public/public.js" type="text/javascript"></script>
+<script src="/static/custom/tablejs/detect/telegram_group.js" type="text/javascript"></script>

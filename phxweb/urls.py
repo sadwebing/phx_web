@@ -20,6 +20,7 @@ urlpatterns = [
     url(r'^monitor/', include('monitor.urls')),
     url(r'^dns/', include('dns.urls')),
     url(r'^detect/', include('detect.urls')),
+    url(r'^message/', include('detect.urls')),
     url(r'^saltstack/', include('saltstack.urls')),
     url(r'^servers/', include('servers.urls')),
     url(r'^upgrade/', include('upgrade.urls')),

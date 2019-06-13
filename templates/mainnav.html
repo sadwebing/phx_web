@@ -12,6 +12,25 @@
 						</ul>
 					</li>
 					{% endcomment %}
+					{% if role == 'kefu' %}
+					<li id='message'>
+						<i class="glyphicon glyphicon-list-alt text-primary"> <span> Telegram </span></i>
+						<ul>  
+						    <li><a ui-sref="message_telegram"><i class="glyphicon glyphicon-align-right"></i>   群组信息</a></li>
+						</ul>
+					</li>
+					{% endif %}
+
+					{% if role == 'sa' %}
+					<li id='message'>
+						<i class="glyphicon glyphicon-list-alt text-primary"> <span> Telegram </span></i>
+						<ul>  
+						    <li><a ui-sref="message_telegram"><i class="glyphicon glyphicon-align-right"></i>   群组信息</a></li>
+						</ul>
+					</li>
+					{% endif %}
+
+
 					{% if role == 'sa' %}
 					<li id='monitor_saltstack'>
 						<i class="glyphicon glyphicon-list-alt text-primary"> <span> 监控 </span></i>
@@ -132,6 +151,7 @@
         destroy: true // 切换菜单时是否释放控件占用资源
     });
     $('#monitor_saltstack').children('ul').slideDown();
+    $('#message').children('ul').slideDown();
     $('#dns').children('ul').slideDown();
     $('#tomcat').children('ul').slideDown();
     $('#monitor').children('ul').slideDown();

@@ -17,6 +17,10 @@ TcbsApp.config(function ($stateProvider, $urlRouterProvider) {
             url:"/op_history",
             templateUrl: "/malfunction/op_history"
         })
+        .state("message_telegram", {
+            url:"/message",
+            templateUrl: "/message/telegram"
+        })
         .state("monitor_services", {
             url:"/services",
             templateUrl: "/monitor/services"
