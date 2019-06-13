@@ -31,15 +31,19 @@ def TelegramGroup(request):
 
     # 获取需要@的群组人员
     atUsers = {}
-    if role == "sa" or request.user.is_superuser:
+    if request.user.is_superuser:
+        atUsersSelects = department_user_t.objects.filter(status=1).all()
+    elif role == "sa":
         atUsersSelects = department_user_t.objects.filter(status=1).all()
     else:
         atUsersSelects = department_user_t.objects.filter(status=1).all()
 
     # 获取需要发送信息的群组
     groups = {}
-    if role == "sa" or request.user.is_superuser:
+    if request.user.is_superuser:
         groupSelects = telegram_chat_group_t.objects.filter(status=1).all()
+    elif role == "sa":
+        groupSelects = telegram_chat_group_t.objects.filter(status=1, group__in=['kindergarten', 'zhuanyepan', 'yunwei']).all()
     else:
         groupSelects = telegram_chat_group_t.objects.filter(status=1, group__in=['kindergarten', 'zhuanyepan']).all()
 
@@ -151,7 +155,7 @@ def Telegramsendgroupmessage(request):
 
         for group in datas['group']:
             message['group'] = group
-            message['text']  = datas['text'] + '\r\n' + '\r\n'.join(atUsers)
+            message['text']  = datas['text'] + '\r\n\r\n' + '\r\n'.join(atUsers)
 
             s = sendTelegram(message)
             if s.send():
