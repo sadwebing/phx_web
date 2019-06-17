@@ -41,7 +41,12 @@
                         </form>
                     </div>
                     <div class="col-xs-1 col-sm-1 col-md-1">
-                        <input id="btn_submit_command" type="submit" onclick="operate.Submit('btn_submit_command')" class="btn btn-default" style="width:100%;" value="发送">
+                        <form class="form-group form-inline" role="form">
+                            <input id="btn_submit_command" type="submit" onclick="operate.Submit('btn_submit_command')" class="btn btn-default" style="width:100%;" value="发送">
+                        </form>
+                        <form class="form-group form-inline" role="form">
+                            <input id="btn_upload_images" type="submit" onclick="operate.Uploadimgs()" class="btn btn-default" style="width:100%;" value="发送图片">
+                        </form>
                     </div>
                 </div>
             </div>
@@ -69,6 +74,24 @@
            </div>  
        </div>  
     </div>  
+
+    <form>
+        <div class="modal fade" id="uploadimgs" tabindex="-1" role="dialog" aria-labelledby="uploadimgsLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">请选择上传的图片，可一次性上传多张</h4>
+                    </div>
+                    <div class="modal-body">
+                        {% comment %}
+                        <a href="~/Data/ExcelTemplate/Order.xlsx" class="form-control" style="border:none;">下载导入模板</a>
+                        {% endcomment %}
+                        <input type="file" name="txt_file" id="txt_file" multiple class="file-loading" />
+                    </div></div>
+            </div>
+        </div>
+    </form>
 
     <div class="placeholder">
         <div class="panel panel-default">

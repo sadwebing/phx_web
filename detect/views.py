@@ -167,6 +167,32 @@ def Telegramsendgroupmessage(request):
         return HttpResponse(status=403)
 
 @csrf_exempt
+def TelegramUploadimgs(request):
+    if request.META.has_key('HTTP_X_FORWARDED_FOR'):
+        clientip = request.META['HTTP_X_FORWARDED_FOR']
+    else:
+        clientip = request.META['REMOTE_ADDR']
+    logger.info('%s is requesting %s' %(clientip, request.get_full_path()))
+
+    if request.method == 'POST':
+        message = settings.message_TEST
+
+        img = request.FILES['txt_file']
+        group = request.GET['group']
+        
+        message['group'] = group
+        s = sendTelegram(message)
+        if s.sendPhoto(img):
+            return HttpResponse(json.dumps({'result': '图片发送成功'}))
+        else: 
+            return HttpResponse(content=json.dumps({'result': '图片发送失败'}), status=502)
+
+        return HttpResponse(json.dumps({'result': '图片发送成功'}))
+
+    else:
+        return HttpResponse(status=403)
+
+@csrf_exempt
 def GetDomains(request):
     title = u'获取检测域名'
     if request.META.has_key('HTTP_X_FORWARDED_FOR'):

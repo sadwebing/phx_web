@@ -12,4 +12,5 @@ urlpatterns = [
     # 发送telegram信息
     url('telegram$', views.TelegramGroup, name='TelegramGroup'),
     url('telegram/sendgroupmessage$', views.Telegramsendgroupmessage, name='Telegramsendgroupmessage'),
+    url('telegram/uploadimgs$', views.TelegramUploadimgs, name='TelegramUploadimgs'),
 ]

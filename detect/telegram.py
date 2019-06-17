@@ -116,3 +116,27 @@ class sendTelegram(object):
                 logger.error('%s: %s' %(ret.status_code, ret.content))
                 logger.error(self.__message)
                 return False
+
+    def sendPhoto(self, photo):
+        '''
+            发送图片
+        '''
+        if not photo: return False
+        self.__message['text'] = self.__message['text'].decode('utf8')
+        files = {'photo': photo}
+        try:
+            ret = requests.post(self.__url+'sendPhoto', data=self.__message, files=files, timeout=self.__timeout)
+                
+        except Exception, e:
+            logger.error('Attention: send photo failed!')
+            logger.error(e.message)
+            return False
+        else:
+            if ret.status_code == 200:
+                logger.info('send photo successfull!')
+                return True
+            else:
+                logger.error('Attention: send photo failed!')
+                logger.error('%s: %s' %(ret.status_code, ret.content))
+                logger.error(self.__message)
+                return False
