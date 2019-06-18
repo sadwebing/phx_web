@@ -140,3 +140,27 @@ class sendTelegram(object):
                 logger.error('%s: %s' %(ret.status_code, ret.content))
                 logger.error(self.__message)
                 return False
+
+    def sendDocument(self, file):
+        '''
+            发送图片
+        '''
+        if not file: return False
+        self.__message['text'] = self.__message['text'].decode('utf8')
+        files = {'document': file}
+        try:
+            ret = requests.post(self.__url+'sendDocument', data=self.__message, files=files, timeout=self.__timeout)
+                
+        except Exception, e:
+            logger.error('Attention: send file failed!')
+            logger.error(e.message)
+            return False
+        else:
+            if ret.status_code == 200:
+                logger.info('send file successfull!')
+                return True
+            else:
+                logger.error('Attention: send file failed!')
+                logger.error('%s: %s' %(ret.status_code, ret.content))
+                logger.error(self.__message)
+                return False

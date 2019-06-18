@@ -181,8 +181,15 @@ def TelegramUploadimgs(request):
         group = request.GET['group']
         
         message['group'] = group
+
+        # 判断文件是不是 gif
         s = sendTelegram(message)
-        if s.sendPhoto(img):
+        if str(img)[-3:] == "gif":
+            r = s.sendDocument(img)
+        else:
+            r = s.sendPhoto(img)
+
+        if r:
             return HttpResponse(json.dumps({'result': '图片发送成功'}))
         else: 
             return HttpResponse(content=json.dumps({'result': '图片发送失败'}), status=502)
