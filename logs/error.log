@@ -25989,3 +25989,39 @@ Traceback (most recent call last):
   File "J:\arno\test\lib\site-packages\django\utils\datastructures.py", line 85, in __getitem__
     raise MultiValueDictKeyError(repr(key))
 MultiValueDictKeyError: "'txt_file'"
+2019-06-20 09:53:35,765 exception.py [django.request:135] [ERROR]- Internal Server Error: /message/telegram/uploadimgs
+Traceback (most recent call last):
+  File "J:\arno\test\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "J:\arno\test\lib\site-packages\channels\handler.py", line 243, in process_exception_by_middleware
+    return super(AsgiHandler, self).process_exception_by_middleware(exception, request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "J:\arno\test\lib\site-packages\django\views\decorators\csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "J:\arno\test\phx_web\detect\views.py", line 181, in TelegramUploadimgs
+    text    = request.FILES['text']
+  File "J:\arno\test\lib\site-packages\django\utils\datastructures.py", line 85, in __getitem__
+    raise MultiValueDictKeyError(repr(key))
+MultiValueDictKeyError: "'text'"
+2019-06-20 09:54:17,096 exception.py [django.request:135] [ERROR]- Internal Server Error: /message/telegram/uploadimgs
+Traceback (most recent call last):
+  File "J:\arno\test\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "J:\arno\test\lib\site-packages\channels\handler.py", line 243, in process_exception_by_middleware
+    return super(AsgiHandler, self).process_exception_by_middleware(exception, request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "J:\arno\test\lib\site-packages\django\views\decorators\csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "J:\arno\test\phx_web\detect\views.py", line 186, in TelegramUploadimgs
+    atUsersSelects = department_user_t.objects.filter(status=1, id__in=datas['atUsers']).all()
+NameError: global name 'datas' is not defined

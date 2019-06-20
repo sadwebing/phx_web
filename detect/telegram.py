@@ -122,7 +122,8 @@ class sendTelegram(object):
             发送图片
         '''
         if not photo: return False
-        self.__message['text'] = self.__message['text'].decode('utf8')
+        self.__message['text']    = self.__message['text'].decode('utf8')
+        self.__message['caption'] = self.__message['text']
         files = {'photo': photo}
         try:
             ret = requests.post(self.__url+'sendPhoto', data=self.__message, files=files, timeout=self.__timeout)
@@ -147,6 +148,7 @@ class sendTelegram(object):
         '''
         if not file: return False
         self.__message['text'] = self.__message['text'].decode('utf8')
+        self.__message['caption'] = self.__message['text']
         files = {'document': file}
         try:
             ret = requests.post(self.__url+'sendDocument', data=self.__message, files=files, timeout=self.__timeout)

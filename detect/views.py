@@ -177,9 +177,18 @@ def TelegramUploadimgs(request):
     if request.method == 'POST':
         message = settings.message_TEST
 
-        img = request.FILES['txt_file']
+        img     = request.FILES['txt_file']
+        text    = request.GET['text']
+        atUsers = request.GET['atUsers'].replace(' ', '').split(',')
         group = request.GET['group']
         
+        # 获取需要@的部门或组
+        atUsersL = []
+        atUsersSelects = department_user_t.objects.filter(status=1, id__in=atUsers).all()
+        for department in atUsersSelects:
+            atUsersL.append(department.department + ': ' + ', '.join([ '@'+user.user for user in department.user.filter(status=1).all() ]))
+
+        message['text']  = text + '\r\n\r\n' + '\r\n'.join(atUsersL)
         message['group'] = group
 
         # 判断文件是不是 gif

@@ -99,9 +99,17 @@ var operate = {
             alert('请选择对应的telegram群组！');
             return false;
         }
+
+        // 获取要@的部门或者组
+        atUsers = public.showSelectedValue('telegram_atusers', false)
+        // console.log(atUsers)
+
+        // 获取信息文本
+        text = document.getElementById('textarea_telegram_text').value
+
         //0.初始化fileinput
         var oFileInput = new FileInput(group);
-        oFileInput.Init("txt_file", "/message/telegram/uploadimgs?group=" + group);
+        oFileInput.Init("txt_file", "/message/telegram/uploadimgs?group=" + group +"&text=" + text + "&atUsers=" + atUsers);
 
         $('#uploadimgs').modal('show');
     },
