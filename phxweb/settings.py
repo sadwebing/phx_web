@@ -161,7 +161,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        'NAME': 'phxweb',                      # Or path to database file if using sqlite3.
+        'NAME': 'phxweb_test',                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': 'phxweb',
         'PASSWORD': 'phexus666',
@@ -270,6 +270,7 @@ choices_s = (
 choices_proj = (
         ('other',      '其他[other]'), 
         ('appleqp',    '苹果棋牌'), 
+        ('eqqp',       'E趣棋牌'), 
         ('caipiao',    '彩票[caipiao]'), 
         ('zhuanyepan', '专业盘[zyp]'), 
         ('sport',      '体育[sport]'),
