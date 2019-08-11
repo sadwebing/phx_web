@@ -14,6 +14,9 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "phxweb.settings")
 from phxweb import settings
 from ssl import SSLError, CertificateError
 
+reload(sys)
+sys.setdefaultencoding('utf8')
+
 #获取当前目录
 current_dir = os.path.abspath(os.path.dirname(__file__))
 
