@@ -14,8 +14,6 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "phxweb.settings")
 from phxweb import settings
 from ssl import SSLError, CertificateError
 
-import re    ## 2019 08 18 新增功能 使每家报警日期不同
-
 reload(sys)
 sys.setdefaultencoding('utf8')
 
@@ -192,22 +190,9 @@ if __name__ == "__main__":
             li.append(t)
             t.start()
 
-    ##  特殊时间业主列表,元素来源于settings.py 中的 choices_customer 变量
-    seven_day_list = ['ali', 'guangda','zyp','hengxin']                  ## 2019 08 18 新增功能 使每家报警日期不同
-    ##  在choices_customer 变量中,过滤业主名字(正则)
-    re_customer = re.compile('.*\[(.*)\].*')                             ## 2019 08 18 新增功能 使每家报警日期不同
-
     for t in li:
         t.join()
         result = t.get_result()
-
-        ##  以正则的方式获取 业主名       
-        valve = re_customer.findall(result[1]['customer'][1])[0]         ## 2019 08 18 新增功能 使每家报警日期不同
-        ##  查看业主名,是正在特殊时间列表中
-        if valve in seven_day_list:                                      ## 2019 08 18 新增功能 使每家报警日期不同
-            ##  如果在列表中,改变默认变量阀值
-            d_one_m = datetime.datetime.now() + datetime.timedelta(8)    ## 2019 08 18 新增功能 使每家报警日期不同
-
 
         alert = None
         #将结果存入报警列表
@@ -239,8 +224,8 @@ if __name__ == "__main__":
 
         if alert['failed']:
             message['text'] += u"<pre>检测失败的域名: </pre>\r\n" + alert['failed']
-        if alert['ex_one_m']:                                             ## 2019 08 18 新增功能 使每家报警日期不同
-            message['text'] += u"\n<pre>%s 号证书到期域名: </pre>\r\n\n"%(result[2]) + alert['ex_one_m']
+        if alert['ex_one_m']:
+            message['text'] += u"<pre>一个月内证书到期域名: </pre>\r\n" + alert['ex_one_m']
 
         atUser = u"%s " %" ".join([ "@"+user for user in alert['user'] ]) if len(alert['user']) !=0 else ""
         atUser += u"请注意更换证书！"
