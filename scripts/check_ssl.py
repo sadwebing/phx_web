@@ -7,6 +7,7 @@
 #         2018/07/26 域名区分产品和客户, 信息长度大于4096，以文件形式发送信息
 #         2018/07/29 域名区分产品和客户, 发送到相应的客户群组
 #         2019/04/01 做一些异常处理
+#         2019/08/18 devin
 
 import os, sys, datetime, logging, ssl, socket, threading, requests, json, urlparse
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir)))
