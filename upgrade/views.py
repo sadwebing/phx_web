@@ -72,6 +72,7 @@ def Operate(request):
                 'id': rec.id,
                 'name': name,
                 'isrsynccode': rec.isrsynccode,
+                'iscrond': rec.iscrond,
             }
             svn_customer_all.append(tmpdict)
             if rec.isrsynccode == 0: continue

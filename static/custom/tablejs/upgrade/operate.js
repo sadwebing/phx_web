@@ -120,6 +120,19 @@ var operate = {
             }
         });
 
+        $("#crond_panel").bind('click',function () {
+            that = document.getElementById("crond_form")
+            if (that.style.display == "none"){
+                that.style.display = "inline";
+                document.getElementById('crond_panel').innerHTML = "-";
+                document.getElementById('crond_panel').title = "隐藏";
+            }else {
+                that.style.display = "none";
+                document.getElementById('crond_panel').innerHTML = "+";
+                document.getElementById('crond_panel').title = "展开";
+            }
+        });
+
         $("#command2_panel").bind('click',function () {
             that = document.getElementById("command2_form")
             if (that.style.display == "none"){
@@ -173,6 +186,34 @@ var operate = {
         }
 
         document.getElementById("apacheconfig_customer").innerHTML=customerHtml;
+        $('.selectpicker').selectpicker('refresh');
+    },
+
+    GetcrondconfigCust: function (){
+        var product = public.showSelectedValue('crondconfig_product'); //获取选中的产品
+        //console.log(product);
+
+        if (product.length != 1){
+            alert('产品选择错误！');
+            return false;
+        }
+
+        var customerHtml = "";
+
+        for (var i = 0; i < items.length; i++){
+            var value = items[i];
+
+            if (value['product'][0] ==  product[0]){
+                for (var i = 0; i < value['svn_customer']['in'].length; i++){
+                    customer_dict = value['svn_customer']['in'][i];
+                    if (customer_dict['iscrond'] == 1){
+                        customerHtml = customerHtml + "<option value="+customer_dict['id']+">"+customer_dict['name']+"</option>";
+                    }
+                }
+            };
+        }
+
+        document.getElementById("crondconfig_customer").innerHTML=customerHtml;
         $('.selectpicker').selectpicker('refresh');
     },
     
@@ -392,6 +433,32 @@ var operate = {
                 };
             }
             var uri = "/upgrade/deploy/apache_config";
+        }else if (submit == 'btn_submit_crond'){
+            var postData = {
+                'product': public.showSelectedValue('crondconfig_product', false), //获取选中的产品
+                'customer': public.showSelectedValue('crondconfig_customer', false), //获取选中的客户
+                //'items': items,
+            }
+
+            if (postData['product'].length != 1){
+                alert('产品选择错误！');
+                return false;
+            }
+    
+            if (postData['customer'].length == 0){
+                alert('客户选择错误！');
+                return false;
+            }
+            for (var i = 0; i < items.length; i++){
+                if (items[i]['product'][0] == postData['product'][0]){
+                    postData['item'] = items[i]
+                    postData['cmd'] = items[i]['svn_master'][postData['codeEnv']];
+                    postData['minion_id'] = items[i]['svn_master']['minion_id'];
+                    postData['id'] = items[i]['id'];
+                    postData['svn_master_id'] = items[i]['svn_master']['id'];
+                };
+            }
+            var uri = "/upgrade/deploy/crond_config";
         }else if (submit == 'btn_submit_command2'){
             upgrade_postData['svn_records'] = [];
 

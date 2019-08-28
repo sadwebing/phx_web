@@ -10,6 +10,7 @@ from servers.index_customer  import ServersUpdate
 from upgrade.execute_customer import UpgradeExecute, UpgradeExecuteZypFront
 from upgrade.remote_exe_customer import RemoteExecute
 from upgrade.deploy.apache_config_customer import ApacheConfig
+from upgrade.deploy.crond_config_customer  import CrondConfig
 
 channel_routing = [
     #/dns/dnspod/record
@@ -35,6 +36,7 @@ channel_routing = [
     route_class(UpgradeExecute, path=r"^/upgrade/execute$"),
     route_class(RemoteExecute, path=r"^/upgrade/remote_execute"),
     route_class(ApacheConfig, path=r"^/upgrade/deploy/apache_config"),
+    route_class(CrondConfig, path=r"^/upgrade/deploy/crond_config"),
     ##专业盘彩票
     route_class(UpgradeExecuteZypFront, path=r"^/upgrade/execute/zypfront"),
 ]

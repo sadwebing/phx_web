@@ -23,7 +23,7 @@
                             <span class="input-group-btn">
                                 <button id="command_panel" class="btn btn-info" type="submit" title="隐藏" style="width: 35px;">-</button>
                             </span>
-                            <span class="form-control" style="width: auto;">凤凰Apache配置推送</span>
+                            <span class="form-control" style="width: auto;">凤凰 Apache配置推送</span>
                         </div>
                     </form>
                 </div>
@@ -39,6 +39,30 @@
                     </div>
                     <div class="col-xs-1 col-sm-1 col-md-1">
                         <input id="btn_submit_command" type="submit" onclick="operate.Submit('btn_submit_command')" class="btn btn-default" style="width:100%;" value="推送">
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <form class="form-group form-inline" role="form" style="margin-bottom: 5px;">
+                        <div class="input-group">
+                            <span class="input-group-btn">
+                                <button id="crond_panel" class="btn btn-info" type="submit" title="隐藏" style="width: 35px;">-</button>
+                            </span>
+                            <span class="form-control" style="width: auto;">凤凰 计划任务更新</span>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12" id="crond_form" style="display: inline; background-color: #F0F8FF;">
+                    <br>
+                    <div class="col-xs-11 col-sm-11 col-md-11">
+                        <form class="form-group form-inline" role="form" id="crondconfigDeploy" name="crondconfigDeploy"> 
+                            <select class="form-control selectpicker show-tick" onchange="operate.GetcrondconfigCust()" id="crondconfig_product" name="crondconfig_product" title="请选择产品" data-width="48%">
+                            </select>
+                            <select class="form-control selectpicker show-tick" data-live-search="true" id="crondconfig_customer" name="crondconfig_customer" data-actions-box="true" title="请选择客户" data-width="48%">
+                            </select>
+                        </form>
+                    </div>
+                    <div class="col-xs-1 col-sm-1 col-md-1">
+                        <input id="btn_submit_crond" type="submit" onclick="operate.Submit('btn_submit_crond')" class="btn btn-default" style="width:100%;" value="更新">
                     </div>
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-12">
@@ -165,7 +189,7 @@
     //console.log("{{ items|safe }}");
     window.items = {{ items|safe }};
     window.atUsers = {{ atUsers|safe }};
-    //console.log(window.items[0]);
+    // console.log(window.items);
     window.envirHtml = ""
     window.productHtml = ""
     window.atUsersHtml = ""
@@ -182,6 +206,7 @@
 
     document.getElementById("project_envir").innerHTML=envirHtml;
     document.getElementById("apacheconfig_product").innerHTML=productHtml;
+    document.getElementById("crondconfig_product").innerHTML=productHtml;
     document.getElementById("project_department").innerHTML=atUsersHtml;
 </script>
 
