@@ -3,6 +3,7 @@ from django.db    import models
 from django.utils import timezone
 from phxweb.settings import choices_product, choices_customer, choices_s, TELEGRAM_API
 from dns.models      import cf_account
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 import datetime, pytz
 
@@ -44,7 +45,7 @@ class cdn_account_t(models.Model):
 class telegram_chat_group_t(models.Model):
     name     = models.CharField(max_length=32, null=False)
     group    = models.CharField(max_length=32, null=False)
-    group_id = models.IntegerField()
+    group_id = models.CharField(max_length=32, null=False)
     status   = models.IntegerField(choices=choices_s, default=1)
     class Meta:
         unique_together = ('group' ,'group_id')
