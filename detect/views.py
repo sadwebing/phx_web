@@ -43,9 +43,9 @@ def TelegramGroup(request):
     if request.user.is_superuser:
         groupSelects = telegram_chat_group_t.objects.filter(status=1).all()
     elif role == "sa":
-        groupSelects = telegram_chat_group_t.objects.filter(status=1, group__in=['kindergarten', 'zhuanyepan', 'yunwei']).all()
+        groupSelects = telegram_chat_group_t.objects.filter(status=1, group__in=['kindergarten', 'zhuanyepan', 'yunwei', 'sport2']).all()
     else:
-        groupSelects = telegram_chat_group_t.objects.filter(status=1, group__in=['kindergarten', 'zhuanyepan']).all()
+        groupSelects = telegram_chat_group_t.objects.filter(status=1, group__in=['kindergarten', 'zhuanyepan', 'sport2']).all()
 
     for department in atUsersSelects:
         atUsers[department.name] = {
@@ -182,6 +182,8 @@ def TelegramUploadimgs(request):
         atUsers = request.GET['atUsers'].replace(' ', '').split(',')
         group = request.GET['group']
         
+        logger.info(atUsers)
+
         # 获取需要@的部门或组
         atUsersL = []
         atUsersSelects = department_user_t.objects.filter(status=1, id__in=atUsers).all()

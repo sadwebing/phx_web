@@ -327,6 +327,8 @@ choices_customer = (
             (36, u'瑞银[ruiyin|UBS]'),
             (37, u'勇士[warrior]'),
             (38, u'体彩[tc]'),
+            (121002, u'565sport[565体育]'), 
+            (121003, u'newregal[新富豪]'), 
 
             #凤凰体育
             (13, u'钻石[le7|diamond]'),
