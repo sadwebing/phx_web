@@ -382,8 +382,8 @@ class UpgradeExecuteZypFront(DefConsumer):
 
         # 这里做一个判断，如果升级文件超过一定数量，通知升级人员考虑全目录升级
         limit = 20
-        # if len(svn_files_all) > limit and self.username not in ['phexus_sa', 'arno']:
-        if len(svn_files_all) > limit:
+        if len(svn_files_all) > limit and self.username not in ['phexus_sa', 'arno']:
+        # if len(svn_files_all) > limit:
             message['text'] = "升级文件数量: %s。超过 %s, 请考虑是否选择目录升级，或者联系管理员！" %(len(svn_files_all), limit)
             info['results'][data['minion_id']] = message['text']
             logger.error(message['text'])
