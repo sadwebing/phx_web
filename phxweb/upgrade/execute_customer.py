@@ -60,19 +60,7 @@ class UpgradeExecute(DefConsumer):
         svn_customer_dict = {}
         info['results'][data['minion_id']] = ""
 
-        #给升级的产品上锁
-        project = project_t.objects.get(id=data['id'])
-
-        if project.svn_mst_lock == 1:
-            info['results'][data['minion_id']] = "此环境的升级已被锁，请等待其他人升级完成，或者请联系管理员！"
-            self.message.reply_channel.send({'text': json.dumps(info)})
-            self.close()
-            return False
-        else:
-            project.svn_mst_lock = 1
-            project.save()
-
-        #获取需要同步的文件
+        # 获取需要同步的文件
         svn_files = []
         svn_files_all = []
         for svn_record in data['svn_records']:
@@ -84,6 +72,30 @@ class UpgradeExecute(DefConsumer):
             else:
                 svn_files += changelist
                 svn_files_all += changelist
+
+        # 这里做一个判断，如果升级文件超过一定数量，通知升级人员考虑全目录升级
+        limit = 30
+        if len(svn_files_all) > limit and self.username not in ['phexus_sa', 'arno']:
+        # if len(svn_files_all) > limit:
+            message['text'] = "升级文件数量: %s。超过 %s, 请考虑是否选择目录升级，或者联系管理员！" %(len(svn_files_all), limit)
+            info['results'][data['minion_id']] = message['text']
+            logger.error(message['text'])
+            sendTelegram(message).send()
+            self.message.reply_channel.send({'text': json.dumps(info)})
+            self.close()
+            return False
+
+        #给升级的产品上锁
+        project = project_t.objects.get(id=data['id'])
+
+        if project.svn_mst_lock == 1:
+            info['results'][data['minion_id']] = "此环境的升级已被锁，请等待其他人升级完成，或者请联系管理员！"
+            self.message.reply_channel.send({'text': json.dumps(info)})
+            self.close()
+            return False
+        else:
+            project.svn_mst_lock = 1
+            project.save()
 
         #给升级到灰度的svn 文件上锁以及解锁
         if len(data['codeEnv']) == 1 and data['codeEnv'][0] == 'gray_env':
@@ -355,18 +367,6 @@ class UpgradeExecuteZypFront(DefConsumer):
         svn_customer_dict = {}
         info['results'][data['minion_id']] = ""
 
-        #给升级的产品上锁
-        project = project_t.objects.get(id=data['id'])
-
-        if project.svn_mst_lock == 1:
-            info['results'][data['minion_id']] = "此环境的升级已被锁，请等待其他人升级完成，或者请联系管理员！"
-            self.message.reply_channel.send({'text': json.dumps(info)})
-            self.close()
-            return False
-        else:
-            project.svn_mst_lock = 1
-            project.save()
-
         #获取需要同步的文件
         svn_files = []
         svn_files_all = []
@@ -379,6 +379,30 @@ class UpgradeExecuteZypFront(DefConsumer):
             else:
                 svn_files += changelist
                 svn_files_all += changelist
+
+        # 这里做一个判断，如果升级文件超过一定数量，通知升级人员考虑全目录升级
+        limit = 20
+        # if len(svn_files_all) > limit and self.username not in ['phexus_sa', 'arno']:
+        if len(svn_files_all) > limit:
+            message['text'] = "升级文件数量: %s。超过 %s, 请考虑是否选择目录升级，或者联系管理员！" %(len(svn_files_all), limit)
+            info['results'][data['minion_id']] = message['text']
+            logger.error(message['text'])
+            sendTelegram(message).send()
+            self.message.reply_channel.send({'text': json.dumps(info)})
+            self.close()
+            return False
+
+        #给升级的产品上锁
+        project = project_t.objects.get(id=data['id'])
+
+        if project.svn_mst_lock == 1:
+            info['results'][data['minion_id']] = "此环境的升级已被锁，请等待其他人升级完成，或者请联系管理员！"
+            self.message.reply_channel.send({'text': json.dumps(info)})
+            self.close()
+            return False
+        else:
+            project.svn_mst_lock = 1
+            project.save()
 
         #给升级到灰度的svn 文件上锁以及解锁
         if len(data['codeEnv']) == 1 and data['codeEnv'][0] == 'gray_env':

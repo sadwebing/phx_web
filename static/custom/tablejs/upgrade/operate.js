@@ -469,6 +469,8 @@ var operate = {
                     return false;
                 }
 
+                var file_count = 0;
+
                 for (var i=0;i<arrselectedData.length;i++){
                     upgrade_postData['svn_records'].push({
                         'revision': arrselectedData[i].revision,
@@ -477,7 +479,15 @@ var operate = {
                         'log': arrselectedData[i].log,
                         'changelist': arrselectedData[i].changelist,
                     });
+
+                    file_count = file_count + arrselectedData[i].changelist.length;
                 }
+
+                // // 如果不是升级全目录，判断要升级的文件是否超过一定的量
+                // if (file_count > 30){
+                //     alert("升级文件数量：" + file_count +"。超过30，请考虑是否选择目录升级，或者联系管理员！");
+                //     return false;
+                // }
 
                 var postData = upgrade_postData;
                 //对svn 记录进行排序，先提交的记录排在前面，顺序升级
