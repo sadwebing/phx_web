@@ -102,7 +102,6 @@ var operate = {
 
         // 获取要@的部门或者组
         atUsers = public.showSelectedValue('telegram_atusers', false)
-        // console.log(atUsers)
 
         // 获取信息文本
         text = document.getElementById('textarea_telegram_text').value

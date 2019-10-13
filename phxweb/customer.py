@@ -3,6 +3,7 @@ from channels          import Channel, Group
 from channels.sessions import channel_session
 from channels.auth     import channel_session_user, channel_session_user_from_http
 from channels.generic.websockets import WebsocketConsumer
+# from channels.generic.websocket  import AsyncWebsocketConsumer
 
 import json, logging
 

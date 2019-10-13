@@ -271,6 +271,7 @@ choices_proj = (
         ('other',      '其他[other]'), 
         ('appleqp',    '苹果棋牌'), 
         ('eqqp',       'E趣棋牌'), 
+        ('yzh5qp',     '越众H5棋牌'), 
         ('caipiao',    '彩票[caipiao]'), 
         ('zhuanyepan', '专业盘[zyp]'), 
         ('sport',      '体育[sport]'),

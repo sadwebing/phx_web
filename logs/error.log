@@ -26053,3 +26053,154 @@ NameError: global name 'datas' is not defined
 2019-08-05 13:59:24,846 update_svn_record.py [django:19] [ERROR]- svn record 12336 not exist: svn_record_t matching query does not exist.
 2019-08-05 16:08:13,624 update_svn_record.py [django:19] [ERROR]- svn record 12341 not exist: svn_record_t matching query does not exist.
 2019-08-05 16:15:20,180 update_svn_record.py [django:19] [ERROR]- svn record 12341 not exist: svn_record_t matching query does not exist.
+2019-09-10 14:43:10,444 exception.py [django.request:135] [ERROR]- Internal Server Error: /message/telegram/uploadimgs
+Traceback (most recent call last):
+  File "J:\arno\test\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "J:\arno\test\lib\site-packages\channels\handler.py", line 243, in process_exception_by_middleware
+    return super(AsgiHandler, self).process_exception_by_middleware(exception, request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "J:\arno\test\lib\site-packages\django\views\decorators\csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "J:\arno\test\phx_web\detect\views.py", line 187, in TelegramUploadimgs
+    atUsersSelects = department_user_t.objects.filter(status=1, id__in=atUsers).all()
+  File "J:\arno\test\lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "J:\arno\test\lib\site-packages\django\db\models\query.py", line 781, in filter
+    return self._filter_or_exclude(False, *args, **kwargs)
+  File "J:\arno\test\lib\site-packages\django\db\models\query.py", line 799, in _filter_or_exclude
+    clone.query.add_q(Q(*args, **kwargs))
+  File "J:\arno\test\lib\site-packages\django\db\models\sql\query.py", line 1260, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "J:\arno\test\lib\site-packages\django\db\models\sql\query.py", line 1286, in _add_q
+    allow_joins=allow_joins, split_subq=split_subq,
+  File "J:\arno\test\lib\site-packages\django\db\models\sql\query.py", line 1220, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+  File "J:\arno\test\lib\site-packages\django\db\models\sql\query.py", line 1114, in build_lookup
+    return final_lookup(lhs, rhs)
+  File "J:\arno\test\lib\site-packages\django\db\models\lookups.py", line 24, in __init__
+    self.rhs = self.get_prep_lookup()
+  File "J:\arno\test\lib\site-packages\django\db\models\lookups.py", line 219, in get_prep_lookup
+    rhs_value = self.lhs.output_field.get_prep_value(rhs_value)
+  File "J:\arno\test\lib\site-packages\django\db\models\fields\__init__.py", line 962, in get_prep_value
+    return int(value)
+ValueError: invalid literal for int() with base 10: ''
+2019-09-10 14:45:15,918 exception.py [django.request:135] [ERROR]- Internal Server Error: /message/telegram/uploadimgs
+Traceback (most recent call last):
+  File "J:\arno\test\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "J:\arno\test\lib\site-packages\channels\handler.py", line 243, in process_exception_by_middleware
+    return super(AsgiHandler, self).process_exception_by_middleware(exception, request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "J:\arno\test\lib\site-packages\django\views\decorators\csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "J:\arno\test\phx_web\detect\views.py", line 189, in TelegramUploadimgs
+    atUsersSelects = department_user_t.objects.filter(status=1, id__in=atUsers).all()
+  File "J:\arno\test\lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "J:\arno\test\lib\site-packages\django\db\models\query.py", line 781, in filter
+    return self._filter_or_exclude(False, *args, **kwargs)
+  File "J:\arno\test\lib\site-packages\django\db\models\query.py", line 799, in _filter_or_exclude
+    clone.query.add_q(Q(*args, **kwargs))
+  File "J:\arno\test\lib\site-packages\django\db\models\sql\query.py", line 1260, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "J:\arno\test\lib\site-packages\django\db\models\sql\query.py", line 1286, in _add_q
+    allow_joins=allow_joins, split_subq=split_subq,
+  File "J:\arno\test\lib\site-packages\django\db\models\sql\query.py", line 1220, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+  File "J:\arno\test\lib\site-packages\django\db\models\sql\query.py", line 1114, in build_lookup
+    return final_lookup(lhs, rhs)
+  File "J:\arno\test\lib\site-packages\django\db\models\lookups.py", line 24, in __init__
+    self.rhs = self.get_prep_lookup()
+  File "J:\arno\test\lib\site-packages\django\db\models\lookups.py", line 219, in get_prep_lookup
+    rhs_value = self.lhs.output_field.get_prep_value(rhs_value)
+  File "J:\arno\test\lib\site-packages\django\db\models\fields\__init__.py", line 962, in get_prep_value
+    return int(value)
+ValueError: invalid literal for int() with base 10: ''
+2019-09-10 14:45:48,336 exception.py [django.request:135] [ERROR]- Internal Server Error: /message/telegram/uploadimgs
+Traceback (most recent call last):
+  File "J:\arno\test\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "J:\arno\test\lib\site-packages\channels\handler.py", line 243, in process_exception_by_middleware
+    return super(AsgiHandler, self).process_exception_by_middleware(exception, request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "J:\arno\test\lib\site-packages\django\views\decorators\csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "J:\arno\test\phx_web\detect\views.py", line 189, in TelegramUploadimgs
+    atUsersSelects = department_user_t.objects.filter(status=1, id__in=atUsers).all()
+  File "J:\arno\test\lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "J:\arno\test\lib\site-packages\django\db\models\query.py", line 781, in filter
+    return self._filter_or_exclude(False, *args, **kwargs)
+  File "J:\arno\test\lib\site-packages\django\db\models\query.py", line 799, in _filter_or_exclude
+    clone.query.add_q(Q(*args, **kwargs))
+  File "J:\arno\test\lib\site-packages\django\db\models\sql\query.py", line 1260, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "J:\arno\test\lib\site-packages\django\db\models\sql\query.py", line 1286, in _add_q
+    allow_joins=allow_joins, split_subq=split_subq,
+  File "J:\arno\test\lib\site-packages\django\db\models\sql\query.py", line 1220, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+  File "J:\arno\test\lib\site-packages\django\db\models\sql\query.py", line 1114, in build_lookup
+    return final_lookup(lhs, rhs)
+  File "J:\arno\test\lib\site-packages\django\db\models\lookups.py", line 24, in __init__
+    self.rhs = self.get_prep_lookup()
+  File "J:\arno\test\lib\site-packages\django\db\models\lookups.py", line 219, in get_prep_lookup
+    rhs_value = self.lhs.output_field.get_prep_value(rhs_value)
+  File "J:\arno\test\lib\site-packages\django\db\models\fields\__init__.py", line 962, in get_prep_value
+    return int(value)
+ValueError: invalid literal for int() with base 10: ''
+2019-09-10 14:46:43,717 exception.py [django.request:135] [ERROR]- Internal Server Error: /message/telegram/uploadimgs
+Traceback (most recent call last):
+  File "J:\arno\test\lib\site-packages\django\core\handlers\exception.py", line 41, in inner
+    response = get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 249, in _legacy_get_response
+    response = self._get_response(request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "J:\arno\test\lib\site-packages\channels\handler.py", line 243, in process_exception_by_middleware
+    return super(AsgiHandler, self).process_exception_by_middleware(exception, request)
+  File "J:\arno\test\lib\site-packages\django\core\handlers\base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "J:\arno\test\lib\site-packages\django\views\decorators\csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "J:\arno\test\phx_web\detect\views.py", line 189, in TelegramUploadimgs
+    atUsersSelects = department_user_t.objects.filter(status=1, id__in=atUsers).all()
+  File "J:\arno\test\lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "J:\arno\test\lib\site-packages\django\db\models\query.py", line 781, in filter
+    return self._filter_or_exclude(False, *args, **kwargs)
+  File "J:\arno\test\lib\site-packages\django\db\models\query.py", line 799, in _filter_or_exclude
+    clone.query.add_q(Q(*args, **kwargs))
+  File "J:\arno\test\lib\site-packages\django\db\models\sql\query.py", line 1260, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "J:\arno\test\lib\site-packages\django\db\models\sql\query.py", line 1286, in _add_q
+    allow_joins=allow_joins, split_subq=split_subq,
+  File "J:\arno\test\lib\site-packages\django\db\models\sql\query.py", line 1220, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+  File "J:\arno\test\lib\site-packages\django\db\models\sql\query.py", line 1114, in build_lookup
+    return final_lookup(lhs, rhs)
+  File "J:\arno\test\lib\site-packages\django\db\models\lookups.py", line 24, in __init__
+    self.rhs = self.get_prep_lookup()
+  File "J:\arno\test\lib\site-packages\django\db\models\lookups.py", line 219, in get_prep_lookup
+    rhs_value = self.lhs.output_field.get_prep_value(rhs_value)
+  File "J:\arno\test\lib\site-packages\django\db\models\fields\__init__.py", line 962, in get_prep_value
+    return int(value)
+ValueError: invalid literal for int() with base 10: ''
+2019-10-03 10:26:16,500 execute_customer.py [django:82] [ERROR]- 升级文件数量: 387。超过 30, 请考虑是否选择目录升级，或者联系管理员！
+2019-10-03 10:26:37,030 execute_customer.py [django:82] [ERROR]- 升级文件数量: 204。超过 30, 请考虑是否选择目录升级，或者联系管理员！
+2019-10-03 10:35:06,259 execute_customer.py [django:389] [ERROR]- 升级文件数量: 41。超过 20, 请考虑是否选择目录升级，或者联系管理员！
