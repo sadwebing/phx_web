@@ -348,6 +348,7 @@ choices_customer = (
             #越众棋牌
             (101001, u'BB棋牌'),
             (101002, u'汪汪棋牌'),
+            (101003, u'H5棋牌'),
             )
 
 choices_product = ( 
