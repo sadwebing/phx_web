@@ -42,6 +42,7 @@ basedir = os.path.abspath(os.path.join(os.path.dirname(__file__)))
 
 
 if __name__ == '__main__':
+    # 获取需要 提醒人的纸飞机ID
     department = department_user_t.objects.filter(name="yunwei").first()
     department2 = department_user_t.objects.filter(name="lianfayunwei").first()
     if not department: sys.exit(1)
