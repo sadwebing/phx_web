@@ -78,24 +78,26 @@ if __name__ == '__main__':
         rt = SuperSign(super_signature[product]).get_data()
         if rt['code'] != 0: # 如果通过接口获取到的数据不正常，跳出本程序
             print (rt)
-            continue
+            message['text'] += "错误: " + str(rt)
+            # continue
             # sys.exit(1)
+        else:
+            data = rt['data'] # 拿到最终的数据
+            
+            # 循环数据，筛选得到所剩名额
+            remain_all = 0
+            for acc in data:
+                account = acc['account']
+                count = acc['count']
+                message['text'] += account + ": " + str(count) + "\r\n"
+                remain_all += count
 
-        data = rt['data'] # 拿到最终的数据
-
-        # 循环数据，筛选得到所剩名额
-        remain_all = 0
-        for acc in data:
-            account = acc['account']
-            count = acc['count']
-            message['text'] += account + ": " + str(count) + "\r\n"
-            remain_all += count
-
-        message['text'] += "\r\n".join([
-            "所剩名额总数: %s" %remain_all,
-            "%s: %s" %(department.department, ", ".join(name)),
-        ])
+            message['text'] += "\r\n".join([
+                "所剩名额总数: %s" %remain_all,
+                "%s: %s" %(department.department, ", ".join(name)),
+            ])
 
         message['group'] = "yunwei"
+        # print (message['text'])
         if remain_all <= remind_account:
             sendTelegram(message).send()
