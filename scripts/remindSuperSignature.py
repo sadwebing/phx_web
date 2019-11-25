@@ -42,6 +42,7 @@ super_signature = {
     "ali": "https://smanage.le079.com/apple/getAllAppleAccounts",
     "leying": "https://lysmanage.le079.com/apple/getAllAppleAccounts",
     }
+remind_account = 100
 
 # 当前脚本路径
 basedir = os.path.abspath(os.path.join(os.path.dirname(__file__)))
@@ -56,7 +57,7 @@ class SuperSign(object):
 
     def get_data(self):
         try:
-            ret = requests.get(self.__api, timeout=self.__timeout)
+            ret = requests.get(self.__api, verify=False, timeout=self.__timeout)
             data = ret.json()['data']
         except Exception as e:
             # raise e
@@ -96,5 +97,5 @@ if __name__ == '__main__':
         ])
 
         message['group'] = "yunwei"
-        if remain_all <= 100:
+        if remain_all <= remind_account:
             sendTelegram(message).send()
