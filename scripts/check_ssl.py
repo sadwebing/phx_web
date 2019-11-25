@@ -8,14 +8,13 @@
 #         2018/07/29 域名区分产品和客户, 发送到相应的客户群组
 #         2019/04/01 做一些异常处理
 
-import os, sys, datetime, logging, ssl, socket, threading, requests, json, urlparse
+import os, sys, datetime, logging,  threading, requests, json, urlparse
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir)))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "phxweb.settings")
 from phxweb import settings
 from ssl import SSLError, CertificateError
-
-import re    ## 2019 08 18 新增功能 使每家报警日期不同
-
+import time
+import subprocess ## 2019 11 23 新增功能 使每家报警日期不同
 reload(sys)
 sys.setdefaultencoding('utf8')
 
@@ -44,7 +43,6 @@ d_half_y     = datetime.datetime.now() + datetime.timedelta(182)
 d_one_m      = datetime.datetime.now() + datetime.timedelta(31)
 ssl_date_fmt = r'%b %d %H:%M:%S %Y %Z'
 nor_date_fmt = r'%Y/%m/%d %H:%M:%S'
-timeout      = 10
 
 #telegram 通知
 def sendTelegram(message):
@@ -71,108 +69,45 @@ class sslExpiry(object):
         '''
         self.__domain = domain
     
-    def setConn(self, bundle=None):
-        '''
-            初始化https连接
-        '''
-    
-        if bundle:
-            context = ssl.create_default_context(cafile="%s/bundle/%s" %(current_dir, bundle))
-        else:
-            context = ssl.create_default_context()
-        context.verify_mode = ssl.CERT_REQUIRED #是否验证证书
-        #context.verify_mode = ssl.CERT_NONE
-        #context.verify_mode = ssl.CERT_OPTIONAL
-        #context.post_handshake_auth = False
-        context.check_hostname = True #是否检查主机域名
-
-        conn    = context.wrap_socket(
-            socket.socket(socket.AF_INET),
-            server_hostname=self.__domain,
-            #do_handshake_on_connect=False,
-        )
-        conn.settimeout(timeout)
-        return conn
-        
-    def getCert(self):
-        #bundles = os.listdir(u'%s/bundle/' %current_dir).insert(0, None)
-        bundles = os.listdir(u'%s/bundle/' %current_dir)
-        bundles.insert(0, None)
-        index = 0
-        ssl   = False
-        while not ssl:
-            #print index
-            conn = self.setConn(bundle=bundles[index])
-            #if "le723.com" in self.__domain:
-            #    logger.error('%s 443 ssl error: %s' %(self.__domain, bundles[index]))
-            try:
-                conn.connect((self.__domain, 443))
-            except (SSLError, CertificateError):
-                index += 1
-                
-                if index < len(bundles):
-                    continue
-                else:
-                    logger.error('%s 443 ssl error' %(self.__domain))
-
-                    #如果指定ca文件无法正常获取证书，再请求一次
-                    try:
-                        conn = self.setConn(bundle=None)
-                        conn.connect((self.__domain, 443))
-                        ssl_info = conn.getpeercert()
-                        return datetime.datetime.strptime(ssl_info['notAfter'], ssl_date_fmt)
-                    except Exception as e:
-                        logger.error('%s return error: \n %s' %(self.__domain, e))
-                        return SSLError
-                    return SSLError
-            except Exception, e:
-                logger.error('%s 443 connection error: \n %s' %(self.__domain, e))
-                return e
-            else:
-                ssl = True
-                ssl_info = conn.getpeercert()
-                logger.info(ssl_info)
-            #return datetime.datetime.strptime(ssl_info['notAfter'], ssl_date_fmt)
-
-        #在返回ssl 证书过期时间时，做一个异常控制
-        try:
-            return datetime.datetime.strptime(ssl_info['notAfter'], ssl_date_fmt)
-        except Exception as e:
-            logger.error('%s return error: \n %s' %(self.__domain, e))
-            return SSLError
     
 class myThread(threading.Thread):
+    ##  初始化接口中获取的域名信息 与 域名提取
     def __init__(self,domain_l):
         super(myThread, self).__init__()
         self.__domain_l = domain_l
-        self.__domain   = urlparse.urlsplit(domain_l['name']).netloc.split(':')[0].strip()
-        
-    def run(self):
-        self.t = None
-        
-        ssle = sslExpiry(self.__domain)
-
-        for i in range(self.__domain_l['retry']):
-            cert = ssle.getCert()
-            #print cert
-            if isinstance(cert, datetime.datetime):
-                break
-
-        if cert == SSLError:
-            self.t = (False, self.__domain_l, u"证书不合法")
-        elif not isinstance(cert, datetime.datetime):
-            self.t = (False, self.__domain_l, cert)
-        else:
-            self.t = (True,  self.__domain_l, cert)
-
+        self.__domain   = urlparse.urlsplit(domain_l['name']).netloc.split(':')[0].strip()  
+    ##  在多线程中 直接 用python3 提取信息 原来的检测模块有问题,信息不准确.
     def get_result(self):
+        for n in range(16):
+            ##  改动最大的地方 由于未知的原因此主机在运行python脚本进会报线程错误
+            ##  所以,加大了python3脚本的outtime 120秒
+            ##  反复链接15次  如果15次后仍然不能获取数据,那么默认为链接失败
+            ##  threading 模块 + cmd命令行调用,导致脚本运行非常的慢
+            if n == 15:
+                self.t = (False,self.__domain_l,'证书获取失败')
+                break
+            else:
+                res = subprocess.Popen('/usr/bin/python3 /pythonenv/monitor/phx_web/scripts/check_ssl_p3 %s'\
+                    %self.__domain,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+                b = res.stdout.read().split('+')
+                a = res.stderr.read()
+                if a:
+                    time.sleep(0.05)
+                    continue
+                else:
+                    valve = b[0].strip()
+                    if valve == 'True':
+                        cert = datetime.datetime.strptime(b[1].strip(),'%Y %m %d %H %M %S')
+                        self.t = (True,  self.__domain_l, cert)
+                    else:
+                        cert = b[1].strip()
+                        self.t = (False,  self.__domain_l, cert)    
+                    break
+
         return self.t
     
 if __name__ == "__main__":
-    #print sslExpiry('alcp33.com').getTime()
     li = []
-    #print getDomains(product=7); sys.exit()
-
     failed    = ""
     ex_half_y = ""
     ex_one_m  = ""
@@ -184,31 +119,25 @@ if __name__ == "__main__":
             continue
         scheme = urlparse.urlsplit(domain_l['name']).scheme
 
-        #测试 www.le723.com 域名
-        #if "www.le723.com" not in domain_l['name']:
-        #    continue
         if scheme == "https":
             t = myThread(domain_l)
             li.append(t)
             t.start()
 
     ##  特殊时间业主列表,元素来源于settings.py 中的 choices_customer 变量
-    seven_day_list = ['ali', 'guangda','zyp','hengxin']                  ## 2019 08 18 新增功能 使每家报警日期不同
-    ##  在choices_customer 变量中,过滤业主名字(正则)
-    re_customer = re.compile('.*\[(.*)\].*')                             ## 2019 08 18 新增功能 使每家报警日期不同
+    ##  ali, guangda ,zyp ,hengxin
+    seven_day_list = [1,2,121001,41]                  ## 2019 08 18 新增功能 使每家报警日期不同
 
     for t in li:
+        d_one_m = datetime.datetime.now() + datetime.timedelta(31)
         t.join()
         result = t.get_result()
+        valve = result[1]['customer'][0]
 
-        ##  以正则的方式获取 业主名       
-        valve = re_customer.findall(result[1]['customer'][1])[0]         ## 2019 08 18 新增功能 使每家报警日期不同
         ##  查看业主名,是正在特殊时间列表中
         if valve in seven_day_list:                                      ## 2019 08 18 新增功能 使每家报警日期不同
             ##  如果在列表中,改变默认变量阀值
             d_one_m = datetime.datetime.now() + datetime.timedelta(8)    ## 2019 08 18 新增功能 使每家报警日期不同
-
-
         alert = None
         #将结果存入报警列表
         for tmp in getDomainsDict['alert']['others']:
@@ -229,23 +158,24 @@ if __name__ == "__main__":
                 alert['ex_half_y'] += result[2].strftime(nor_date_fmt) + ": " + info + "\r\n"
         else:
             alert['failed'] += str(result[2]) + ": " + info + "\r\n"
-
     getDomainsDict['alert']['others'].append(getDomainsDict['alert']['default'])
 
     for alert in getDomainsDict['alert']['others']:
+
         message['text']    = ""
         message['doc']     = False
         message['caption'] = ""
 
         if alert['failed']:
-            message['text'] += u"<pre>检测失败的域名: </pre>\r\n" + alert['failed']
+            message['text'] += u"<pre>证书检测失败的域名: </pre>\r\n" + alert['failed']
         if alert['ex_one_m']:                                             ## 2019 08 18 新增功能 使每家报警日期不同
-            message['text'] += u"\n<pre>%s 号证书到期域名: </pre>\r\n\n"%(result[2]) + alert['ex_one_m']
+            message['text'] += u"<pre>一个月内证书到期域名: </pre>\r\n" + alert['ex_one_m'] 
 
         atUser = u"%s " %" ".join([ "@"+user for user in alert['user'] ]) if len(alert['user']) !=0 else ""
         atUser += u"请注意更换证书！"
 
         if "证书" in message['text']:
+
             if len(message['text']) >= 4096:
                 message['text']    = message['text'].replace('\r\n', '\n')
                 message['doc']     = True
@@ -254,8 +184,8 @@ if __name__ == "__main__":
                 message['text'] += atUser
         else:
             continue
-
         for group in alert['chat_group']:
-            #message['group'] = "arno_test2"
+            ##  这是阿若的测试 group ID
+##            message['group'] = "arno_test"
             message['group'] = group
             sendTelegram(message)
