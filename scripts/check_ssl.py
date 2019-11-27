@@ -87,7 +87,7 @@ class myThread(threading.Thread):
                 self.t = (False,self.__domain_l,'证书获取失败')
                 break
             else:
-                res = subprocess.Popen('/usr/bin/python3 /pythonenv/monitor/phx_web/scripts/check_ssl_p3 %s'\
+                res = subprocess.Popen('/usr/bin/python3 /pythonenv/monitor/phx_web/scripts/check_ssl_p3.py %s'\
                     %self.__domain,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
                 b = res.stdout.read().split('+')
                 a = res.stderr.read()
