@@ -78,6 +78,19 @@ class svn_zyp_front_gray_lock_t(models.Model):
     def __str__(self):
         return " - ".join([str(self.revision), self.author, self.date, self.log])
 
+class svn_zyp_front2_gray_lock_t(models.Model):
+    '''
+        专业盘体育彩票前端代码svn灰度锁，记录锁住的svn记录
+    '''
+    revision   = models.IntegerField(unique=True, null=False)
+    author     = models.CharField(max_length=32, null=False)
+    date       = models.CharField(max_length=32, null=False)
+    log        = models.TextField(blank=True, null=True)
+    changelist = models.TextField(blank=False, null=False)
+
+    def __str__(self):
+        return " - ".join([str(self.revision), self.author, self.date, self.log])
+
 class svn_record_t(models.Model):
     '''
         svn记录，每个环境升级了哪些客户

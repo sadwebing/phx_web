@@ -133,6 +133,19 @@ var operate = {
             }
         });
 
+        $("#command3_panel").bind('click',function () {
+            that = document.getElementById("command3_form")
+            if (that.style.display == "none"){
+                that.style.display = "inline";
+                document.getElementById('command3_panel').innerHTML = "-";
+                document.getElementById('command3_panel').title = "隐藏";
+            }else {
+                that.style.display = "none";
+                document.getElementById('command3_panel').innerHTML = "+";
+                document.getElementById('command3_panel').title = "展开";
+            }
+        });
+
         $("#restart_panel").bind('click',function () {
             that = document.getElementById("restart_form")
             if (that.style.display == "none"){
@@ -181,6 +194,8 @@ var operate = {
             var envir = public.showSelectedValue('project_envir'); //获取选中的产品环境
         }else if (value == 'front'){
             var envir = public.showSelectedValue('project_envir_front'); //获取选中的产品环境
+        }else if (value == 'front2'){
+            var envir = public.showSelectedValue('project_envir_front2'); //获取选中的产品环境
         }
         
         //console.log(envir);
@@ -204,6 +219,8 @@ var operate = {
             document.getElementById("project_product").innerHTML=productHtml;
         }else if (value == 'front'){
             document.getElementById("project_product_front").innerHTML=productHtml;
+        }else if (value == 'front2'){
+            document.getElementById("project_product_front2").innerHTML=productHtml;
         }
 
         $('.selectpicker').selectpicker('refresh');
@@ -216,6 +233,9 @@ var operate = {
         }else if (value == 'front'){
             var envir = public.showSelectedValue('project_envir_front'); //获取选中的产品环境
             var product = public.showSelectedValue('project_product_front'); //获取选中的产品
+        }else if (value == 'front2'){
+            var envir = public.showSelectedValue('project_envir_front2'); //获取选中的产品环境
+            var product = public.showSelectedValue('project_product_front2'); //获取选中的产品
         }
         
         //console.log(envir);
@@ -256,7 +276,12 @@ var operate = {
             document.getElementById("project_customer_in_front").innerHTML=customerInHtml;
             document.getElementById("project_customer_ex_front").innerHTML=customerExHtml;
             document.getElementById("project_codeEnv_front").innerHTML=codeEnvHtml;
+        }else if (value == 'front2'){
+            document.getElementById("project_customer_in_front2").innerHTML=customerInHtml;
+            document.getElementById("project_customer_ex_front2").innerHTML=customerExHtml;
+            document.getElementById("project_codeEnv_front2").innerHTML=codeEnvHtml;
         }
+
 
         $('.selectpicker').selectpicker('refresh');
     },
@@ -333,6 +358,24 @@ var operate = {
                 'isrsyncwhole': public.showSelectedValue('project_isrsyncwhole_front', false), //获取选中是否同步全目录
                 'department': public.showSelectedValue('project_department_front', true), //获取选中要通知的部门同事
                 'end': value,
+                'front': 0,
+            }
+        }else if (value == 'front2') {
+            var postData = {
+                'envir': public.showSelectedValue('project_envir_front2', false), //获取选中的产品环境
+                'product': public.showSelectedValue('project_product_front2', false), //获取选中的产品
+                'customer': {
+                        'in': public.showSelectedValue('project_customer_in_front2', false), //获取选中的只升级的客户
+                        'ex': public.showSelectedValue('project_customer_ex_front2', false), //获取选中的不升级的客户
+                        'real':[],
+                    },
+                'codeEnv': public.showSelectedValue('project_codeEnv_front2', false), //获取选中的代码环境
+                //'items': items,
+                'isdeletegraylock': public.showSelectedValue('project_isdeletegraylock_front2', false), //获取选中是否删除记录锁
+                'isrsyncwhole': public.showSelectedValue('project_isrsyncwhole_front2', false), //获取选中是否同步全目录
+                'department': public.showSelectedValue('project_department_front2', true), //获取选中要通知的部门同事
+                'end': value,
+                'front': 1,
             }
         }else {
             return false;
@@ -391,6 +434,8 @@ var operate = {
             var uri = "/upgrade/execute";
         }else if (value == 'front') {
             var uri = "/upgrade/execute/zypfront";
+        }else if (value == 'front2') {
+            var uri = "/upgrade/execute/zypfront";
         }else {
             return false;
         }
@@ -404,6 +449,8 @@ var operate = {
                 svn.GetSvnRecords(postData, "fenghuang_zyp");
             }else if (value == 'front') {
                 svn.GetSvnRecords(postData, "fenghuang_zypfront");
+            }else if (value == 'front2') {
+                svn.GetSvnRecords(postData, "fenghuang_zypfront2");
             }else {
                 return false;
             }
@@ -460,6 +507,9 @@ var operate = {
             var uri = "/upgrade/execute";
         }else if (postData['end'] == "front"){
             postData['key'] = "fenghuang_zyp_front"
+            var uri = "/upgrade/execute/zypfront";
+        }else if (postData['end'] == "front2"){
+            postData['key'] = "fenghuang_zyp_front2"
             var uri = "/upgrade/execute/zypfront";
         }else {
             return false;

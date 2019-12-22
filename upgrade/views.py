@@ -400,6 +400,10 @@ def GetSvnRecords(request):
             url      = svn_master.svn_frontcode_url
             user     = svn_master.svn_frontcode_u
             password = svn_master.svn_frontcode_p
+        if data['key'] == "fenghuang_zypfront2":
+            url      = svn_master.svn_front2code_url
+            user     = svn_master.svn_front2code_u
+            password = svn_master.svn_front2code_p
         else:
             url      = svn_master.svn_code_url
             user     = svn_master.svn_code_u
@@ -446,6 +450,8 @@ def GetSvnLockRecords(request):
             locks = svn_master.svnzyp_gray_lock.all()
         elif data['key'] == "fenghuang_zypfront":
             locks = svn_master.svnzypfront_gray_lock.all()
+        elif data['key'] == "fenghuang_zypfront2":
+            locks = svn_master.svnzypfront2_gray_lock.all()
         else:
             locks = []
 

@@ -7,7 +7,7 @@ from phxweb.upgrade.update_svn_record import updateSvnRecord
 from saltstack.saltapi import SaltAPI
 from monitor.models    import project_t, minion_t, minion_ip_t, svn_master_t
 from upgrade.models    import svn_customer_t
-from upgrade.models    import svn_gray_lock_t, svn_zyp_lottery_gray_lock_t, svn_zyp_front_gray_lock_t
+from upgrade.models    import svn_gray_lock_t, svn_zyp_lottery_gray_lock_t, svn_zyp_front_gray_lock_t, svn_zyp_front2_gray_lock_t
 from saltstack.command import Command
 from accounts.limit    import LimitAccess
 from accounts.views    import getIp, getProjects
@@ -406,7 +406,10 @@ class UpgradeExecuteZypFront(DefConsumer):
 
         #给升级到灰度的svn 文件上锁以及解锁
         if len(data['codeEnv']) == 1 and data['codeEnv'][0] == 'gray_env':
-            sr = svn_zyp_front_gray_lock_t()
+            if data['end'] == 'front':
+                sr = svn_zyp_front_gray_lock_t()
+            elif data['end'] == 'front2':
+                sr = svn_zyp_front2_gray_lock_t()
 
             for svn_record in data['svn_records']:
                 sr.revision   = svn_record['revision']
@@ -419,14 +422,21 @@ class UpgradeExecuteZypFront(DefConsumer):
                 except Exception as e:
                     logger.error(str(e))
                     logger.error("svn 记录锁已存在：%s" %svn_record)
-                    sr = svn_zyp_front_gray_lock_t.objects.get(revision=svn_record['revision'])
-
+                    if data['end'] == 'front':
+                        sr = svn_zyp_front_gray_lock_t.objects.get(revision=svn_record['revision'])
+                    elif data['end'] == 'front2':
+                        sr = svn_zyp_front2_gray_lock_t.objects.get(revision=svn_record['revision'])
+                    
                 else:
                     logger.info("svn 记录锁：%s" %svn_record)
 
                 try:
                     svn_master = svn_master_t.objects.get(id=data['svn_master_id'])
-                    svn_master.svnzypfront_gray_lock.add(sr)
+                    
+                    if data['end'] == 'front':
+                        svn_master.svnzypfront_gray_lock.add(sr)
+                    elif data['end'] == 'front2':
+                        svn_master.svnzypfront2_gray_lock.add(sr)
                     
                 except Exception as e:
                     message['text'] = "@arno\r\nsvn 记录锁 存入svn master 失败：%s\r\n%s" %(svn_record, str(e))
@@ -470,6 +480,8 @@ class UpgradeExecuteZypFront(DefConsumer):
                             sr = svn_zyp_lottery_gray_lock_t.objects.filter(revision=svn_record['revision']).delete()
                         elif data['key'] == "fenghuang_zyp_front":
                             sr = svn_zyp_front_gray_lock_t.objects.filter(revision=svn_record['revision']).delete()
+                        elif data['key'] == "fenghuang_zyp_front2":
+                            sr = svn_zyp_front2_gray_lock_t.objects.filter(revision=svn_record['revision']).delete()
                     except Exception as e:
                         info['results'][data['minion_id']] = "svn 记录锁删除失败：%s" %svn_record
                         logger.error(info['results'][data['minion_id']])
@@ -608,6 +620,7 @@ class UpgradeExecuteZypFront(DefConsumer):
                     'isrsyncwhole': int(data['isrsyncwhole'][0]),
                     'svn_customer_dict': svn_customer_dict,
                     'atUsers': atUsers,
+                    'end': data['end'],
                 }))
             except Exception as e:
                 message['text'] = api + '\nException: ' + str(e)

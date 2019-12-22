@@ -35,6 +35,8 @@ def get_svn_lock_files(svn_master_id, excepts=[], key=None):
             locks = svn_master.svnzyp_gray_lock.all()
         elif key == "fenghuang_zyp_front":
             locks = svn_master.svnzypfront_gray_lock.all()
+        elif key == "fenghuang_zyp_front2":
+            locks = svn_master.svnzypfront2_gray_lock.all()
         else:
             locks = []
 
