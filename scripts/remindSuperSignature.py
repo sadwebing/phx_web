@@ -100,4 +100,5 @@ if __name__ == '__main__':
         message['group'] = "yunwei"
         # print (message['text'])
         if remain_all <= remind_account:
-            sendTelegram(message).send()
+            message['group'] = "arno_test2"
+        sendTelegram(message).send()
