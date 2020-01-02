@@ -39,8 +39,9 @@ normal_status = [200, 404, 403]
 
 # 各家 超级签接口
 super_signature = {
-    "ali": "https://smanage.le079.com/apple/getAllAppleAccounts",
-    "leying": "https://lysmanage.le079.com/apple/getAllAppleAccounts",
+    "ali": "https://alisuper.le079.com/apple/getAllAppleAccounts",
+    "leying": "https://lysuper.le079.com/apple/getAllAppleAccounts",
+    "guangda": "https://gdsuper.le079.com/apple/getAllAppleAccounts",
     }
 remind_account = 100
 
