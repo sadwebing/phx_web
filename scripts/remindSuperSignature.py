@@ -41,7 +41,8 @@ normal_status = [200, 404, 403]
 super_signature = {
     "ali": "https://alisuper.le079.com/apple/getAllAppleAccounts",
     "leying": "https://lysuper.le079.com/apple/getAllAppleAccounts",
-    "guangda": "https://gdsuper.le079.com/apple/getAllAppleAccounts",
+    # "guangda": "https://gdsuper.le079.com/apple/getAllAppleAccounts",
+    "guangda": "https://gdsmanage.le079.com/apple/getAllAppleAccounts",
     }
 remind_account = 100
 
@@ -98,8 +99,8 @@ if __name__ == '__main__':
                 "%s: %s" %(department.department, ", ".join(name)),
             ])
 
-        message['group'] = "yunwei"
+        message['group'] = "arno_test2"
         # print (message['text'])
         if remain_all <= remind_account:
-            message['group'] = "arno_test2"
+            message['group'] = "yunwei"
         sendTelegram(message).send()
