@@ -42,7 +42,7 @@ super_signature = {
     "ali": "https://alisuper.le079.com/apple/getAllAppleAccounts",
     "leying": "https://lysuper.le079.com/apple/getAllAppleAccounts",
     "guangda": "https://gdsuper.le079.com/apple/getAllAppleAccounts",
-    "uc": "https:/ucsuper.le079.com/apple/getAllAppleAccounts",
+    "uc": "https://ucsuper.le079.com/apple/getAllAppleAccounts",
     # "guangda": "https://gdsmanage.le079.com/apple/getAllAppleAccounts",
     }
 remind_account = 100
